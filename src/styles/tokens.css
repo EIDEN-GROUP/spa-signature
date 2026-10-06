@@ -1,0 +1,107 @@
+/* Design tokens.
+   Colours keep the names of the materials they come from, so designers and
+   developers share one vocabulary: lime plaster, tadelakt, black soap, Fès
+   glaze, fresh mint, brass. */
+
+:root {
+  /* Grounds */
+  --color-chaux: #f5f1e8; /* lime plaster: the page */
+  --color-paper: #fbf9f4; /* sheets, fields */
+  --color-tadelakt: #eae2d1; /* polished plaster: alternate bands */
+  --color-pierre: #d9d1bf; /* stone: hairlines */
+  --color-pierre-soft: #e6dfcf;
+
+  /* Ink */
+  --color-beldi: #17201b; /* black soap: text, icons, rating stars */
+  --color-ink-2: #3d4841;
+  --color-ink-3: #5a645d;
+
+  /* Green acts */
+  --color-fes: #0f4a38; /* glazed tile of Fès: actions and links */
+  --color-fes-press: #0a3a2c;
+  --color-fes-deep: #0b3328; /* large dark grounds */
+  --color-naana: #a6cfb1; /* fresh mint: selected states */
+  --color-naana-tint: #dceadd;
+
+  /* Brass means earned. Editorial distinctions and the logo, nothing else. */
+  --color-dhahab: #96762b;
+  --color-dhahab-ink: #765812;
+  --color-dhahab-light: #d8bc78;
+
+  /* A rare warm accent: errors and "never". */
+  --color-ocre: #a34a23;
+
+  /* On dark grounds */
+  --on-dark: #f5f1e8;
+  --on-dark-2: #c6d3ca;
+  --on-dark-3: #9db2a6;
+  --line-dark: #27503f;
+
+  /* Type */
+  --font-serif: 'Newsreader Variable', 'Newsreader Fallback', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-sans: 'Hanken Grotesk Variable', 'Hanken Fallback', 'Helvetica Neue', Arial, sans-serif;
+
+  --text-display: clamp(2.75rem, 1.86rem + 3.8vw, 5rem); /* 44 to 80 */
+  --text-h1: clamp(2.125rem, 1.6rem + 2.3vw, 3.5rem); /* 34 to 56 */
+  --text-h2: clamp(1.625rem, 1.35rem + 1.2vw, 2.375rem); /* 26 to 38 */
+  --text-h3: clamp(1.1875rem, 1.12rem + 0.3vw, 1.375rem); /* 19 to 22 */
+  --text-lede: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem); /* 17 to 20 */
+  --text-body: clamp(1rem, 0.98rem + 0.1vw, 1.0625rem); /* 16 to 17 */
+  --text-small: 0.875rem;
+  --text-label: 0.6875rem;
+
+  /* One four-point scale */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.25rem;
+  --s-6: 1.5rem;
+  --s-8: 2rem;
+  --s-10: 2.5rem;
+  --s-12: 3rem;
+  --s-16: 4rem;
+  --s-20: 5rem;
+  --s-24: 6rem;
+  --s-32: 8rem;
+
+  /* Layout */
+  --gutter: 1rem;
+  --container: 80rem;
+  --section: clamp(3.5rem, 2.4rem + 4.6vw, 7.5rem);
+  --header-h: 3.5rem;
+  --tap: 2.75rem; /* 44px minimum touch target */
+
+  /* Surfaces: flat, with a single shadow kept for things that float. */
+  --radius: 2px;
+  --hairline: 1px solid var(--color-pierre);
+  --shadow-float: 0 -8px 24px rgb(23 32 27 / 0.1);
+  --shadow-sheet: 0 -12px 40px rgb(23 32 27 / 0.16);
+
+  /* Motion confirms an action or reveals content. It never decorates. */
+  --t-press: 120ms;
+  --t-hover: 200ms;
+  --t-sheet: 320ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  color-scheme: light;
+}
+
+@media (min-width: 40em) {
+  :root {
+    --gutter: 1.5rem;
+  }
+}
+
+@media (min-width: 64em) {
+  :root {
+    --gutter: 2.5rem;
+    --header-h: 4.5rem;
+  }
+}
+
+@media (min-width: 90em) {
+  :root {
+    --gutter: 5rem;
+  }
+}
