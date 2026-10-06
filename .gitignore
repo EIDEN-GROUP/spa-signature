@@ -1,24 +1,13 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Shared by every folder in the repository. What a folder builds or installs
+# is ignored in its own .gitignore (see frontend/.gitignore).
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
+# Editors and operating systems
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
+Thumbs.db
 *.sw?
+
+# Logs
+*.log
