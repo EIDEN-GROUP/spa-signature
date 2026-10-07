@@ -11,6 +11,8 @@ interface DoorProps {
   ratio?: number
   /** How far the photograph drifts behind the frame as the page scrolls, in percent. */
   drift?: number
+  /** The cut of the frame: an arch over straight jambs, a soft rectangle, or fully rounded ends. */
+  shape?: 'door' | 'soft' | 'pill'
   priority?: boolean
   decorative?: boolean
   className?: string
@@ -21,7 +23,7 @@ interface DoorProps {
  * from its threshold when revealed (put it inside a Stagger) and the picture
  * drifts slightly behind the frame on scroll.
  */
-export function Door({ media, ratio = 3 / 4, drift = 6, priority, decorative, className }: DoorProps) {
+export function Door({ media, ratio = 3 / 4, drift = 6, shape = 'door', priority, decorative, className }: DoorProps) {
   const ref = useRef<HTMLDivElement>(null)
   const still = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
@@ -30,7 +32,7 @@ export function Door({ media, ratio = 3 / 4, drift = 6, priority, decorative, cl
   return (
     <motion.div
       ref={ref}
-      className={cx('door', className)}
+      className={cx('door', shape !== 'door' && `door-${shape}`, className)}
       style={{ '--ratio': ratio } as CSSProperties}
       variants={unveil}
     >

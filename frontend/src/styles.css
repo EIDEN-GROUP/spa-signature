@@ -202,7 +202,7 @@ html {
 
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-corner {
-  background: transparent;
+  background: var(--color-sage-soft);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -238,9 +238,9 @@ body {
   /* As wide as the window, scrollbar included: when the scrollbar arrives it
      lies over the edge of the page and nothing moves. */
   position: relative;
-  width: 100vw;
+  /* width: 100vw; */
   margin: 0;
-  background: var(--color-page);
+  background: transparent;
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: var(--text-body);
@@ -1091,6 +1091,15 @@ address {
   border-radius: 50% 50% var(--radius) var(--radius) / var(--rise) var(--rise) var(--radius) var(--radius);
   background-color: var(--color-sage-tint);
   isolation: isolate;
+}
+
+/* Not every photograph is a doorway: some are soft rectangles, some have rounded ends. */
+.door-soft {
+  border-radius: var(--door-radius, var(--radius-lg));
+}
+
+.door-pill {
+  border-radius: var(--radius-full);
 }
 
 .door-drift {
@@ -2047,110 +2056,215 @@ address {
   isolation: isolate;
 }
 
-/* A zellige star set into the wall, barely lit. */
+/* A zellige star set into the wall behind the name, barely lit. */
 .site-footer::before {
   content: '';
   position: absolute;
   z-index: -1;
-  right: -12rem;
-  top: -10rem;
-  width: min(90vw, 40rem);
+  top: -9rem;
+  left: 50%;
+  width: min(135vw, 44rem);
   aspect-ratio: 1;
+  translate: -50% 0;
   background: url('./assets/decor-zellige-star.webp') center / cover no-repeat;
-  opacity: 0.11;
+  opacity: 0.12;
   mix-blend-mode: luminosity;
   mask-image: radial-gradient(closest-side, #000 25%, transparent 100%);
   pointer-events: none;
 }
 
+/* The name in the middle; contact and navigation either side of it, each under
+   a rule that runs off its own edge of the page. */
 .site-footer-top {
   display: grid;
-  gap: var(--s-12);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    'brand brand'
+    'contact nav';
+  gap: var(--s-12) var(--s-8);
+}
+
+.site-footer-brand {
+  grid-area: brand;
+  display: grid;
+  justify-items: center;
+  gap: var(--s-4);
+  text-align: center;
+}
+
+.site-footer-home {
+  display: inline-flex;
 }
 
 .site-footer-logo {
-  height: 2.5rem;
+  height: 3.75rem;
+}
+
+.site-footer-ornament {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin-block: var(--s-2);
+}
+
+.site-footer-ornament::before,
+.site-footer-ornament::after {
+  content: '';
+  width: 3rem;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-sage) 55%, transparent);
 }
 
 .site-footer-motto {
-  margin-top: var(--s-8);
   font-family: var(--font-serif);
   font-style: normal;
   font-weight: 320;
-  font-size: 1.625rem;
+  font-size: 1.5rem;
   line-height: 1.15;
   letter-spacing: -0.01em;
   color: var(--on-dark);
 }
 
 .site-footer-gloss {
-  margin-top: var(--s-3);
   max-width: 22rem;
   font-size: var(--text-small);
   color: var(--on-dark-2);
 }
 
-.site-footer-links {
+.site-footer-column {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--s-8) var(--s-6);
+  align-content: start;
+  min-width: 0;
 }
 
-.site-footer-links h2 {
-  padding-bottom: var(--s-2);
-  margin-bottom: var(--s-1);
-  border-bottom: 1px solid var(--line-dark);
+.site-footer-column ul {
+  display: grid;
 }
 
-.site-footer-links a {
+.site-footer-contact {
+  grid-area: contact;
+  justify-items: end;
+  text-align: right;
+}
+
+.site-footer-contact ul {
+  justify-items: end;
+}
+
+.site-footer-nav {
+  grid-area: nav;
+  justify-items: start;
+}
+
+.site-footer-column .label {
+  position: relative;
+  padding-bottom: var(--s-3);
+  margin-bottom: var(--s-2);
+  letter-spacing: 0.24em;
+  color: var(--on-dark);
+}
+
+.site-footer-column .label::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  height: 1px;
+  background: color-mix(in srgb, var(--on-dark) 34%, transparent);
+}
+
+.site-footer-contact .label::after {
+  right: 0;
+}
+
+.site-footer-nav .label::after {
+  left: 0;
+}
+
+.site-footer-column a,
+.site-footer-cities a {
   display: inline-flex;
   align-items: center;
   min-height: var(--tap);
-  font-size: 0.9375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--on-dark-2);
   transition: color var(--t-hover) var(--ease);
 }
 
-.site-footer-base {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-2);
+.site-footer-language {
+  margin-right: -0.375rem;
+}
+
+.site-footer-cities {
   margin-top: var(--s-12);
-  padding-top: var(--s-5);
+  padding-top: var(--s-4);
   border-top: 1px solid var(--line-dark);
+}
+
+.site-footer-cities ul {
+  text-align: center;
+  text-wrap: balance;
+}
+
+.site-footer-cities li {
+  display: inline-block;
+  margin-inline: var(--s-3);
+}
+
+.site-footer-base {
+  display: grid;
+  justify-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-4);
   font-size: 0.8125rem;
   color: var(--on-dark-3);
+  text-align: center;
+}
+
+.site-footer-base p:first-child {
+  font-size: var(--text-label);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--on-dark-2);
 }
 
 @media (hover: hover) {
-  .site-footer-links a:hover {
+  .site-footer-column a:hover,
+  .site-footer-cities a:hover {
     color: var(--on-dark);
   }
 }
 
-@media (min-width: 48em) {
-  .site-footer-links {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .site-footer-base {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-
-@media (min-width: 64em) {
+@media (min-width: 56em) {
   .site-footer {
     padding-top: var(--s-24);
   }
 
   .site-footer-top {
-    grid-template-columns: 5fr 7fr;
-    gap: var(--s-16);
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-areas: 'contact brand nav';
+    align-items: start;
+    gap: clamp(3rem, 7vw, 7rem);
+  }
+
+  .site-footer-column {
+    padding-top: var(--s-4);
+  }
+
+  .site-footer-logo {
+    height: 5rem;
   }
 
   .site-footer-motto {
-    font-size: 2rem;
+    font-size: 1.75rem;
+  }
+
+  .site-footer-cities {
+    margin-top: var(--s-20);
   }
 }
 
@@ -3309,21 +3423,19 @@ html.is-loading {
    ════════════════════════════════════════════════════════════════════════════ */
 
 .home-hero {
-  --overlap: 3.5rem; /* how far the search bar climbs onto the photograph */
-
   position: relative;
   margin-top: calc(-1 * var(--header-h)); /* the photograph runs up behind the header */
-  padding: var(--frame) var(--frame) var(--s-10);
+  /* padding: var(--frame); */
   isolation: isolate;
 }
 
-/* The photograph is a panel set into the page, a margin of plaster around it. */
+/* The photograph is a panel set into the page, a margin of plaster around it. It fills the first screen. */
 .home-hero-stage {
   position: relative;
-  display: flex;
-  align-items: center;
-  min-height: max(27rem, 100svh - 13.5rem);
-  border-radius: var(--radius-lg);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: 100svh;
+  /* border-bottom-left-radius: var(--radius-lg); */
   overflow: hidden;
   transform-origin: 50% 100%;
   isolation: isolate;
@@ -3348,20 +3460,19 @@ html.is-loading {
   pointer-events: none;
 }
 
-/* The grade: darker where the header and the title sit, clear in between. */
+/* The grade: darker where the header, the title and the foot sit. */
 .home-hero-gate::after {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to bottom, color-mix(in srgb, var(--color-black) 60%, transparent), transparent 30%),
-    linear-gradient(
-      to top,
-      color-mix(in srgb, var(--color-black) 82%, transparent),
-      color-mix(in srgb, var(--color-black) 36%, transparent) 44%,
-      transparent 72%
-    ),
-    linear-gradient(to right, color-mix(in srgb, var(--color-black) 62%, transparent), transparent 82%);
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-black) 62%, transparent), transparent 32%),
+    linear-gradient(to top, color-mix(in srgb, var(--color-black) 78%, transparent), transparent 46%),
+    radial-gradient(
+      120% 62% at 50% 46%,
+      color-mix(in srgb, var(--color-black) 58%, transparent),
+      color-mix(in srgb, var(--color-black) 22%, transparent) 100%
+    );
 }
 
 /* Taller than the panel, so the photograph can slide down behind it as the page scrolls. */
@@ -3385,17 +3496,25 @@ html.is-loading {
 /* Inside the panel the container starts a frame's width further in; this takes it back,
    so the title and the search line up with the header above and the sections below. */
 .home-hero-copy,
-.home-hero-below {
-  width: min(100% - 2 * (var(--gutter) - var(--frame)), var(--container));
+.home-hero-foot {
+  width: min(100% - 2 * var(--gutter), var(--container));
+  background: none; /* the photograph is the ground here, not the dark plaster of .on-dark */
 }
 
 .home-hero-copy {
   display: grid;
-  justify-items: start;
+  align-content: center;
+  justify-items: center;
+  gap: clamp(1.5rem, 4svh, 2.75rem);
+  padding-top: calc(var(--header-h) + var(--s-6));
+  padding-bottom: var(--s-6);
+  text-align: center;
+}
+
+.home-hero-words {
+  display: grid;
+  justify-items: center;
   gap: var(--s-4);
-  padding-top: calc(var(--header-h) + var(--s-8));
-  padding-bottom: calc(var(--overlap) + var(--s-6));
-  background: none; /* the photograph is the ground here, not the dark plaster of .on-dark */
 }
 
 .home-hero-copy .label {
@@ -3406,27 +3525,26 @@ html.is-loading {
   font-size: clamp(2.875rem, min(12.5vw, 12.5svh), 7.25rem);
   line-height: 0.98;
   letter-spacing: -0.045em;
+  font-weight: bold;
 }
 
 /* Over the photograph the leaning words take the paler sage, to stand clear of the palms. */
 .home-hero-copy .home-hero-title em {
   color: var(--color-gold);
+  font-weight: bold;
 }
 
-.home-hero-below {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  gap: var(--s-5);
-  margin-top: calc(-1 * var(--overlap));
+.home-hero-search {
+  width: min(100%, 60rem);
+  text-align: left;
 }
 
-/* The search is one bar laid across the foot of the photograph. */
+/* The search is one bar of smoked glass laid over the photograph. */
 .home-hero-form .search-form-row {
   padding: var(--s-2);
-  border: 1px solid var(--color-line-soft);
+  border: 1px solid color-mix(in srgb, var(--on-dark) 26%, transparent);
   border-radius: var(--radius-full);
-  background: var(--color-paper);
+  background: color-mix(in srgb, var(--color-black) 52%, transparent);
   box-shadow: var(--shadow-card);
 }
 
@@ -3434,24 +3552,72 @@ html.is-loading {
   .home-hero-form .search-form-row {
     border-radius: var(--radius-lg);
   }
+
+  .home-hero-form .search-form-field,
+  .home-hero-form .search-form-submit {
+    --inner: calc(var(--radius-lg) - var(--s-2));
+  }
+
+  .home-hero-form .search-form-field:nth-child(3) {
+    grid-column: 1 / -1;
+  }
 }
 
 .home-hero-form .search-form-field,
 .home-hero-form .search-form-submit {
-  border-radius: calc(var(--radius-full) - var(--s-2));
+  border-radius: var(--inner, calc(var(--radius-full) - var(--s-2)));
+}
+
+.home-hero-form .search-form-field {
+  border-color: color-mix(in srgb, var(--on-dark) 16%, transparent);
+  background: color-mix(in srgb, var(--on-dark) 7%, transparent);
+}
+
+.home-hero-form .search-form-field label {
+  color: var(--on-dark-3);
+}
+
+.home-hero-form .search-form-field select {
+  color: var(--on-dark);
+}
+
+.home-hero-form .search-form-field select:focus-visible {
+  outline-color: var(--color-sage);
+}
+
+.home-hero-form .search-form-field option {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.home-hero-form .search-form-field .icon {
+  color: var(--on-dark-2);
+}
+
+.home-hero-form .search-form-chosen {
+  border-color: var(--color-sage);
+  background: color-mix(in srgb, var(--color-sage) 24%, transparent);
+}
+
+.home-hero-form .search-form-chosen label {
+  color: var(--color-sage);
 }
 
 .home-hero-foot {
   display: grid;
+  justify-items: center;
   gap: var(--s-4);
+  padding-bottom: var(--s-6);
+  text-align: center;
 }
 
 .home-hero-trust {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.375rem 1.25rem;
   font-size: var(--text-small);
-  color: var(--color-ink-2);
+  color: var(--on-dark-2);
 }
 
 .home-hero-trust li {
@@ -3469,17 +3635,25 @@ html.is-loading {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: var(--s-2) var(--s-6);
+  order: -1;
 }
 
-/* From here the four choices and the button fit on one line. */
-@media (min-width: 56em) {
-  .home-hero {
-    --overlap: 2.4rem;
+@media (hover: hover) {
+  .home-hero-form .search-form-field:hover {
+    border-color: color-mix(in srgb, var(--on-dark) 42%, transparent);
   }
 
-  .home-hero-stage {
-    min-height: max(31rem, 100svh - var(--frame) - 9rem);
+  .home-hero-form .search-form-chosen:hover {
+    border-color: var(--color-sage-soft);
+  }
+}
+
+/* From here the three choices and the button fit on one line. */
+@media (min-width: 56em) {
+  .home-hero-form .search-form-row {
+    backdrop-filter: blur(16px) saturate(1.3);
   }
 
   .home-hero-form .search-form-field {
@@ -3495,12 +3669,12 @@ html.is-loading {
     bottom: 22%;
     left: calc(-0.25rem - 1.5px);
     width: 1px;
-    background: var(--color-line);
+    background: color-mix(in srgb, var(--on-dark) 24%, transparent);
   }
 
   .home-hero-form .search-form-chosen {
     border-color: var(--color-sage);
-    background: var(--color-sage-tint);
+    background: color-mix(in srgb, var(--color-sage) 24%, transparent);
   }
 
   .home-hero-form .search-form-submit {
@@ -3509,20 +3683,30 @@ html.is-loading {
 
   .home-hero-foot {
     grid-template-columns: minmax(0, 1fr) auto;
+    justify-items: start;
     align-items: center;
-    padding-inline: var(--s-4);
+    padding-bottom: var(--s-8);
+    text-align: left;
+  }
+
+  .home-hero-trust {
+    justify-content: flex-start;
+  }
+
+  .home-hero-actions {
+    order: 0;
   }
 }
 
 @media (min-width: 56em) and (hover: hover) {
   .home-hero-form .search-form-field:hover {
     border-color: transparent;
-    background: var(--color-page);
+    background: color-mix(in srgb, var(--on-dark) 10%, transparent);
   }
 
   .home-hero-form .search-form-chosen:hover {
-    border-color: var(--color-sage-deep);
-    background: var(--color-sage-tint);
+    border-color: var(--color-sage-soft);
+    background: color-mix(in srgb, var(--color-sage) 24%, transparent);
   }
 }
 
@@ -3729,6 +3913,10 @@ html.is-loading {
   gap: var(--s-5);
   padding-block: var(--s-6);
   border-top: var(--hairline);
+}
+
+.home-picks-thumb {
+  --door-radius: var(--radius);
 }
 
 .home-picks-row-body {
@@ -3955,16 +4143,11 @@ html.is-loading {
   isolation: isolate;
 }
 
-.home-experiences-panel::before,
-.home-experiences-panel::after {
+/* Lantern light thrown across the wall. */
+.home-experiences-panel::before {
   content: '';
   position: absolute;
   z-index: -1;
-  pointer-events: none;
-}
-
-/* Lantern light thrown across the wall… */
-.home-experiences-panel::before {
   top: -22%;
   right: -16%;
   width: min(110vw, 52rem);
@@ -3974,204 +4157,489 @@ html.is-loading {
   mix-blend-mode: screen;
   filter: grayscale(1) sepia(0.6);
   mask-image: radial-gradient(closest-side, #000 20%, transparent 100%);
-}
-
-/* …and a zellige star low in the opposite corner. */
-.home-experiences-panel::after {
-  left: -10rem;
-  bottom: -12rem;
-  width: min(90vw, 36rem);
-  aspect-ratio: 1;
-  background: url('./assets/decor-zellige-star.webp') center / cover no-repeat;
-  opacity: 0.14;
-  mix-blend-mode: luminosity;
-  mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
+  pointer-events: none;
 }
 
 .home-experiences-inner {
+  --card: clamp(6.25rem, 27vw, 11rem);
+  --card-gap: var(--s-3);
+
   width: min(100% - 2 * (var(--gutter) - var(--frame)), var(--container));
   display: grid;
-  gap: var(--s-2);
+  gap: var(--s-6);
 }
 
-/* The doorway that shows the experience under the pointer: wide screens only. */
-.home-experiences-preview {
-  display: none;
+.home-experiences-intro {
+  margin-bottom: 0;
 }
 
-.home-experiences-preview .door {
+/* The stage: one photograph at a time, the next fading in over the last. */
+.home-experiences-frame {
+  display: grid;
+}
+
+.home-experiences-stage {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-lg);
   background-color: var(--line-dark);
+  overflow: hidden;
+  isolation: isolate;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.home-experiences-slide {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  align-items: end;
+  opacity: 0;
+  transition: opacity 0s linear 0.9s;
+}
+
+.home-experiences-shown {
+  z-index: 1;
+  opacity: 1;
+  transition: opacity 0.9s var(--ease-out);
+}
+
+.home-experiences-slide:focus-visible {
+  outline-offset: -4px;
+  border-radius: var(--radius-lg);
 }
 
 .home-experiences-shot {
   position: absolute;
   inset: 0;
+  z-index: -2;
   background-color: transparent;
-  opacity: 0;
-  transition: opacity 0.9s var(--ease-out);
+  pointer-events: none;
 }
 
 .home-experiences-shot img {
-  scale: 1.14;
-  transition: scale 1.8s var(--ease-out);
+  height: 100%;
+  object-fit: cover;
+  scale: 1.12;
+  transition: scale 0s linear 0.9s;
 }
 
-.home-experiences-shown {
-  opacity: 1;
-}
-
-.home-experiences-shown img {
+.home-experiences-shown .home-experiences-shot img {
   scale: 1;
+  transition: scale 7s var(--ease-out);
 }
 
-.home-experiences-list {
+.home-experiences-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-black) 84%, transparent),
+    color-mix(in srgb, var(--color-black) 30%, transparent) 46%,
+    transparent 70%
+  );
+}
+
+.home-experiences-caption {
   display: grid;
-  border-bottom: 1px solid var(--line-dark);
+  justify-items: start;
+  gap: var(--s-2);
+  padding: var(--s-5);
+  color: var(--on-dark);
 }
 
-.home-experiences-item {
-  border-top: 1px solid var(--line-dark);
+.home-experiences-caption > * {
+  opacity: 0;
+  translate: 0 1.25rem;
+  transition:
+    opacity 0.3s var(--ease),
+    translate 0s linear 0.3s;
 }
 
-.home-experiences-link {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--s-4);
-  padding-block: var(--s-4);
+.home-experiences-shown .home-experiences-caption > * {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.9s var(--ease-out) var(--wait, 0.25s),
+    translate 1s var(--ease-out) var(--wait, 0.25s);
 }
 
-.home-experiences-thumb {
-  width: 4.25rem;
+.home-experiences-caption > :nth-child(2) {
+  --wait: 0.33s;
 }
 
-.home-experiences-index {
-  display: none;
+.home-experiences-caption > :nth-child(3) {
+  --wait: 0.41s;
 }
 
-.home-experiences-body {
-  display: grid;
-  gap: 0.25rem;
-  min-width: 0;
+.home-experiences-caption > :nth-child(4) {
+  --wait: 0.49s;
+}
+
+.home-experiences-number,
+.home-experiences-pick-number {
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.home-experiences-number {
+  color: var(--color-sage);
 }
 
 .home-experiences-name {
   font-family: var(--font-title);
-  font-size: clamp(1.5rem, 1.3rem + 0.8vw, 2rem);
-  font-weight: 400;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  transition: color var(--t-hover) var(--ease);
+  font-size: clamp(2.25rem, 1.7rem + 2.6vw, 3.5rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.035em;
 }
 
 .home-experiences-words {
-  font-size: 1.0625rem;
+  max-width: 20rem;
+  font-size: 1.125rem;
   color: var(--on-dark-2);
+}
+
+.home-experiences-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  width: 100%;
+  margin-top: var(--s-2);
 }
 
 .home-experiences-count {
   font-size: var(--text-small);
+  color: var(--on-dark-2);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* The rail: the experiences still to come, each one moving up a place when the stage changes. */
+.home-experiences-rail {
+  position: relative;
+  z-index: 2;
+}
+
+.home-experiences-cards {
+  position: relative;
+  height: calc(var(--card) * 4 / 3);
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.home-experiences-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--card);
+  height: 100%;
+  transform: translateX(calc(var(--slot) * (var(--card) + var(--card-gap))));
+  transition:
+    transform 1s var(--ease-out),
+    opacity 0.6s var(--ease-out);
+}
+
+.home-experiences-away {
+  opacity: 0;
+}
+
+/* The card that goes round to the other end does not cross the row: it appears there. */
+.home-experiences-wrapped {
+  transition: none;
+  animation: home-experiences-arrive 0.8s var(--ease-out);
+}
+
+@keyframes home-experiences-arrive {
+  from {
+    opacity: 0;
+  }
+}
+
+.home-experiences-pick {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: var(--s-3);
+  border-radius: var(--radius);
+  overflow: hidden;
+  color: var(--on-dark);
+  text-align: left;
+  isolation: isolate;
+  transition: translate var(--t-sheet) var(--ease-out);
+}
+
+.home-experiences-pick .picture {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-color: var(--line-dark);
+  pointer-events: none;
+}
+
+.home-experiences-pick .picture img {
+  height: 100%;
+  object-fit: cover;
+  transition: scale 1.2s var(--ease-out);
+}
+
+.home-experiences-pick::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--on-dark) 16%, transparent);
+  background:
+    linear-gradient(to top, color-mix(in srgb, var(--color-black) 78%, transparent), transparent 58%),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-black) 44%, transparent), transparent 34%);
+}
+
+.home-experiences-pick-number {
+  color: var(--on-dark-2);
+}
+
+.home-experiences-pick-name {
+  font-family: var(--font-title);
+  font-size: clamp(1rem, 0.9rem + 0.45vw, 1.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.home-experiences-foot {
+  display: grid;
+  gap: var(--s-6);
+}
+
+.home-experiences-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+/* A line that fills while the stage waits; when it is full the next experience comes up. */
+.home-experiences-progress {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  margin-inline: var(--s-2);
+  background: var(--line-dark);
+}
+
+.home-experiences-fill {
+  position: absolute;
+  inset: -0.5px 0;
+  background: var(--color-sage);
+  transform-origin: 0 50%;
+  animation: home-experiences-progress 5.5s linear both;
+}
+
+@keyframes home-experiences-progress {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.home-experiences-index {
+  font-size: var(--text-small);
+  letter-spacing: 0.08em;
   color: var(--on-dark-3);
   font-variant-numeric: tabular-nums lining-nums;
 }
 
-.home-experiences-link:focus-visible {
-  outline-offset: 2px;
-  border-radius: var(--radius);
+.home-experiences-index b {
+  margin-right: 0.25rem;
+  font-family: var(--font-title);
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--on-dark);
+}
+
+.home-experiences-controls .home-go:active {
+  background: var(--color-sage);
+  border-color: var(--color-sage);
+  color: var(--color-burgundy-night);
+}
+
+/* The way out of the section: a ring, the words across it, and a long arrow. */
+.home-experiences-all {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: var(--s-4);
+  min-height: 3.5rem;
+  padding-left: 1.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-dark);
+  isolation: isolate;
+}
+
+.home-experiences-all::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: -1;
+  width: 3.5rem;
+  aspect-ratio: 1;
+  translate: 0 -50%;
+  border: 1px solid color-mix(in srgb, var(--color-sage) 70%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-sage) 22%, transparent);
+  transition:
+    scale var(--t-sheet) var(--ease-out),
+    background-color var(--t-sheet) var(--ease-out);
+}
+
+.home-experiences-all-line {
+  position: relative;
+  width: 3.5rem;
+  height: 1px;
+  background: currentColor;
+  transition: width var(--t-sheet) var(--ease-out);
+}
+
+.home-experiences-all-line::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 0.4375rem;
+  aspect-ratio: 1;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  translate: 0 -50%;
+  rotate: 45deg;
 }
 
 @media (hover: hover) {
-  .home-experiences-link:hover .home-go {
+  .home-experiences-slide:hover .home-go,
+  .home-experiences-controls .home-go:hover {
     background: var(--color-sage);
     border-color: var(--color-sage);
     color: var(--color-burgundy-night);
+  }
+
+  .home-experiences-slide:hover .home-go {
     transform: translateX(4px);
   }
 
-  .home-experiences-link:hover .home-experiences-name {
-    color: var(--color-sage);
+  .home-experiences-pick:hover {
+    translate: 0 -0.375rem;
+  }
+
+  .home-experiences-pick:hover .picture img {
+    scale: 1.07;
+  }
+
+  .home-experiences-all:hover::before {
+    scale: 1.14;
+    background: color-mix(in srgb, var(--color-sage) 38%, transparent);
+  }
+
+  .home-experiences-all:hover .home-experiences-all-line {
+    width: 5rem;
   }
 }
 
 @media (min-width: 40em) {
-  .home-experiences-link {
-    gap: var(--s-6);
-    padding-block: var(--s-5);
+  .home-experiences-inner {
+    --card-gap: var(--s-4);
   }
 
-  .home-experiences-thumb {
-    width: 5.5rem;
+  .home-experiences-stage {
+    aspect-ratio: 16 / 10;
+  }
+
+  .home-experiences-caption {
+    padding: var(--s-8);
+  }
+
+  .home-experiences-foot {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--s-10);
   }
 }
 
-/* With room, the titles and the doorway stand to the left and the list runs beside them. */
+/* With room, the photograph takes the whole left side of the panel, edge to edge; the titles,
+   the rail and the controls run beside it, and the first card of the rail steps onto it. */
 @media (min-width: 64em) {
   .home-experiences-inner {
+    --card: clamp(9rem, 12.5vw, 11.5rem);
+    --overlap: calc(var(--card) * 0.42);
+    --between: clamp(2.5rem, 5vw, 5rem);
+    --wide: min(100vw - 2 * var(--gutter), var(--container));
+    --side: calc((100vw - 2 * var(--frame) - var(--wide)) / 2);
+
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    align-items: start;
-    gap: clamp(3rem, 7vw, 7rem);
+    grid-template-rows: 1fr auto auto;
+    grid-template-areas:
+      '. intro'
+      '. rail'
+      '. foot';
+    gap: var(--s-8) var(--between);
+    min-height: 34rem;
   }
 
-  .home-experiences-aside {
-    position: sticky;
-    top: calc(var(--header-h) + var(--s-6));
-    display: grid;
-    gap: var(--s-10);
+  .home-experiences-intro {
+    grid-area: intro;
+    align-self: start;
   }
 
-  .home-experiences-aside .home-intro {
-    flex-direction: column;
-    align-items: flex-start;
+  .home-experiences-frame {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: calc(var(--side) + (var(--wide) - var(--between)) * 5 / 12);
+  }
+
+  .home-experiences-stage {
+    aspect-ratio: auto;
+    border-radius: 0;
+  }
+
+  .home-experiences-slide:focus-visible {
+    border-radius: 0;
+  }
+
+  .home-experiences-caption {
+    padding: var(--s-12) calc(var(--overlap) + var(--s-8)) clamp(2.5rem, 5vw, 4.5rem) 2rem;
+  }
+
+  .home-experiences-rail {
+    grid-area: rail;
+    margin-left: calc(-1 * (var(--between) + var(--overlap)));
+  }
+
+  .home-experiences-foot {
+    grid-area: foot;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--s-4);
-    margin-bottom: 0;
   }
+}
 
-  .home-experiences-preview {
-    display: block;
-    width: min(100%, 21rem);
-  }
-
-  /* The photograph is in the doorway; the row keeps its number instead. */
-  .home-experiences-thumb {
-    display: none;
-  }
-
-  .home-experiences-index {
-    display: block;
-    width: 2.5rem;
-    font-size: var(--text-small);
-    font-weight: 500;
-    font-variant-numeric: tabular-nums lining-nums;
-    letter-spacing: 0.08em;
-    color: var(--on-dark-3);
-    transition: color var(--t-hover) var(--ease);
-  }
-
-  .home-experiences-link {
-    padding-block: var(--s-6);
-    transition: padding var(--t-sheet) var(--ease);
-  }
-
-  .home-experiences-name {
-    font-size: clamp(2rem, 1.3rem + 1.4vw, 2.625rem);
-    font-weight: 300;
-    letter-spacing: -0.03em;
-  }
-
-  /* Sage marks the row that is showing. */
-  .home-experiences-current .home-experiences-link {
-    padding-left: var(--s-3);
-  }
-
-  .home-experiences-current .home-experiences-name,
-  .home-experiences-current .home-experiences-index {
-    color: var(--color-sage);
-  }
-
-  .home-experiences-current .home-go {
-    background: var(--color-sage);
-    border-color: var(--color-sage);
-    color: var(--color-burgundy-night);
+@media (min-width: 80em) {
+  .home-experiences-foot {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--s-10);
   }
 }
 
@@ -4210,30 +4678,25 @@ html.is-loading {
   margin-top: var(--s-3);
 }
 
-/* Two doors, one in front of the other. */
+/* One tall photograph with rounded ends, and its outline standing a step behind it. */
 .home-closing-doors {
   position: relative;
-  width: min(100%, 22rem);
+  width: min(74%, 19rem);
   margin-inline: auto;
-  padding: 0 0 2.5rem 3.5rem;
+  padding-bottom: var(--s-5);
+}
+
+.home-closing-doors::before {
+  content: '';
+  position: absolute;
+  inset: var(--s-5) calc(-1 * var(--s-5)) 0 var(--s-5);
+  border: 1px solid var(--color-sage-deep);
+  border-radius: var(--radius-full);
+  pointer-events: none;
 }
 
 .home-closing-tall {
   width: 100%;
-}
-
-/* The nearer door keeps a margin of plaster around it. */
-.home-closing-small {
-  --edge: 0.5rem;
-
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 44%;
-  padding: var(--edge);
-  border-radius: 50% 50% calc(var(--radius) + var(--edge)) calc(var(--radius) + var(--edge)) / 38% 38%
-    calc(var(--radius) + var(--edge)) calc(var(--radius) + var(--edge));
-  background: var(--color-page);
 }
 
 @media (min-width: 64em) {
@@ -4244,9 +4707,7 @@ html.is-loading {
   }
 
   .home-closing-doors {
-    width: min(100%, 30rem);
-    margin-inline: auto 0;
-    padding: 0 0 3.5rem 5rem;
+    width: min(100%, 22rem);
   }
 }
 
@@ -4258,14 +4719,17 @@ html.is-loading {
   padding-bottom: var(--section);
 }
 
-/* A band of sage, the last thing before the footer. */
+/* A band of burgundy with a door left open at its far end: the last thing before the footer. */
 .home-for-spas-band {
+  --door: clamp(10rem, 46vw, 15rem);
+
   position: relative;
   display: grid;
-  gap: var(--s-8);
-  padding: clamp(2rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 4.5rem);
+  justify-items: center;
+  gap: var(--s-12);
+  padding: clamp(2rem, 7vw, 4.5rem) clamp(1.5rem, 5vw, 4.5rem) 0;
   border-radius: var(--radius-lg);
-  background: var(--gradient-sage);
+  background: var(--gradient-burgundy);
   overflow: hidden;
   isolation: isolate;
 }
@@ -4278,66 +4742,121 @@ html.is-loading {
   pointer-events: none;
 }
 
-/* Doorways drawn in hairlines, one inside the other, standing at the far end… */
+/* Light spilling out of the doorway… */
 .home-for-spas-band::before {
-  top: 10%;
-  right: clamp(1rem, 6vw, 5rem);
-  bottom: 0;
-  aspect-ratio: 3 / 4;
-  background: var(--color-burgundy);
-  opacity: 0.3;
-  mask: var(--art-doorways) center bottom / contain no-repeat;
+  left: 50%;
+  bottom: -32%;
+  width: min(150%, 46rem);
+  aspect-ratio: 1;
+  translate: -50% 0;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--color-sage) 40%, transparent), transparent);
 }
 
 /* …and carved plaster pressed into the near corner. */
 .home-for-spas-band::after {
+  top: 0;
   left: 0;
-  bottom: 0;
-  width: min(70%, 34rem);
+  width: min(90%, 36rem);
   height: 100%;
   background: url('./assets/decor-plaster.webp') center / cover no-repeat;
-  opacity: 0.22;
-  mix-blend-mode: multiply;
-  mask-image: radial-gradient(120% 110% at 0% 100%, #000 0%, transparent 62%);
+  opacity: 0.5;
+  filter: grayscale(1);
+  mix-blend-mode: soft-light;
+  mask-image: radial-gradient(120% 110% at 0% 0%, #000 0%, transparent 64%);
 }
 
 .home-for-spas-band .label {
-  color: var(--color-ink-2);
+  color: var(--on-dark-2);
 }
 
 .home-for-spas-text {
   display: grid;
   justify-items: start;
   gap: var(--s-4);
+  width: 100%;
   max-width: 40rem;
 }
 
 .home-for-spas-title {
   font-family: var(--font-title);
-  font-size: clamp(1.875rem, 1.4rem + 2.1vw, 3rem);
+  font-size: clamp(2rem, 1.35rem + 2.9vw, 3.5rem);
   font-weight: 300;
-  line-height: 1.06;
-  letter-spacing: -0.03em;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
   text-wrap: balance;
 }
 
 .home-for-spas-title em {
   font-style: normal;
-  color: var(--color-burgundy);
+  color: var(--color-sage);
 }
 
 .home-for-spas-line {
   font-size: var(--text-lede);
   line-height: 1.45;
-  color: var(--color-ink-2);
+  color: var(--on-dark-2);
   text-wrap: pretty;
+}
+
+.home-for-spas-cta {
+  min-height: 3.5rem;
+  margin-top: var(--s-3);
+  padding-inline: var(--s-8);
+  border-radius: var(--radius-full);
+  font-size: 1rem;
+}
+
+/* The door stands on the floor of the band, two hairline arches drawn around it. */
+.home-for-spas-door {
+  position: relative;
+  width: var(--door);
+}
+
+.home-for-spas-door .door {
+  border-radius: var(--radius-full) var(--radius-full) 0 0;
+}
+
+.home-for-spas-door::before,
+.home-for-spas-door::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--out)) calc(-1 * var(--out)) 0;
+  border: 1px solid color-mix(in srgb, var(--color-sage) var(--ink), transparent);
+  border-bottom: 0;
+  border-radius: var(--radius-full) var(--radius-full) 0 0;
+  pointer-events: none;
+}
+
+.home-for-spas-door::before {
+  --out: var(--s-3);
+  --ink: 72%;
+}
+
+.home-for-spas-door::after {
+  --out: var(--s-6);
+  --ink: 36%;
 }
 
 @media (min-width: 56em) {
   .home-for-spas-band {
+    --door: clamp(14rem, 22vw, 18rem);
+
     grid-template-columns: minmax(0, 1fr) auto;
+    justify-items: start;
     align-items: end;
-    gap: var(--s-12);
+    gap: var(--s-16);
+    padding-right: clamp(3.5rem, 8vw, 7rem);
+  }
+
+  .home-for-spas-band::before {
+    left: auto;
+    right: -6%;
+    translate: 0 0;
+  }
+
+  .home-for-spas-text {
+    align-self: center;
+    padding-bottom: clamp(2rem, 6vw, 4.5rem);
   }
 }
 

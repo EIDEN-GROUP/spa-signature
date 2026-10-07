@@ -116,6 +116,9 @@ export const en: Dictionary = {
     title: 'Explore by *experience*',
     lede: 'Start from what you want, in your own words.',
     all: 'All experiences',
+    choose: 'Choose an experience',
+    previous: 'Previous experience',
+    next: 'Next experience',
     byId: {
       hammam: {
         name: 'Hammam',
@@ -155,7 +158,6 @@ export const en: Dictionary = {
     title: 'Not sure yet? *Start with a city.*',
     lede: 'Tell us where you will be. We will show you who is worth the visit.',
     arcadeAlt: 'Horseshoe arches in rose plaster around a marble fountain',
-    gateAlt: 'A brick horseshoe arch with a heavy wooden door, opening onto a sunlit lane',
   },
 
   forSpas: {
@@ -163,6 +165,7 @@ export const en: Dictionary = {
     title: 'Run a spa? Be found by people *choosing one*.',
     line: 'Visibility, content and demand reports. Selection stays editorial.',
     cta: 'For spas',
+    doorAlt: 'A brick horseshoe arch with a heavy wooden door, opening onto a sunlit lane',
   },
 
   footer: {
@@ -172,6 +175,8 @@ export const en: Dictionary = {
     cities: 'Cities',
     experiences: 'Experiences',
     about: 'About',
+    contact: 'Contact',
+    navigation: 'Navigation',
     allSpas: 'All spas',
     picks: 'This month’s picks',
     hammams: 'Traditional hammams',

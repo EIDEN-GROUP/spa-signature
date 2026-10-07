@@ -1,5 +1,5 @@
-import { motion, type MotionStyle, useReducedMotion, useScroll, useTransform } from 'framer-motion'
-import { type CSSProperties, type ReactNode, useRef, useState } from 'react'
+import { motion, type MotionStyle, useInView, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { type CSSProperties, type FocusEvent, type ReactNode, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { SearchForm } from '@/components/site/SearchForm'
 import { Seo } from '@/components/site/Seo'
@@ -54,7 +54,7 @@ function Hero() {
   const still = useReducedMotion()
   const revealed = useRevealed()
   const [curtain] = useState(!revealed)
-  const from = curtain ? 0.5 : 1.3 // seconds before the words start to arrive
+  const from = curtain ? 0.5 : 1.3 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const drift = useTransform(scrollYProgress, [0, 1], ['0%', '12%'])
   const recede = useTransform(scrollYProgress, [0, 1], [1, 0.93])
@@ -71,39 +71,38 @@ function Hero() {
           transition={{ duration: 1.9, ease: [0.72, 0, 0.18, 1], delay: 0.15 }}
         >
           <motion.div className="home-hero-drift" style={still ? undefined : { y: drift }}>
-            <motion.picture
-              className="home-hero-picture"
-              initial={still ? false : { scale: 1.3 }}
-              animate={{ scale: revealed ? 1 : 1.3 }}
-              transition={{ duration: 2.8, ease: EASE, delay: 0.15 }}
-            >
+            <motion.picture className="home-hero-picture" initial={still ? false : { scale: 1.3 }} animate={{ scale: revealed ? 1 : 1.3 }} transition={{ duration: 2.8, ease: EASE, delay: 0.15 }}>
               <img src={heroImg} alt={t.hero.imageAlt} decoding="sync" fetchPriority="high" />
             </motion.picture>
           </motion.div>
         </motion.div>
 
-        <motion.div className="container on-dark home-hero-copy" style={still ? undefined : { y: lift, opacity: dim }}>
-          <motion.div
-            initial={still ? false : { opacity: 0, y: 20 }}
-            animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 1, ease: EASE, delay: from }}
-          >
-            <Eyebrow className='text-gold'>{t.hero.eyebrow}</Eyebrow>
+        <div className="container on-dark home-hero-copy">
+          <motion.div className="home-hero-words" style={still ? undefined : { y: lift, opacity: dim }}>
+            <motion.div initial={still ? false : { opacity: 0, y: 20 }} animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }} transition={{ duration: 1, ease: EASE, delay: from }}>
+              <Eyebrow className='text-gold'>{t.hero.eyebrow}</Eyebrow>
+            </motion.div>
+            <SplitHeading as="h1" className="display home-hero-title" delay={from + 0.05} ready={revealed}>
+              <Rich text={t.hero.title} />
+            </SplitHeading>
           </motion.div>
-          <SplitHeading as="h1" className="display home-hero-title" delay={from + 0.05} ready={revealed}>
-            <Rich text={t.hero.title} />
-          </SplitHeading>
-        </motion.div>
-      </motion.div>
 
-      <motion.div
-        className="container home-hero-below"
-        initial={still ? false : { opacity: 0, y: 56 }}
-        animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 56 }}
-        transition={{ duration: 1.2, ease: EASE, delay: from + 0.25 }}
-      >
-        <SearchForm fields={['city', 'experience', 'occasion']} submitLabel={t.search.submit} className="home-hero-form" />
-        <div className="home-hero-foot">
+          <motion.div
+            className="home-hero-search"
+            initial={still ? false : { opacity: 0, y: 40 }}
+            animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ duration: 1.2, ease: EASE, delay: from + 0.25 }}
+          >
+            <SearchForm fields={['city', 'experience', 'occasion']} submitLabel={t.search.submit} className="home-hero-form" />
+          </motion.div>
+        </div>
+
+        <motion.div
+          className="container on-dark home-hero-foot"
+          initial={still ? false : { opacity: 0, y: 24 }}
+          animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ duration: 1.2, ease: EASE, delay: from + 0.45 }}
+        >
           <ul className="home-hero-trust">
             {t.hero.promises.map((promise) => (
               <li key={promise}>
@@ -118,7 +117,7 @@ function Hero() {
             </Button>
             <ArrowLink to={paths.spas()}>{t.hero.allSpas}</ArrowLink>
           </div>
-        </div>
+        </motion.div>
       </motion.div>
     </section>
   )
@@ -185,7 +184,7 @@ function Picks() {
           <Stagger as="ol" className="home-picks-list" gap={0.12} delay={0.15}>
             {others.map(({ spa, card, whyNow }, index) => (
               <motion.li key={spa.id} className="home-picks-row" variants={rise}>
-                <Door media={card.leadImage} ratio={4 / 5} drift={4} decorative className="home-picks-thumb" />
+                <Door media={card.leadImage} shape="soft" ratio={1} drift={4} decorative className="home-picks-thumb" />
                 <div className="home-picks-row-body">
                   <p className="home-picks-pick">N° {index + 2}</p>
                   <h3 className="home-picks-name">
@@ -269,65 +268,159 @@ function CityDoor({ city, index }: { city: City; index: number }) {
 
 function Experiences() {
   const t = useT()
-  // The row under the pointer, or holding focus, shows its photograph in the doorway.
-  const [current, setCurrent] = useState(0)
+  const still = useReducedMotion()
+  const panel = useRef<HTMLDivElement>(null)
+  const seen = useInView(panel, { amount: 0.3 })
+  const dragged = useRef(false)
+  const [step, setStep] = useState(0)
+  const [dir, setDir] = useState(1)
+  const [held, setHeld] = useState(false)
+  const count = EXPERIENCES.length
+  const current = ((step % count) + count) % count
+  const number = (index: number) => String(index + 1).padStart(2, '0')
+
+  const go = (by: number) => {
+    setDir(by)
+    setStep((value) => value + by)
+  }
+
+  const swipe = {
+    onPanStart: () => {
+      dragged.current = false
+    },
+    onPan: (_: unknown, info: { offset: { x: number } }) => {
+      if (Math.abs(info.offset.x) > 10) dragged.current = true
+    },
+    onPanEnd: (_: unknown, info: { offset: { x: number; y: number } }) => {
+      const { x, y } = info.offset
+      window.setTimeout(() => {
+        dragged.current = false
+      }, 60)
+      if (Math.abs(x) >= 40 && Math.abs(x) > Math.abs(y)) go(x < 0 ? 1 : -1)
+    },
+  }
+
+  const hold = {
+    onPointerEnter: () => setHeld(true),
+    onPointerLeave: () => setHeld(false),
+    onFocus: (event: FocusEvent<HTMLElement>) => {
+      if (event.target.matches(':focus-visible')) setHeld(true)
+    },
+    onBlur: () => setHeld(false),
+  }
 
   return (
     <section className="home-experiences" aria-labelledby="home-experiences">
       <Scene panel>
-        <div className="on-dark home-experiences-panel">
+        <div ref={panel} className="on-dark home-experiences-panel">
           <div className="container home-experiences-inner">
-            <div className="home-experiences-aside">
-              <Intro
-                id="home-experiences"
-                eyebrow={t.experiences.eyebrow}
-                title={t.experiences.title}
-                lede={t.experiences.lede}
-                action={<ArrowLink to={paths.experiences}>{t.experiences.all}</ArrowLink>}
-              />
-              <Stagger className="home-experiences-preview">
-                <motion.div className="door" style={{ '--ratio': 4 / 5 } as CSSProperties} variants={unveil} aria-hidden="true">
-                  {EXPERIENCES.map((experience, index) => (
-                    <Picture
-                      key={experience.id}
-                      media={experience.image}
-                      decorative
-                      className={cx('door-picture', 'home-experiences-shot', index === current && 'home-experiences-shown')}
-                    />
-                  ))}
-                </motion.div>
-              </Stagger>
-            </div>
+            <Intro
+              id="home-experiences"
+              eyebrow={t.experiences.eyebrow}
+              title={t.experiences.title}
+              lede={t.experiences.lede}
+              className="home-experiences-intro"
+            />
 
-            <Stagger as="ul" className="home-experiences-list" gap={0.07}>
-              {EXPERIENCES.map((experience, index) => (
-                <motion.li
-                  key={experience.id}
-                  className={cx('home-experiences-item', index === current && 'home-experiences-current')}
-                  variants={rise}
-                >
-                  <Link
-                    to={paths.experience(experience.slug)}
-                    className="home-experiences-link"
-                    onMouseEnter={() => setCurrent(index)}
-                    onFocus={() => setCurrent(index)}
-                  >
-                    <Door media={experience.image} drift={4} decorative className="home-experiences-thumb" />
-                    <span className="home-experiences-index" aria-hidden="true">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <span className="home-experiences-body">
-                      <span className="home-experiences-name">{t.experiences.byId[experience.id].name}</span>
-                      <span className="voice home-experiences-words">{t.format.quote(t.experiences.byId[experience.id].words)}</span>
-                      <span className="home-experiences-count">{t.format.spas(spasWithExperience(experience.id).length)}</span>
-                    </span>
-                    <span className="home-go">
-                      <Icon name="arrow-right" />
-                    </span>
-                  </Link>
-                </motion.li>
-              ))}
+            <Stagger className="home-experiences-frame">
+              <motion.div className="home-experiences-stage" variants={unveil} {...swipe} {...hold}>
+                {EXPERIENCES.map((experience, index) => {
+                  const words = t.experiences.byId[experience.id]
+                  const shown = index === current
+                  return (
+                    <Link
+                      key={experience.id}
+                      to={paths.experience(experience.slug)}
+                      className={cx('home-experiences-slide', shown && 'home-experiences-shown')}
+                      inert={!shown}
+                      draggable={false}
+                      onClick={(event) => {
+                        if (dragged.current) event.preventDefault()
+                      }}
+                    >
+                      <Picture media={experience.image} decorative className="home-experiences-shot" />
+                      <span className="home-experiences-caption">
+                        <span className="home-experiences-number" aria-hidden="true">
+                          {number(index)}
+                        </span>
+                        <span className="home-experiences-name">{words.name}</span>
+                        <span className="voice home-experiences-words">{t.format.quote(words.words)}</span>
+                        <span className="home-experiences-meta">
+                          <span className="home-experiences-count">{t.format.spas(spasWithExperience(experience.id).length)}</span>
+                          <span className="home-go">
+                            <Icon name="arrow-right" />
+                          </span>
+                        </span>
+                      </span>
+                    </Link>
+                  )
+                })}
+              </motion.div>
             </Stagger>
+
+            <Reveal className="home-experiences-rail" delay={0.15}>
+              <motion.ul className="home-experiences-cards" aria-label={t.experiences.choose} {...swipe} {...hold}>
+                {EXPERIENCES.map((experience, index) => {
+                  const ahead = (index - current + count) % count
+                  const slot = ahead - 1
+                  const wrapped = dir > 0 ? slot >= count - 1 - dir : slot <= -dir - 2
+                  return (
+                    <li
+                      key={experience.id}
+                      className={cx(
+                        'home-experiences-card',
+                        slot < 0 && 'home-experiences-away',
+                        wrapped && 'home-experiences-wrapped',
+                      )}
+                      style={{ '--slot': slot } as CSSProperties}
+                      inert={slot < 0}
+                    >
+                      <button
+                        type="button"
+                        className="home-experiences-pick"
+                        onClick={() => {
+                          if (!dragged.current) go(ahead > count / 2 ? ahead - count : ahead)
+                        }}
+                      >
+                        <Picture media={experience.image} decorative />
+                        <span className="home-experiences-pick-number" aria-hidden="true">
+                          {number(index)}
+                        </span>
+                        <span className="home-experiences-pick-name">{t.experiences.byId[experience.id].name}</span>
+                      </button>
+                    </li>
+                  )
+                })}
+              </motion.ul>
+            </Reveal>
+
+            <Reveal className="home-experiences-foot" delay={0.25}>
+              <div className="home-experiences-controls">
+                <button type="button" className="home-go" onClick={() => go(-1)} aria-label={t.experiences.previous}>
+                  <Icon name="arrow-left" />
+                </button>
+                <button type="button" className="home-go" onClick={() => go(1)} aria-label={t.experiences.next}>
+                  <Icon name="arrow-right" />
+                </button>
+                <span className="home-experiences-progress" aria-hidden="true">
+                  {still ? null : (
+                    <span
+                      key={step}
+                      className="home-experiences-fill"
+                      style={{ animationPlayState: seen && !held ? 'running' : 'paused' }}
+                      onAnimationEnd={() => go(1)}
+                    />
+                  )}
+                </span>
+                <span className="home-experiences-index" aria-hidden="true">
+                  <b>{number(current)}</b> / {number(count - 1)}
+                </span>
+              </div>
+              <Link to={paths.experiences} className="home-experiences-all">
+                <span>{t.experiences.all}</span>
+                <span className="home-experiences-all-line" aria-hidden="true" />
+              </Link>
+            </Reveal>
           </div>
         </div>
       </Scene>
@@ -360,10 +453,13 @@ function Closing() {
           </div>
 
           <Stagger className="home-closing-doors" gap={0.2}>
-            <Door media={{ src: doorArcade, alt: t.closing.arcadeAlt, focus: '64% 50%' }} drift={7} className="home-closing-tall" />
-            <motion.div className="home-closing-small" variants={fade}>
-              <Door media={{ src: doorGate, alt: t.closing.gateAlt }} drift={-5} />
-            </motion.div>
+            <Door
+              media={{ src: doorArcade, alt: t.closing.arcadeAlt, focus: '64% 50%' }}
+              shape="pill"
+              ratio={5 / 8}
+              drift={7}
+              className="home-closing-tall"
+            />
           </Stagger>
         </div>
       </Scene>
@@ -379,19 +475,20 @@ function ForSpas() {
   return (
     <section className="home-for-spas" aria-labelledby="home-for-spas">
       <Scene panel className="container">
-        <Stagger className="home-for-spas-band" gap={0.12}>
+        <Stagger className="on-dark home-for-spas-band" gap={0.14}>
           <motion.div className="home-for-spas-text" variants={rise}>
             <Eyebrow>{t.forSpas.eyebrow}</Eyebrow>
             <h2 id="home-for-spas" className="home-for-spas-title">
               <Rich text={t.forSpas.title} />
             </h2>
             <p className="home-for-spas-line">{t.forSpas.line}</p>
-          </motion.div>
-          <motion.div className="home-for-spas-action" variants={rise}>
-            <Button to={paths.forSpas} variant="primary" arrow>
+            <Button to={paths.forSpas} variant="primary" arrow className="home-for-spas-cta">
               {t.forSpas.cta}
             </Button>
           </motion.div>
+          <div className="home-for-spas-door">
+            <Door media={{ src: doorGate, alt: t.forSpas.doorAlt }} drift={5} />
+          </div>
         </Stagger>
       </Scene>
     </section>
@@ -405,7 +502,6 @@ interface IntroProps {
   eyebrow: string
   title: string
   lede?: string
-  /** A link out of the section, set beside the title on wide screens. */
   action?: ReactNode
   className?: string
 }

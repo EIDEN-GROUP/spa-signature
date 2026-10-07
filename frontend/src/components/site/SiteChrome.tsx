@@ -4,6 +4,7 @@ import { Link, NavLink, useLocation } from 'react-router'
 import { Logo } from '@/components/site/Logo'
 import { SearchOverlay } from '@/components/site/SearchOverlay'
 import { Icon } from '@/components/ui/Icon'
+import { Khatam } from '@/components/ui/Khatam'
 import { Reveal } from '@/components/ui/Reveal'
 import { Sheet } from '@/components/ui/Sheet'
 import { useHistorySheet } from '@/hooks/use-history-sheet'
@@ -208,7 +209,12 @@ export function SiteFooter() {
     <footer className="on-dark site-footer">
       <Reveal className="container site-footer-top">
         <div className="site-footer-brand">
-          <Logo className="site-footer-logo" />
+          <Link to={paths.home} className="site-footer-home">
+            <Logo className="site-footer-logo" />
+          </Link>
+          <span className="site-footer-ornament" aria-hidden="true">
+            <Khatam />
+          </span>
           <p className="site-footer-motto" lang="fr">
             La sélection se mérite.
             <br />
@@ -217,65 +223,57 @@ export function SiteFooter() {
           <p className="site-footer-gloss">{t.footer.gloss}</p>
         </div>
 
-        <nav className="site-footer-links" aria-label={t.footer.label}>
-          <section aria-labelledby="footer-discover">
-            <h2 id="footer-discover" className="label">
-              {t.footer.discover}
-            </h2>
-            <ul>
-              <li>
-                <Link to={paths.spas()}>{t.footer.allSpas}</Link>
-              </li>
-              <li>
-                <Link to={`${paths.home}#home-picks`}>{t.footer.picks}</Link>
-              </li>
-              <li>
-                <Link to={paths.spas({ types: ['traditional-hammam'] })}>{t.footer.hammams}</Link>
-              </li>
-            </ul>
-          </section>
-          <section aria-labelledby="footer-cities">
-            <h2 id="footer-cities" className="label">
-              {t.footer.cities}
-            </h2>
-            <ul>
-              {CITIES.map((city) => (
-                <li key={city.id}>
-                  <Link to={paths.city(city.slug)}>{t.cities.byId[city.id].name}</Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-          <section aria-labelledby="footer-experiences">
-            <h2 id="footer-experiences" className="label">
-              {t.footer.experiences}
-            </h2>
-            <ul>
-              {EXPERIENCES.map((experience) => (
-                <li key={experience.id}>
-                  <Link to={paths.experience(experience.slug)}>{t.experiences.byId[experience.id].name}</Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-          <section aria-labelledby="footer-about">
-            <h2 id="footer-about" className="label">
-              {t.footer.about}
-            </h2>
-            <ul>
-              <li>
-                <Link to={paths.forSpas}>{t.footer.forSpas}</Link>
-              </li>
-              <li>
-                <a href={`mailto:${SITE.email.editors}`}>{t.footer.write}</a>
-              </li>
-              <li>
-                <a href={`mailto:${SITE.email.corrections}?subject=${encodeURIComponent(t.footer.correction)}`}>{t.footer.report}</a>
-              </li>
-            </ul>
-          </section>
+        <section className="site-footer-column site-footer-contact" aria-labelledby="footer-contact">
+          <h2 id="footer-contact" className="label">
+            {t.footer.contact}
+          </h2>
+          <ul>
+            <li>
+              <a href={`mailto:${SITE.email.editors}`}>{t.footer.write}</a>
+            </li>
+            <li>
+              <a href={`mailto:${SITE.email.corrections}?subject=${encodeURIComponent(t.footer.correction)}`}>{t.footer.report}</a>
+            </li>
+            <li>
+              <Link to={paths.forSpas}>{t.footer.forSpas}</Link>
+            </li>
+          </ul>
+          <LanguageSwitch className="site-footer-language" />
+        </section>
+
+        <nav className="site-footer-column site-footer-nav" aria-labelledby="footer-navigation">
+          <h2 id="footer-navigation" className="label">
+            {t.footer.navigation}
+          </h2>
+          <ul>
+            <li>
+              <Link to={paths.spas()}>{t.footer.allSpas}</Link>
+            </li>
+            <li>
+              <Link to={`${paths.home}#home-picks`}>{t.footer.picks}</Link>
+            </li>
+            <li>
+              <Link to={paths.cities}>{t.nav.cities}</Link>
+            </li>
+            <li>
+              <Link to={paths.experiences}>{t.nav.experiences}</Link>
+            </li>
+            <li>
+              <Link to={paths.spas({ types: ['traditional-hammam'] })}>{t.footer.hammams}</Link>
+            </li>
+          </ul>
         </nav>
       </Reveal>
+
+      <nav className="container site-footer-cities" aria-label={t.footer.cities}>
+        <ul>
+          {CITIES.map((city) => (
+            <li key={city.id}>
+              <Link to={paths.city(city.slug)}>{t.cities.byId[city.id].name}</Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       <div className="container site-footer-base">
         <p>

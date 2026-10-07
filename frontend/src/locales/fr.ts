@@ -121,6 +121,9 @@ export const fr = {
     title: 'Explorer par *expérience*',
     lede: 'Partez de ce que vous voulez, avec vos propres mots.',
     all: 'Toutes les expériences',
+    choose: 'Choisir une expérience',
+    previous: 'Expérience précédente',
+    next: 'Expérience suivante',
     byId: {
       hammam: {
         name: 'Hammam',
@@ -160,7 +163,6 @@ export const fr = {
     title: 'Pas encore sûr ? *Commencez par une ville.*',
     lede: 'Dites-nous où vous serez. Nous vous montrerons qui vaut le détour.',
     arcadeAlt: 'Des arcs outrepassés en enduit rose autour d’une fontaine de marbre',
-    gateAlt: 'Un arc outrepassé en brique et sa lourde porte de bois, ouverte sur une ruelle ensoleillée',
   },
 
   forSpas: {
@@ -168,6 +170,7 @@ export const fr = {
     title: 'Vous dirigez un spa ? Soyez trouvé par ceux qui *en choisissent un*.',
     line: 'Visibilité, contenu et rapports de demande. La sélection reste éditoriale.',
     cta: 'Pour les spas',
+    doorAlt: 'Un arc outrepassé en brique et sa lourde porte de bois, ouverte sur une ruelle ensoleillée',
   },
 
   footer: {
@@ -177,6 +180,8 @@ export const fr = {
     cities: 'Villes',
     experiences: 'Expériences',
     about: 'À propos',
+    contact: 'Contact',
+    navigation: 'Navigation',
     allSpas: 'Tous les spas',
     picks: 'Les choix du mois',
     hammams: 'Hammams traditionnels',

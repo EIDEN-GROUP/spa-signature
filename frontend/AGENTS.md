@@ -21,6 +21,9 @@ closing search, and the “Run a spa?” band. The order follows where attention
 falls on the page: the search in the first screen, the only section with real
 spas to compare straight after it, the two ways to browse, a second search for
 whoever reaches the end, and spa owners last. Keep it when adding to the page.
+The hero fills the first screen: the title is centred over the photograph, the
+search is a bar of smoked glass under it, and the promises and the two links
+sit along the foot of the photograph. It has one photograph and no carousel.
 “Signature Selection”, “Signature Method”, “Guides” and “Explore Morocco” were
 removed on purpose: do not add them back, or link to them from the header or
 footer.
@@ -47,8 +50,16 @@ footer.
 - Nothing is set in italic, not even `<em>`: emphasis is a change of colour.
 - The scrollbar is a slim grey pill on a clear track that turns burgundy under
   the pointer. `body` is `100vw` wide so the page does not move when it appears.
-- Interface corners use `--radius`. Photographs are framed as doorways with the
-  `Door` component (`src/components/ui/Door.tsx`), not with a plain rounded box.
+- Interface corners use `--radius`. Photographs are framed with the `Door`
+  component (`src/components/ui/Door.tsx`), and the cut changes from one
+  section to the next so the page is not all doorways: `shape="door"` (an arch
+  over straight jambs: the cities, the first pick, the “Run a spa?” band),
+  `shape="soft"` (a rounded rectangle: the other picks) and `shape="pill"`
+  (rounded ends: the closing search). The experiences carousel uses plain
+  rounded rectangles. When adding a section, do not repeat the shape of the
+  section above it.
+- Design the phone first. Every section is composed for a narrow screen and
+  then given more room, not the other way round.
 
 ## Photographs
 
@@ -71,10 +82,22 @@ footer.
   then the screen rises like a curtain. The page does not scroll and shows no
   scrollbar until it is gone. Whatever opens a page waits for it with
   `useRevealed()`.
-- The page is light. One section may be dark (today: Explore by experience).
+- The page is light, with three blocks of burgundy set into it: Explore by
+  experience (wine), the “Run a spa?” band (the bright gradient) and the
+  footer (night). Do not add a fourth.
   A light section is never left bare: the wall behind the page is drawn in
   `body::before` / `body::after`, and each section adds its own ornament the
   same way.
+- Explore by experience is a carousel that plays by itself and loops: a stage
+  with one photograph, a rail of the experiences still to come, two arrows and
+  a line that fills while the stage waits. On a wide screen the photograph
+  takes the whole left side of the panel, edge to edge and top to bottom, and
+  the first card of the rail steps onto it; on a phone it is a card above the
+  rail. The panel's only ornament is the lantern in `::before`. The line is the clock: when its
+  animation ends the next experience comes up, so it stops while the pointer
+  is over the stage or the rail, while keyboard focus is inside, and while the
+  section is off screen. It can be dragged or swiped. With
+  `prefers-reduced-motion` it does not play by itself.
 - Everything must still read correctly with `prefers-reduced-motion`.
 
 ## Language
