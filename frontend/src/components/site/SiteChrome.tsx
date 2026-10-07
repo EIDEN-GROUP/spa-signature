@@ -1,13 +1,14 @@
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { useState } from 'react'
-import { Link, NavLink } from 'react-router'
+import { Link, NavLink, useLocation } from 'react-router'
 import { Logo } from '@/components/site/Logo'
 import { SearchOverlay } from '@/components/site/SearchOverlay'
-import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Reveal } from '@/components/ui/Reveal'
 import { Sheet } from '@/components/ui/Sheet'
 import { useHistorySheet } from '@/hooks/use-history-sheet'
+import { SITE_LANGUAGES, useLanguage, useT } from '@/hooks/use-language'
+import { useRevealed } from '@/hooks/use-revealed'
 import { CITIES, cityStats, EXPERIENCES, TOTALS } from '@/lib/data'
 import { EASE } from '@/lib/motion'
 import { paths } from '@/lib/paths'
@@ -16,67 +17,102 @@ import { cx } from '@/lib/utils'
 
 // ── Header ──────────────────────────────────────────────────────────────────────
 
-const MAIN_NAV = [
-  { to: paths.spas(), label: 'Discover' },
-  { to: paths.cities, label: 'Cities' },
-  { to: paths.experiences, label: 'Experiences' },
-]
-
 export function SiteHeader() {
+  const t = useT()
   const menu = useHistorySheet('menu')
   const search = useHistorySheet('search')
+  const { pathname } = useLocation()
+  const revealed = useRevealed()
   const { scrollY } = useScroll()
   const [hidden, setHidden] = useState(false)
   const [raised, setRaised] = useState(false)
+  const [arrived, setArrived] = useState(false)
   const link = ({ isActive }: { isActive: boolean }) => cx('site-header-link', isActive && 'site-header-current')
+
+  // At the top of the homepage the bar lies clear over the photograph, in linen.
+  const over = pathname === paths.home && !raised
 
   // Steps aside on the way down the page, returns on the way up.
   useMotionValueEvent(scrollY, 'change', (latest) => {
     const previous = scrollY.getPrevious() ?? 0
-    setRaised(latest > 8)
+    setRaised(latest > 24)
     if (Math.abs(latest - previous) > 3) setHidden(latest > 320 && latest > previous)
   })
 
   return (
     <motion.header
-      className={cx('site-header', raised && 'site-header-raised')}
-      initial={{ y: '-100%' }}
-      animate={{ y: hidden ? '-100%' : '0%' }}
-      transition={{ duration: 0.55, ease: EASE }}
+      className={cx('site-header', raised && 'site-header-raised', over && 'site-header-over')}
+      initial={{ y: '-120%' }}
+      animate={{ y: hidden || !revealed ? '-120%' : '0%' }}
+      transition={{ duration: 0.7, ease: EASE, delay: arrived ? 0 : 0.6 }}
+      onAnimationComplete={() => {
+        if (revealed) setArrived(true)
+      }}
       onFocusCapture={() => setHidden(false)}
     >
-      <div className="container site-header-bar">
+      {/* Links to the left, the name in the middle, the two actions to the right. */}
+      <div className="site-header-bar">
         <button type="button" className="site-header-tool site-header-menu-button" onClick={menu.show} aria-haspopup="dialog">
           <Icon name="menu" />
-          <span className="visually-hidden">Menu</span>
+          <span className="visually-hidden">{t.nav.menu}</span>
         </button>
+
+        <nav className="site-header-nav" aria-label={t.nav.main}>
+          <NavLink to={paths.spas()} className={link}>
+            {t.nav.discover}
+          </NavLink>
+          <NavLink to={paths.cities} className={link}>
+            {t.nav.cities}
+          </NavLink>
+          <NavLink to={paths.experiences} className={link}>
+            {t.nav.experiences}
+          </NavLink>
+        </nav>
 
         <Link to={paths.home} className="site-header-brand">
           <Logo className="site-header-logo" />
         </Link>
 
-        <nav className="site-header-nav" aria-label="Main">
-          {MAIN_NAV.map((item) => (
-            <NavLink key={item.to} to={item.to} className={link}>
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
-
         <div className="site-header-tools">
+          <LanguageSwitch className="site-header-language" />
+          <NavLink to={paths.forSpas} className={(state) => cx(link(state), 'site-header-for-spas')}>
+            {t.nav.forSpas}
+          </NavLink>
           <button type="button" className="site-header-tool site-header-search-button" onClick={search.show} aria-haspopup="dialog">
             <Icon name="search" />
-            <span className="visually-hidden">Search</span>
+            <span className="site-header-search-label">{t.nav.search}</span>
           </button>
-          <Button to={paths.forSpas} className="site-header-for-spas">
-            For spas
-          </Button>
         </div>
       </div>
 
       <MobileMenu open={menu.open} onClose={menu.hide} />
       <SearchOverlay open={search.open} onClose={search.hide} />
     </motion.header>
+  )
+}
+
+// ── Language ────────────────────────────────────────────────────────────────────
+
+function LanguageSwitch({ className }: { className?: string }) {
+  const t = useT()
+  const { language, setLanguage } = useLanguage()
+
+  return (
+    <div className={cx('language-switch', className)} role="group" aria-label={t.nav.language}>
+      {SITE_LANGUAGES.map(({ code, name }) => (
+        <button
+          key={code}
+          type="button"
+          lang={code}
+          className={cx('language-switch-choice', code === language && 'language-switch-current')}
+          aria-pressed={code === language}
+          onClick={() => setLanguage(code)}
+        >
+          <span aria-hidden="true">{code.toUpperCase()}</span>
+          <span className="visually-hidden">{name}</span>
+        </button>
+      ))}
+    </div>
   )
 }
 
@@ -88,25 +124,27 @@ interface MobileMenuProps {
 }
 
 function MobileMenu({ open, onClose }: MobileMenuProps) {
+  const t = useT()
+
   return (
-    <Sheet open={open} onClose={onClose} title="Menu" variant="cover" hideTitle>
-      <nav className="mobile-menu" aria-label="Menu">
+    <Sheet open={open} onClose={onClose} title={t.nav.menu} variant="cover" hideTitle>
+      <nav className="mobile-menu" aria-label={t.nav.menu}>
         <ul className="mobile-menu-primary">
           <li>
             <Link to={paths.spas()} replace>
-              <span>All spas</span>
+              <span>{t.menu.allSpas}</span>
               <span className="mobile-menu-count">{TOTALS.spas}</span>
             </Link>
           </li>
           <li>
             <Link to={paths.cities} replace>
-              <span>Cities</span>
+              <span>{t.nav.cities}</span>
               <Icon name="arrow-right" />
             </Link>
           </li>
           <li>
             <Link to={paths.experiences} replace>
-              <span>Experiences</span>
+              <span>{t.nav.experiences}</span>
               <Icon name="arrow-right" />
             </Link>
           </li>
@@ -115,13 +153,13 @@ function MobileMenu({ open, onClose }: MobileMenuProps) {
         <div className="mobile-menu-columns">
           <section aria-labelledby="menu-cities">
             <h3 id="menu-cities" className="label">
-              By city
+              {t.menu.byCity}
             </h3>
             <ul>
               {CITIES.map((city) => (
                 <li key={city.id}>
                   <Link to={paths.city(city.slug)} replace>
-                    {city.name}
+                    {t.cities.byId[city.id].name}
                     <span className="mobile-menu-small">{cityStats(city.id).count}</span>
                   </Link>
                 </li>
@@ -130,13 +168,13 @@ function MobileMenu({ open, onClose }: MobileMenuProps) {
           </section>
           <section aria-labelledby="menu-experiences">
             <h3 id="menu-experiences" className="label">
-              By experience
+              {t.menu.byExperience}
             </h3>
             <ul>
               {EXPERIENCES.map((experience) => (
                 <li key={experience.id}>
                   <Link to={paths.experience(experience.slug)} replace>
-                    {experience.name}
+                    {t.experiences.byId[experience.id].name}
                   </Link>
                 </li>
               ))}
@@ -147,12 +185,15 @@ function MobileMenu({ open, onClose }: MobileMenuProps) {
         <ul className="mobile-menu-secondary">
           <li>
             <Link to={paths.forSpas} replace>
-              For spas
+              {t.nav.forSpas}
             </Link>
+          </li>
+          <li>
+            <LanguageSwitch />
           </li>
         </ul>
 
-        <p className="mobile-menu-motto">Selected by editors. Rated by guests. Never paid for.</p>
+        <p className="mobile-menu-motto">{t.menu.motto}</p>
       </nav>
     </Sheet>
   )
@@ -161,6 +202,8 @@ function MobileMenu({ open, onClose }: MobileMenuProps) {
 // ── Footer ──────────────────────────────────────────────────────────────────────
 
 export function SiteFooter() {
+  const t = useT()
+
   return (
     <footer className="on-dark site-footer">
       <Reveal className="container site-footer-top">
@@ -171,63 +214,63 @@ export function SiteFooter() {
             <br />
             La visibilité s’achète.
           </p>
-          <p className="site-footer-gloss">Selection is earned. Visibility is bought. The two never touch.</p>
+          <p className="site-footer-gloss">{t.footer.gloss}</p>
         </div>
 
-        <nav className="site-footer-links" aria-label="Footer">
+        <nav className="site-footer-links" aria-label={t.footer.label}>
           <section aria-labelledby="footer-discover">
             <h2 id="footer-discover" className="label">
-              Discover
+              {t.footer.discover}
             </h2>
             <ul>
               <li>
-                <Link to={paths.spas()}>All spas</Link>
+                <Link to={paths.spas()}>{t.footer.allSpas}</Link>
               </li>
               <li>
-                <Link to={`${paths.home}#home-picks`}>This month’s picks</Link>
+                <Link to={`${paths.home}#home-picks`}>{t.footer.picks}</Link>
               </li>
               <li>
-                <Link to={paths.spas({ types: ['traditional-hammam'] })}>Traditional hammams</Link>
+                <Link to={paths.spas({ types: ['traditional-hammam'] })}>{t.footer.hammams}</Link>
               </li>
             </ul>
           </section>
           <section aria-labelledby="footer-cities">
             <h2 id="footer-cities" className="label">
-              Cities
+              {t.footer.cities}
             </h2>
             <ul>
               {CITIES.map((city) => (
                 <li key={city.id}>
-                  <Link to={paths.city(city.slug)}>{city.name}</Link>
+                  <Link to={paths.city(city.slug)}>{t.cities.byId[city.id].name}</Link>
                 </li>
               ))}
             </ul>
           </section>
           <section aria-labelledby="footer-experiences">
             <h2 id="footer-experiences" className="label">
-              Experiences
+              {t.footer.experiences}
             </h2>
             <ul>
               {EXPERIENCES.map((experience) => (
                 <li key={experience.id}>
-                  <Link to={paths.experience(experience.slug)}>{experience.name}</Link>
+                  <Link to={paths.experience(experience.slug)}>{t.experiences.byId[experience.id].name}</Link>
                 </li>
               ))}
             </ul>
           </section>
           <section aria-labelledby="footer-about">
             <h2 id="footer-about" className="label">
-              About
+              {t.footer.about}
             </h2>
             <ul>
               <li>
-                <Link to={paths.forSpas}>For spas</Link>
+                <Link to={paths.forSpas}>{t.footer.forSpas}</Link>
               </li>
               <li>
-                <a href={`mailto:${SITE.email.editors}`}>Write to the editors</a>
+                <a href={`mailto:${SITE.email.editors}`}>{t.footer.write}</a>
               </li>
               <li>
-                <a href={`mailto:${SITE.email.corrections}?subject=${encodeURIComponent('Correction')}`}>Report an error</a>
+                <a href={`mailto:${SITE.email.corrections}?subject=${encodeURIComponent(t.footer.correction)}`}>{t.footer.report}</a>
               </li>
             </ul>
           </section>
@@ -238,7 +281,7 @@ export function SiteFooter() {
         <p>
           © {SITE.edition} {SITE.name} · {SITE.publisher}
         </p>
-        <p>Demonstration edition: the spas, ratings and prices shown are illustrative.</p>
+        <p>{t.footer.demo}</p>
       </div>
     </footer>
   )

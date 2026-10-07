@@ -1,7 +1,22 @@
-import { media } from '@/lib/media'
+import spaAsif from '@/assets/spa-asif.webp'
+import spaAtelierSpartel from '@/assets/spa-atelier-spartel.webp'
+import spaBabElAssa from '@/assets/spa-bab-el-assa.webp'
+import spaBainsAgdal from '@/assets/spa-bains-agdal.webp'
+import spaBainsHabous from '@/assets/spa-bains-habous.webp'
+import spaCercleSouissi from '@/assets/spa-cercle-souissi.webp'
+import spaDarTassa from '@/assets/spa-dar-tassa.webp'
+import spaJardinArgile from '@/assets/spa-jardin-argile.webp'
+import spaMaisonGauthier from '@/assets/spa-maison-gauthier.webp'
+import spaMaisonOudaya from '@/assets/spa-maison-oudaya.webp'
+import spaOceane from '@/assets/spa-oceane.webp'
+import spaRiadSahrij from '@/assets/spa-riad-sahrij.webp'
+import spaTalborjt from '@/assets/spa-talborjt.webp'
+import spaTifawt from '@/assets/spa-tifawt.webp'
+import spaVillaMarshan from '@/assets/spa-villa-marshan.webp'
 import type {
   DayHours,
   IsoDate,
+  Media,
   OpeningHours,
   Spa,
   Treatment,
@@ -9,6 +24,22 @@ import type {
   VerifiedField,
   Weekday,
 } from '@/lib/types'
+
+const riadSahrijPhoto: Media = { src: spaRiadSahrij, alt: 'A green zellige basin and its fountain in a terracotta courtyard, between two potted trees', focus: '50% 89%' }
+const darTassaPhoto: Media = { src: spaDarTassa, alt: 'Water poured from an engraved bowl into a tadelakt basin, beside two hammam pails', focus: '50% 26%' }
+const jardinArgilePhoto: Media = { src: spaJardinArgile, alt: 'A green pool in a walled garden, seen through banana leaves and bougainvillea', focus: '50% 100%' }
+const oceanePhoto: Media = { src: spaOceane, alt: 'An indoor pool beneath a white arched pavilion hung with brass lanterns' }
+const maisonGauthierPhoto: Media = { src: spaMaisonGauthier, alt: 'Roses floating in a scalloped marble basin beneath a running spout', focus: '50% 85%' }
+const bainsHabousPhoto: Media = { src: spaBainsHabous, alt: 'A round mosaic basin in a tiled niche, a jug and bowl on its rim', focus: '50% 76%' }
+const asifPhoto: Media = { src: spaAsif, alt: 'Woven rugs, cushions and low tables on a terrace above the rocky Atlantic shore', focus: '50% 74%' }
+const tifawtPhoto: Media = { src: spaTifawt, alt: 'A keyhole-arched door in a wooden lattice, open onto the Atlantic', focus: '50% 63%' }
+const talborjtPhoto: Media = { src: spaTalborjt, alt: 'Tiled hammam benches in terracotta and sea-green zellige', focus: '50% 83%' }
+const maisonOudayaPhoto: Media = { src: spaMaisonOudaya, alt: 'A horseshoe-arched alcove edged in green zellige, a white towel hanging beside it', focus: '50% 21%' }
+const bainsAgdalPhoto: Media = { src: spaBainsAgdal, alt: 'A treatment table laid with linen in a grey tadelakt room', focus: '50% 85%' }
+const cercleSouissiPhoto: Media = { src: spaCercleSouissi, alt: 'A narrow indoor pool seen through an arch, lined with tall cacti in clay pots', focus: '50% 66%' }
+const villaMarshanPhoto: Media = { src: spaVillaMarshan, alt: 'A white arch opening onto garden windows, a green glass lantern hanging above', focus: '50% 30%' }
+const babElAssaPhoto: Media = { src: spaBabElAssa, alt: 'A hand filling a brass bowl at a brass tap above a carved marble basin', focus: '50% 30%' }
+const atelierSpartelPhoto: Media = { src: spaAtelierSpartel, alt: 'A pale pool under white arches, framed by banana leaves' }
 
 // ── Builders that keep the records readable ─────────────────────────────────────
 
@@ -136,9 +167,9 @@ const MARRAKECH: Spa[] = [
       ],
     },
     media: {
-      lead: media('spa-riad-sahrij'),
-      card: media('spa-riad-sahrij'),
-      gallery: [media('spa-riad-sahrij')],
+      lead: riadSahrijPhoto,
+      card: riadSahrijPhoto,
+      gallery: [riadSahrijPhoto],
     },
     verified: verifiedOn('2026-09-12', { prices: '2026-09-28' }),
   },
@@ -226,9 +257,9 @@ const MARRAKECH: Spa[] = [
       ],
     },
     media: {
-      lead: media('spa-dar-tassa'),
-      card: media('spa-dar-tassa'),
-      gallery: [media('spa-dar-tassa')],
+      lead: darTassaPhoto,
+      card: darTassaPhoto,
+      gallery: [darTassaPhoto],
     },
     verified: verifiedOn('2026-09-05', { hours: '2026-09-22' }),
   },
@@ -307,9 +338,9 @@ const MARRAKECH: Spa[] = [
       goodToKnow: ['Closed on Mondays', 'Bring swimwear for the pool', 'Lunch is served from 12:30 to 15:00'],
     },
     media: {
-      lead: media('spa-jardin-argile'),
-      card: media('spa-jardin-argile'),
-      gallery: [media('spa-jardin-argile')],
+      lead: jardinArgilePhoto,
+      card: jardinArgilePhoto,
+      gallery: [jardinArgilePhoto],
     },
     verified: verifiedOn('2026-08-30', { prices: '2026-09-18' }),
   },
@@ -396,9 +427,9 @@ const CASABLANCA: Spa[] = [
       ],
     },
     media: {
-      lead: media('spa-oceane'),
-      card: media('spa-oceane'),
-      gallery: [media('spa-oceane')],
+      lead: oceanePhoto,
+      card: oceanePhoto,
+      gallery: [oceanePhoto],
     },
     verified: verifiedOn('2026-09-16'),
   },
@@ -476,9 +507,9 @@ const CASABLANCA: Spa[] = [
       goodToKnow: ['Closed on Sundays', 'By appointment only', 'Book a facial two or three days before an event'],
     },
     media: {
-      lead: media('spa-maison-gauthier'),
-      card: media('spa-maison-gauthier'),
-      gallery: [media('spa-maison-gauthier')],
+      lead: maisonGauthierPhoto,
+      card: maisonGauthierPhoto,
+      gallery: [maisonGauthierPhoto],
     },
     verified: verifiedOn('2026-09-09'),
   },
@@ -551,9 +582,9 @@ const CASABLANCA: Spa[] = [
       ],
     },
     media: {
-      lead: media('spa-bains-habous'),
-      card: media('spa-bains-habous'),
-      gallery: [media('spa-bains-habous')],
+      lead: bainsHabousPhoto,
+      card: bainsHabousPhoto,
+      gallery: [bainsHabousPhoto],
     },
     verified: verifiedOn('2026-09-02', { website: '2026-09-02' }),
   },
@@ -641,9 +672,9 @@ const AGADIR: Spa[] = [
       ],
     },
     media: {
-      lead: media('spa-asif'),
-      card: media('spa-asif'),
-      gallery: [media('spa-asif')],
+      lead: asifPhoto,
+      card: asifPhoto,
+      gallery: [asifPhoto],
     },
     verified: verifiedOn('2026-09-19'),
   },
@@ -715,9 +746,9 @@ const AGADIR: Spa[] = [
       ],
     },
     media: {
-      lead: media('spa-tifawt'),
-      card: media('spa-tifawt'),
-      gallery: [media('spa-tifawt')],
+      lead: tifawtPhoto,
+      card: tifawtPhoto,
+      gallery: [tifawtPhoto],
     },
     verified: verifiedOn('2026-09-20'),
   },
@@ -796,9 +827,9 @@ const AGADIR: Spa[] = [
       goodToKnow: ['Cash only', 'Private rooms should be reserved a day ahead by WhatsApp', 'Quietest before 10:00'],
     },
     media: {
-      lead: media('spa-talborjt'),
-      card: media('spa-talborjt'),
-      gallery: [media('spa-talborjt')],
+      lead: talborjtPhoto,
+      card: talborjtPhoto,
+      gallery: [talborjtPhoto],
     },
     verified: verifiedOn('2026-09-19', { website: '2026-09-19' }),
   },
@@ -880,9 +911,9 @@ const RABAT: Spa[] = [
       goodToKnow: ['Closed on Mondays', 'Three rooms only: reserve several days ahead', 'Guests aged 16 and over'],
     },
     media: {
-      lead: media('spa-maison-oudaya'),
-      card: media('spa-maison-oudaya'),
-      gallery: [media('spa-maison-oudaya')],
+      lead: maisonOudayaPhoto,
+      card: maisonOudayaPhoto,
+      gallery: [maisonOudayaPhoto],
     },
     verified: verifiedOn('2026-09-11'),
   },
@@ -943,9 +974,9 @@ const RABAT: Spa[] = [
       goodToKnow: ['Walk-ins accepted before noon', 'Shorter hours on Sundays'],
     },
     media: {
-      lead: media('spa-bains-agdal'),
-      card: media('spa-bains-agdal'),
-      gallery: [media('spa-bains-agdal')],
+      lead: bainsAgdalPhoto,
+      card: bainsAgdalPhoto,
+      gallery: [bainsAgdalPhoto],
     },
     verified: verifiedOn('2026-09-11'),
   },
@@ -1013,9 +1044,9 @@ const RABAT: Spa[] = [
       ],
     },
     media: {
-      lead: media('spa-cercle-souissi'),
-      card: media('spa-cercle-souissi'),
-      gallery: [media('spa-cercle-souissi')],
+      lead: cercleSouissiPhoto,
+      card: cercleSouissiPhoto,
+      gallery: [cercleSouissiPhoto],
     },
     verified: verifiedOn('2026-09-10'),
   },
@@ -1102,9 +1133,9 @@ const TANGIER: Spa[] = [
       ],
     },
     media: {
-      lead: media('spa-villa-marshan'),
-      card: media('spa-villa-marshan'),
-      gallery: [media('spa-villa-marshan')],
+      lead: villaMarshanPhoto,
+      card: villaMarshanPhoto,
+      gallery: [villaMarshanPhoto],
     },
     verified: verifiedOn('2026-09-24'),
   },
@@ -1171,9 +1202,9 @@ const TANGIER: Spa[] = [
       ],
     },
     media: {
-      lead: media('spa-bab-el-assa'),
-      card: media('spa-bab-el-assa'),
-      gallery: [media('spa-bab-el-assa')],
+      lead: babElAssaPhoto,
+      card: babElAssaPhoto,
+      gallery: [babElAssaPhoto],
     },
     verified: verifiedOn('2026-09-24', { website: '2026-09-24' }),
   },
@@ -1240,9 +1271,9 @@ const TANGIER: Spa[] = [
       goodToKnow: ['Closed on Sundays and Mondays', 'By appointment only', 'Opened in July 2026'],
     },
     media: {
-      lead: media('spa-atelier-spartel'),
-      card: media('spa-atelier-spartel'),
-      gallery: [media('spa-atelier-spartel')],
+      lead: atelierSpartelPhoto,
+      card: atelierSpartelPhoto,
+      gallery: [atelierSpartelPhoto],
     },
     verified: verifiedOn('2026-09-23'),
   },

@@ -73,7 +73,7 @@ export function Gallery({ images, name }: GalleryProps) {
       >
         {images.map((image, index) => (
           <button
-            key={`${image.id}-${index}`}
+            key={`${image.src}-${index}`}
             type="button"
             className="gallery-slide"
             onClick={() => setOpenAt(index)}
@@ -128,7 +128,7 @@ export function Gallery({ images, name }: GalleryProps) {
             </div>
             <div ref={viewer.ref} className="gallery-viewer-strip" onScroll={viewer.onScroll}>
               {images.map((image, index) => (
-                <figure key={`${image.id}-${index}`} className="gallery-viewer-slide">
+                <figure key={`${image.src}-${index}`} className="gallery-viewer-slide">
                   <Picture media={image} className="gallery-viewer-picture" />
                   <figcaption>{image.alt}</figcaption>
                 </figure>

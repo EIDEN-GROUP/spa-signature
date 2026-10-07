@@ -1,3 +1,4 @@
+import { useT } from '@/hooks/use-language'
 import { absoluteUrl, type JsonLd } from '@/lib/seo'
 import { SITE } from '@/lib/site'
 
@@ -12,7 +13,8 @@ interface SeoProps {
 }
 
 export function Seo({ title, description, path, image, type = 'website', noindex = false, jsonLd = [] }: SeoProps) {
-  const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · ${SITE.tagline}`
+  const t = useT()
+  const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · ${t.site.tagline}`
   const url = absoluteUrl(path)
   const social = `${SITE.url}${image ?? '/brand/og-default.jpg'}`
 
@@ -28,7 +30,7 @@ export function Seo({ title, description, path, image, type = 'website', noindex
       <meta property="og:description" content={description} />
       <meta property="og:url" content={url} />
       <meta property="og:image" content={social} />
-      <meta property="og:locale" content="en_GB" />
+      <meta property="og:locale" content={t.locale} />
       <meta name="twitter:card" content="summary_large_image" />
       {jsonLd.map((data, index) => (
         <script

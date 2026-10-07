@@ -1,12 +1,8 @@
-import type { MediaId } from '@/lib/media'
-
 // The public data model. Every page is a view over these shapes.
 //
 // Two things are deliberately absent: the editors' internal assessment and any
 // commercial agreement. Neither can be reached from a public type, so neither
 // can leak into a card, a sort order or a filter.
-
-export type { MediaId }
 
 // ── Taxonomy ────────────────────────────────────────────────────────────────
 
@@ -33,10 +29,12 @@ export type IsoDate = `${number}-${number}-${number}`
 // ── Media ───────────────────────────────────────────────────────────────────
 
 export interface Media {
-  /** The photograph’s file name in src/assets, without the extension. */
-  id: MediaId
+  /** The imported file: `import photo from '@/assets/name.webp'`. */
+  src: string
   alt: string
   caption?: string
+  /** Where to hold the crop when a frame cuts the photograph, as a CSS object-position. */
+  focus?: string
 }
 
 // ── Places and experiences ──────────────────────────────────────────────────

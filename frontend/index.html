@@ -1,15 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr" class="is-loading" style="background-color: #0d0c0c">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#f6f2e8" />
+    <meta name="theme-color" content="#f3f4ee" />
     <title>Spa Maroc Signature</title>
+    <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
     <div id="root"></div>
+    <div id="loader" class="loader" role="status">
+      <div class="loader-under"></div>
+      <div class="on-dark loader-sheet">
+        <div class="loader-film" aria-hidden="true">
+          <video src="/src/assets/loader.mp4" muted playsinline autoplay loop preload="auto"></video>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,4 +1,14 @@
-import { media } from '@/lib/media'
+import cityAgadir from '@/assets/city-agadir.webp'
+import cityCasablanca from '@/assets/city-casablanca.webp'
+import cityMarrakech from '@/assets/city-marrakech.webp'
+import cityRabat from '@/assets/city-rabat.webp'
+import cityTangier from '@/assets/city-tangier.webp'
+import expBeauty from '@/assets/exp-beauty.webp'
+import expCouples from '@/assets/exp-couples.webp'
+import expHammam from '@/assets/exp-hammam.webp'
+import expMassage from '@/assets/exp-massage.webp'
+import expRecovery from '@/assets/exp-recovery.webp'
+import expWellness from '@/assets/exp-wellness.webp'
 import { meanRating, reviewCount, summarise } from '@/lib/rating'
 import { SPAS } from '@/lib/spas'
 import { priceBandOf, SPA_TYPES } from '@/lib/taxonomy'
@@ -29,7 +39,7 @@ export const CITIES: City[] = [
       'The Médina and the Kasbah hold the oldest rooms and the most atmosphere. Guéliz and Hivernage have the urban day spas, easier to reach and easier to book. The Palmeraie, twenty minutes north, trades history for gardens and space.',
       'The city is fierce in summer: from June to September, book mornings or evenings and keep the hours after lunch for shade. November to March is high season, when the best addresses fill several days ahead. Whatever the month, a good hammam here follows the same slow order: heat, black soap, a thorough gommage, clay, rest, tea.',
     ],
-    image: media('city-marrakech'),
+    image: { src: cityMarrakech, alt: 'A painted cedar door under a pointed arch, set in a rose-pink wall in Marrakech' },
     neighbourhoods: [
       { id: 'medina', name: 'Médina', aliases: ['medina', 'old town', 'vieille ville', 'mouassine'] },
       { id: 'kasbah', name: 'Kasbah', aliases: ['kasbah', 'casbah', 'bab agnaou'] },
@@ -77,7 +87,7 @@ export const CITIES: City[] = [
       'The city spreads along the ocean. Aïn Diab and the Corniche have the hotel spas with sea light and pools. Gauthier and Maârif, in the centre, are where the beauty ateliers work quietly on first floors. The Habous quarter, built in the 1920s, keeps the neighbourhood hammam alive beside its bookshops and olive sellers.',
       'Come here for a facial before an event, for a massage after a long flight, or for a public hammam shared with the quarter rather than with other travellers. Traffic is the only real obstacle: leave twice the time you think you need, or take the tram.',
     ],
-    image: media('city-casablanca'),
+    image: { src: cityCasablanca, alt: 'The Hassan II Mosque and its minaret above the Atlantic in Casablanca' },
     neighbourhoods: [
       { id: 'ain-diab', name: 'Aïn Diab', aliases: ['ain diab', 'corniche', 'la corniche'] },
       { id: 'anfa', name: 'Anfa', aliases: ['anfa'] },
@@ -124,7 +134,7 @@ export const CITIES: City[] = [
       'The bay has the resort spas: seawater pools, thalasso circuits and long menus, built for guests who want everything in one place. Talborjt, the neighbourhood rebuilt after the 1960 earthquake, has the hammams that people who live here actually use, at prices that have little to do with tourism.',
       'Twenty minutes north, Taghazout and Tamraght have turned surf culture into something useful: small wellness houses where the massage is sports massage and the therapists know what paddling does to shoulders. The season never really ends. Winter brings the swell and the visitors; summer is cooler than Marrakech by ten degrees.',
     ],
-    image: media('city-agadir'),
+    image: { src: cityAgadir, alt: 'Blue fishing boats on the beach below the white houses of Taghazout, near Agadir' },
     neighbourhoods: [
       { id: 'founty', name: 'Founty', aliases: ['founty', 'baie d agadir', 'agadir bay', 'the bay'] },
       { id: 'talborjt', name: 'Talborjt', aliases: ['talborjt', 'nouveau talborjt'] },
@@ -170,7 +180,7 @@ export const CITIES: City[] = [
       'The Kasbah des Oudayas, blue and white above the mouth of the Bouregreg, hides a handful of riads where the classical ritual is practised with precision. Agdal is the modern residential centre, with bright urban spas used by people who work nearby. Souissi and Hay Riad, the embassy quarters, have the clubs: lap pools, saunas and gardens behind high hedges.',
       'Rabat rewards the traveller who has seen the hammam as spectacle and now wants it as habit. Autumn and spring are the best months, with clear river light and mild evenings. The tram makes the city easy; so does the fact that almost nobody is trying to sell you anything.',
     ],
-    image: media('city-rabat'),
+    image: { src: cityRabat, alt: 'Palm trees along the ramparts of the Kasbah des Oudayas in Rabat', focus: '77% 50%' },
     neighbourhoods: [
       { id: 'oudayas', name: 'Kasbah des Oudayas', aliases: ['oudayas', 'oudaias', 'oudaya', 'kasbah des oudayas'] },
       { id: 'medina', name: 'Médina', aliases: ['medina'] },
@@ -216,7 +226,7 @@ export const CITIES: City[] = [
       'The Kasbah and the Médina below it still have working bathhouses, some of the last inside old city walls anywhere on this coast. They are plain, properly hot and used by the people who live there. Marshan, the residential plateau to the west, has the grand villas, a few of them now small hotels with serious spas. Out towards Cap Spartel, where the Atlantic meets the Mediterranean, new addresses are opening among the pines.',
       'The light is the reason to come: white, maritime, different from anywhere else in the country. Summer is busy with Moroccans returning from Europe. Spring and October are the months we would choose.',
     ],
-    image: media('city-tangier'),
+    image: { src: cityTangier, alt: 'White rooftops of the Tangier Kasbah above the bay, seen from a terrace with a zellige table' },
     neighbourhoods: [
       { id: 'kasbah', name: 'Kasbah', aliases: ['kasbah', 'casbah'] },
       { id: 'medina', name: 'Médina', aliases: ['medina', 'petit socco'] },
@@ -278,7 +288,7 @@ export const EXPERIENCES: Experience[] = [
         text: 'Rhassoul clay on skin and hair, a long rinse, then tea somewhere cool. Allow an hour and a quarter in all.',
       },
     ],
-    image: media('exp-hammam'),
+    image: { src: expHammam, alt: 'A green tadelakt hammam with brass basins, dappled by the light of a pierced lantern', focus: '29% 50%' },
     aliases: ['hammam', 'hamam', 'hamman', 'hammams', 'gommage', 'bain maure', 'steam bath', 'scrub'],
     faq: [
       {
@@ -321,7 +331,7 @@ export const EXPERIENCES: Experience[] = [
         text: 'Thirty covers a back and neck. For the whole body, book sixty or more; after a hammam, seventy-five is ideal.',
       },
     ],
-    image: media('exp-massage'),
+    image: { src: expMassage, alt: 'Rolled towels on a treatment table beneath two carved plaster panels' },
     aliases: ['massage', 'massages', 'deep tissue', 'relaxing massage', 'argan massage', 'back pain', 'sports massage'],
     faq: [
       {
@@ -362,7 +372,7 @@ export const EXPERIENCES: Experience[] = [
         text: 'Book a facial two or three days before an event, not the morning of it.',
       },
     ],
-    image: media('exp-beauty'),
+    image: { src: expBeauty, alt: 'Cupped hands holding freshly picked damask roses', focus: '24% 50%' },
     aliases: ['beauty', 'facial', 'facials', 'face', 'soin visage', 'soin du visage', 'skin', 'bride', 'manicure'],
     faq: [
       {
@@ -404,7 +414,7 @@ export const EXPERIENCES: Experience[] = [
         text: 'Towels and robes almost always are. Lunch and swimwear almost never.',
       },
     ],
-    image: media('exp-wellness'),
+    image: { src: expWellness, alt: 'A keyhole arch reflected in a still green pool' },
     aliases: ['wellness', 'spa day', 'day pass', 'bien etre', 'bien-etre', 'thalasso', 'relax', 'pool day', 'yoga'],
     faq: [
       {
@@ -445,7 +455,7 @@ export const EXPERIENCES: Experience[] = [
         text: 'Most spas have a single duo room. Weekends go first.',
       },
     ],
-    image: media('exp-couples'),
+    image: { src: expCouples, alt: 'Two glasses of mint tea and a silver teapot on a tray, on a blue zellige table' },
     aliases: ['couples', 'couple', 'duo', 'for two', 'a deux', 'romantic', 'honeymoon', 'anniversary'],
     faq: [
       {
@@ -486,7 +496,7 @@ export const EXPERIENCES: Experience[] = [
         text: 'Sports massage is purposeful. You should feel worked on, not hurt.',
       },
     ],
-    image: media('exp-recovery'),
+    image: { src: expRecovery, alt: 'Ridges of the High Atlas fading into morning haze' },
     aliases: ['recovery', 'recuperation', 'sport', 'sports', 'after hiking', 'after surf', 'jet lag', 'cold plunge', 'stretching'],
     faq: [
       {

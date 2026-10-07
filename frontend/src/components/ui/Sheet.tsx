@@ -1,5 +1,6 @@
 import { type ReactNode, useEffect, useId, useRef, useState } from 'react'
 import { Icon } from '@/components/ui/Icon'
+import { useT } from '@/hooks/use-language'
 import { cx } from '@/lib/utils'
 
 interface SheetProps {
@@ -26,6 +27,7 @@ interface SheetProps {
  */
 export function Sheet({ open, onClose, title, variant = 'bottom', hideTitle, footer, children, className }: SheetProps) {
   const ref = useRef<HTMLDialogElement>(null)
+  const t = useT()
   const titleId = useId()
   const [mounted, setMounted] = useState(false)
   if (open && !mounted) setMounted(true)
@@ -64,7 +66,7 @@ export function Sheet({ open, onClose, title, variant = 'bottom', hideTitle, foo
             </h2>
             <button type="button" className="sheet-close" onClick={onClose}>
               <Icon name="close" />
-              <span className="visually-hidden">Close</span>
+              <span className="visually-hidden">{t.site.close}</span>
             </button>
           </header>
           <div className="sheet-body">{children}</div>

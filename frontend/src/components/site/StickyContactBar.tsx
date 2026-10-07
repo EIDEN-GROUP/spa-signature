@@ -3,7 +3,7 @@ import { track } from '@/lib/analytics'
 import { directionsUrl, telUrl, whatsappUrl } from '@/lib/contact'
 import { signatureTreatment } from '@/lib/data'
 import type { Spa } from '@/lib/types'
-import { cx, formatDuration, formatMad } from '@/lib/utils'
+import { cx, formatDuration } from '@/lib/utils'
 
 interface StickyContactBarProps {
   spa: Spa
@@ -25,7 +25,7 @@ export function StickyContactBar({ spa, visible }: StickyContactBarProps) {
       <p className="sticky-contact-bar-summary">
         <b>{signature.name}</b>
         <span>
-          {formatDuration(signature.durationMin)} · {formatMad(signature.priceMad)}
+          {formatDuration(signature.durationMin)}
         </span>
       </p>
       <div className="sticky-contact-bar-buttons">

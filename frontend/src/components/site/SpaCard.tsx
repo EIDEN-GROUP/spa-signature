@@ -6,7 +6,7 @@ import { Picture } from '@/components/ui/Picture'
 import { track } from '@/lib/analytics'
 import { paths } from '@/lib/paths'
 import type { SpaCardData } from '@/lib/types'
-import { cx, formatDuration, formatMad } from '@/lib/utils'
+import { cx, formatDuration } from '@/lib/utils'
 
 interface SpaCardProps {
   spa: SpaCardData
@@ -93,7 +93,7 @@ export function SpaCard({
           <p className="spa-card-signature">
             <span className="spa-card-ritual">{spa.signature.name}</span>
             <span className="spa-card-facts">
-              {formatDuration(spa.signature.durationMin)} · from <b>{formatMad(spa.priceFrom)}</b>
+              {formatDuration(spa.signature.durationMin)}
             </span>
           </p>
           <span className="spa-card-cta" aria-hidden="true">

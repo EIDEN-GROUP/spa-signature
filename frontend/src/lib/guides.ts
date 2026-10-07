@@ -1,4 +1,9 @@
-import { media } from '@/lib/media'
+import expCouples from '@/assets/exp-couples.webp'
+import expHammam from '@/assets/exp-hammam.webp'
+import expMassage from '@/assets/exp-massage.webp'
+import spaAsif from '@/assets/spa-asif.webp'
+import spaBabElAssa from '@/assets/spa-bab-el-assa.webp'
+import spaDarTassa from '@/assets/spa-dar-tassa.webp'
 import type { ArticleCategory, EditorialArticle } from '@/lib/types'
 
 export const ARTICLE_CATEGORIES: Record<ArticleCategory, { name: string; purpose: string }> = {
@@ -25,7 +30,7 @@ export const ARTICLES: EditorialArticle[] = [
     publishedOn: '2026-06-02',
     updatedOn: '2026-09-29',
     readMinutes: 4,
-    image: media('exp-hammam'),
+    image: { src: expHammam, alt: 'A green tadelakt hammam with brass basins, dappled by the light of a pierced lantern', focus: '29% 50%' },
     experienceId: 'hammam',
     spaIds: ['dar-tassa', 'hammam-talborjt', 'maison-oudaya'],
     body: [
@@ -92,7 +97,7 @@ export const ARTICLES: EditorialArticle[] = [
     publishedOn: '2026-07-14',
     updatedOn: '2026-09-28',
     readMinutes: 3,
-    image: media('spa-dar-tassa'),
+    image: { src: spaDarTassa, alt: 'Water poured from an engraved bowl into a tadelakt basin, beside two hammam pails', focus: '50% 26%' },
     experienceId: 'hammam',
     spaIds: ['hammam-talborjt', 'dar-tassa', 'riad-sahrij'],
     body: [
@@ -148,7 +153,7 @@ export const ARTICLES: EditorialArticle[] = [
     publishedOn: '2026-05-20',
     updatedOn: '2026-09-15',
     readMinutes: 4,
-    image: media('spa-bab-el-assa'),
+    image: { src: spaBabElAssa, alt: 'A hand filling a brass bowl at a brass tap above a carved marble basin', focus: '50% 30%' },
     experienceId: 'hammam',
     spaIds: ['jardin-argile', 'dar-tassa', 'maison-gauthier'],
     body: [
@@ -194,7 +199,7 @@ export const ARTICLES: EditorialArticle[] = [
     publishedOn: '2026-10-01',
     updatedOn: '2026-10-01',
     readMinutes: 2,
-    image: media('exp-couples'),
+    image: { src: expCouples, alt: 'Two glasses of mint tea and a silver teapot on a tray, on a blue zellige table' },
     spaIds: ['jardin-argile', 'asif-wellness', 'maison-oudaya'],
     body: [
       {
@@ -229,7 +234,7 @@ export const ARTICLES: EditorialArticle[] = [
     publishedOn: '2026-08-18',
     updatedOn: '2026-09-22',
     readMinutes: 3,
-    image: media('spa-asif'),
+    image: { src: spaAsif, alt: 'Woven rugs, cushions and low tables on a terrace above the rocky Atlantic shore', focus: '50% 74%' },
     cityId: 'agadir',
     spaIds: ['hammam-talborjt', 'asif-wellness'],
     body: [
@@ -275,7 +280,7 @@ export const ARTICLES: EditorialArticle[] = [
     publishedOn: '2026-07-01',
     updatedOn: '2026-09-08',
     readMinutes: 3,
-    image: media('exp-massage'),
+    image: { src: expMassage, alt: 'Rolled towels on a treatment table beneath two carved plaster panels' },
     experienceId: 'massage',
     spaIds: ['spa-oceane', 'villa-marshan', 'asif-wellness'],
     body: [

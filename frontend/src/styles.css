@@ -1,95 +1,62 @@
-/* Spa Maroc Signature: the one stylesheet.
-
-   Every style in the site lives in this file, in this order:
-
-    1. Tokens: colours, type, spacing, radius, motion
-    2. Base: reset, typography, layout helpers
-    3. Khatam star and eyebrow · components/ui/Khatam.tsx
-    4. Button · components/ui/Button.tsx
-    5. Picture · components/ui/Picture.tsx
-    6. Stars and rating · components/site/Stars.tsx
-    7. Sheet · components/ui/Sheet.tsx
-    8. Door-shaped photograph · components/ui/Door.tsx
-    9. Marquee · components/ui/Marquee.tsx
-   10. Logo · components/site/Logo.tsx
-   11. Distinction · components/site/Distinction.tsx
-   12. Breadcrumbs · components/site/Breadcrumbs.tsx
-   13. Section head, page head, scroller, FAQ · components/ui/Section.tsx
-   14. Search overlay · components/site/SearchOverlay.tsx
-   15. Mobile menu · components/site/SiteChrome.tsx
-   16. Site header · components/site/SiteChrome.tsx
-   17. Site footer · components/site/SiteChrome.tsx
-   18. Spa card · components/site/SpaCard.tsx
-   19. Contact actions · components/site/ContactActions.tsx
-   20. Gallery · components/site/Gallery.tsx
-   21. Opening hours · components/site/Hours.tsx
-   22. Rating breakdown · components/site/RatingBreakdown.tsx
-   23. Sticky contact bar · components/site/StickyContactBar.tsx
-   24. Search form · components/site/SearchForm.tsx
-   25. Homepage · section intro · routes/index.tsx
-   26. Homepage · hero · routes/index.tsx
-   27. Homepage · discover by city · routes/index.tsx
-   28. Homepage · explore by experience · routes/index.tsx
-   29. Homepage · this month’s picks · routes/index.tsx
-   30. Homepage · “Run a spa?” band · routes/index.tsx
-   31. Homepage · closing search · routes/index.tsx
-   32. Coming soon · routes/coming-soon.tsx
-
-   Classes are named after the component they belong to: `.button-primary`,
-   `.site-header-nav`, `.home-hero-card`. A component always comes after the
-   pieces it is built from, so its rules can adjust theirs. */
-
 @import '@fontsource-variable/newsreader/opsz.css';
-@import '@fontsource-variable/newsreader/opsz-italic.css';
 @import '@fontsource-variable/hanken-grotesk/wght.css';
 @import 'lenis/dist/lenis.css';
 
-/* ════════════════════════════════════════════════════════════════════════════
-   Tokens
-   ════════════════════════════════════════════════════════════════════════════ */
-
-/* Design tokens.
-   Colours keep the names of the materials they come from, so designers and
-   developers share one vocabulary: lime plaster, tadelakt, black soap, Fès
-   glaze, fresh mint, gold leaf. */
 
 :root {
-  /* Grounds */
-  --color-chaux: #f6f2e8; /* lime plaster: the page, cards and sheets */
-  --color-paper: #fbf9f3; /* fields, and cards that sit on plaster */
-  --color-tadelakt: #eae1cd; /* polished plaster: alternate sections and bands */
-  --color-pierre: #d8cfba; /* stone: hairlines */
-  --color-pierre-soft: #e5dcc8;
+  /* Grounds: sage, thinned until it is almost white */
+  --color-page: #f3f4ee;
+  --color-paper: #fbfbf8; /* fields, bars, sheets, cards that sit on the page */
+  --color-sage-tint: #e7ebe0; /* washes, panels, selected states, the place a photograph will fill */
+  --color-line: #d6dbcc; /* hairlines */
+  --color-line-soft: #e2e6da;
 
   /* Ink */
-  --color-beldi: #13201a; /* black soap: text, icons, rating stars */
-  --color-ink-2: #39453e;
-  --color-ink-3: #56615a;
+  --color-ink: #1d1d1d; /* text, icons, rating stars */
+  --color-ink-2: #414340;
+  --color-ink-3: #62655f;
+  --color-black: #0d0c0c; /* the loader, and the grade over photographs */
 
-  /* Green acts: Fès for actions, mint for selection and success */
-  --color-fes: #0f4a38; /* glazed roof tiles of Fès: actions, links, dark bands */
-  --color-fes-press: #0b3b2d;
-  --color-fes-deep: #0b3328; /* large dark grounds */
-  --color-naana: #a6cfb1; /* fresh mint: selected states, chips, highlights */
-  --color-naana-tint: #ddede0; /* panels */
+  --color-burgundy-bright: #9b251b;
+  --color-burgundy: #821911;
+  --color-burgundy-deep: #5c110b; /* pressed, and the dark room of a page */
+  --color-burgundy-night: #2a0907; /* the footer */
 
-  /* Gold means earned: the logo mark and editorial distinctions, nothing else.
-     Always flat, never a gradient or foil. */
-  --color-dhahab: #c9a43b;
-  --color-dhahab-ink: #7e5f0d; /* gold as text on light grounds */
-  --logo-mark: var(--color-dhahab);
+  --color-sage-soft: #d3dac8;
+  --color-sage: #b2bda3;
+  --color-sage-deep: #8a977a; /* outlines, ornament */
 
-  /* A rare warm accent: errors and "never" marks. */
-  --color-ocre: #b4572e;
-  --color-ocre-ink: #a34a23; /* as text */
+  /* Gold is kept for one thing: the first of the month's picks. Always flat. */
+  --color-gold: #c28f1a;
+
+  --gradient-burgundy: linear-gradient(
+    135deg,
+    var(--color-burgundy-bright),
+    var(--color-burgundy) 45%,
+    var(--color-burgundy-deep)
+  );
+  --gradient-wine: linear-gradient(
+    160deg,
+    var(--color-burgundy) -10%,
+    var(--color-burgundy-deep) 50%,
+    var(--color-burgundy-night) 125%
+  );
+  --gradient-night: linear-gradient(
+    170deg,
+    var(--color-burgundy-deep) -45%,
+    var(--color-burgundy-night) 55%,
+    var(--color-black) 135%
+  );
+  --gradient-sage: linear-gradient(135deg, var(--color-sage-soft), var(--color-sage));
+  --logo-mark: var(--color-burgundy);
 
   /* On dark grounds */
-  --on-dark: #f6f2e8;
-  --on-dark-2: #c7d6cc;
-  --on-dark-3: #9db5a8;
-  --line-dark: #27503f;
+  --on-dark: #f7f3ec;
+  --on-dark-2: #e0d3cd;
+  --on-dark-3: #c5aea8;
+  --line-dark: color-mix(in srgb, var(--on-dark) 18%, transparent);
 
-  /* Type */
+  --font-title: 'Aeonik', 'Hanken Grotesk Variable', 'Hanken Fallback', 'Helvetica Neue', Arial, sans-serif;
   --font-serif: 'Newsreader Variable', 'Newsreader Fallback', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
   --font-sans: 'Hanken Grotesk Variable', 'Hanken Fallback', 'Helvetica Neue', Arial, sans-serif;
 
@@ -122,18 +89,23 @@
   --container: 80rem;
   --section: clamp(4rem, 2.6rem + 5.8vw, 8.5rem);
   --header-h: 3.75rem;
+  --frame: 0.5rem; /* the margin of plaster left around a panel that spans the page */
   --tap: 2.75rem; /* 44px minimum touch target */
 
-  /* Surfaces. Corners are soft; photographs are cut as doorways: a full arch
-     over straight jambs (see Door). */
   --radius-sm: 0.5rem; /* chips, tags */
   --radius: 0.875rem; /* buttons, fields, cards */
   --radius-lg: 1.5rem; /* panels and bands */
   --radius-full: 999px;
-  --hairline: 1px solid var(--color-pierre);
-  --shadow-card: 0 1px 0 rgb(19 32 26 / 0.04), 0 28px 64px -28px rgb(19 32 26 / 0.34);
-  --shadow-float: 0 -8px 24px rgb(19 32 26 / 0.1);
-  --shadow-sheet: 0 -12px 40px rgb(19 32 26 / 0.16);
+  --hairline: 1px solid var(--color-line);
+  --shadow-card: 0 1px 0 rgb(29 29 29 / 0.04), 0 28px 64px -28px rgb(29 29 29 / 0.34);
+  --shadow-bar: inset 0 1px 0 rgb(255 255 255 / 0.55), 0 18px 40px -24px rgb(29 29 29 / 0.45);
+  --shadow-float: 0 -8px 24px rgb(29 29 29 / 0.1);
+  --shadow-sheet: 0 -12px 40px rgb(29 29 29 / 0.16);
+
+  /* Ornament. The doorways, one inside another, are used as a mask, so they
+     take whatever colour is behind them. */
+  --art-doorways: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' fill='none' stroke='%23000'%3E%3Cpath d='M1 400V150a149 149 0 0 1 298 0v250' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M31 400V150a119 119 0 0 1 238 0v250' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M61 400V150a89 89 0 0 1 178 0v250' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M91 400V150a59 59 0 0 1 118 0v250' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --art-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
 
   /* Motion: slow to arrive, quick to answer. */
   --t-press: 120ms;
@@ -156,6 +128,7 @@
   :root {
     --gutter: 2.5rem;
     --header-h: 4.75rem;
+    --frame: 0.75rem;
   }
 }
 
@@ -188,6 +161,24 @@
   line-gap-override: 0%;
 }
 
+@font-face {
+  font-family: 'Aeonik';
+  src: url('./assets/fonts/AeonikTRIAL-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+20, U+2C-2E, U+30-39, U+41-5A, U+61-7A;
+}
+
+@font-face {
+  font-family: 'Aeonik';
+  src: url('./assets/fonts/AeonikTRIAL-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+20, U+2C-2E, U+30-39, U+41-5A, U+61-7A;
+}
+
 *,
 *::before,
 *::after {
@@ -199,7 +190,43 @@ html {
   text-size-adjust: 100%;
   scroll-padding-top: calc(var(--header-h) + 1rem);
   scroll-padding-bottom: 6rem; /* focus is never hidden behind the sticky contact bar */
-  scrollbar-gutter: stable;
+  overflow-x: hidden;
+}
+
+/* The scrollbar: a slim grey pill on a clear track, burgundy under the pointer.
+   It is absent while the loader is up (see Loader). */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  min-height: 56px;
+  border: 3px solid transparent;
+  border-radius: var(--radius-full);
+  background-color: color-mix(in srgb, var(--color-ink) 30%, transparent);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-burgundy);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--color-burgundy-deep);
+}
+
+/* Firefox takes the two standard properties; it has no hover colour to give. */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--color-ink) 30%, transparent) transparent;
+  }
 }
 
 /* A modal sheet owns the scroll while it is open. */
@@ -208,9 +235,13 @@ html:has(dialog[open]) {
 }
 
 body {
+  /* As wide as the window, scrollbar included: when the scrollbar arrives it
+     lies over the edge of the page and nothing moves. */
+  position: relative;
+  width: 100vw;
   margin: 0;
-  background: var(--color-chaux);
-  color: var(--color-beldi);
+  background: var(--color-page);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: var(--text-body);
   line-height: 1.5;
@@ -218,6 +249,52 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+/* The wall behind the page, so a plain section is never bare. It belongs to
+   the body, not to the sections, so nothing stops at the edge of one. */
+body::before,
+body::after {
+  content: '';
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Washes of sage under a fine grain, which stay put while the content moves… */
+body::before {
+  position: fixed;
+  background:
+    var(--art-grain),
+    radial-gradient(52vmax 52vmax at 104% 6%, var(--color-sage-soft), transparent 64%),
+    radial-gradient(50vmax 50vmax at -10% 58%, var(--color-sage-tint), transparent 66%),
+    radial-gradient(42vmax 42vmax at 82% 108%, var(--color-sage-soft), transparent 62%);
+}
+
+/* …and carved plaster and a patch of zellige pressed into it down the page,
+   each one faded out on every side. */
+body::after {
+  --plaster: min(64vw, 38rem);
+  --plaster-size: var(--plaster) calc(var(--plaster) * 1.5);
+  --zellige: min(90vw, 44rem);
+  --zellige-size: var(--zellige) var(--zellige);
+  --from-right: radial-gradient(100% 50% at 100% 50%, #000 0%, transparent 72%);
+  --from-left: radial-gradient(100% 50% at 0% 50%, #000 0%, transparent 72%);
+
+  position: absolute;
+  background:
+    url('./assets/decor-plaster.webp') right 11% / var(--plaster-size) no-repeat,
+    url('./assets/decor-plaster.webp') left 37% / var(--plaster-size) no-repeat,
+    url('./assets/decor-plaster.webp') left 84% / var(--plaster-size) no-repeat,
+    url('./assets/decor-zellige-green.webp') center / 20rem auto;
+  opacity: 0.17;
+  filter: grayscale(1);
+  mix-blend-mode: multiply;
+  mask:
+    var(--from-right) right 11% / var(--plaster-size) no-repeat,
+    var(--from-left) left 37% / var(--plaster-size) no-repeat,
+    var(--from-left) left 84% / var(--plaster-size) no-repeat,
+    radial-gradient(closest-side, #000 15%, transparent 100%) right -6rem top 78% / var(--zellige-size) no-repeat;
 }
 
 h1,
@@ -297,8 +374,8 @@ address {
 }
 
 ::selection {
-  background: var(--color-naana);
-  color: var(--color-beldi);
+  background: var(--color-sage);
+  color: var(--color-ink);
 }
 
 :focus {
@@ -306,13 +383,13 @@ address {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-fes);
+  outline: 2px solid var(--color-burgundy);
   outline-offset: 3px;
 }
 
 .on-dark :focus-visible,
 .on-dark:focus-visible {
-  outline-color: var(--color-naana);
+  outline-color: var(--color-sage);
 }
 
 /* ── Type: the serif judges, the sans informs ───────────────────────────── */
@@ -320,18 +397,18 @@ address {
 .display,
 .h1,
 .h2 {
-  font-family: var(--font-serif);
-  font-weight: 330;
+  font-family: var(--font-title);
+  font-weight: 300;
   font-variant-numeric: lining-nums;
-  letter-spacing: -0.018em;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 }
 
 .display {
   font-size: var(--text-display);
-  line-height: 0.98;
+  line-height: 1;
   font-weight: 300;
-  letter-spacing: -0.024em;
+  letter-spacing: -0.04em;
 }
 
 .h1 {
@@ -342,8 +419,7 @@ address {
 .h2 {
   font-size: var(--text-h2);
   line-height: 1.1;
-  font-weight: 360;
-  letter-spacing: -0.012em;
+  letter-spacing: -0.028em;
 }
 
 .h3 {
@@ -357,8 +433,9 @@ address {
 .display em,
 .h1 em,
 .h2 em {
-  font-style: italic;
+  font-style: normal;
   font-weight: 300;
+  color: var(--color-burgundy);
 }
 
 .lede {
@@ -397,7 +474,7 @@ address {
 /* The editors' voice, wherever it appears. */
 .voice {
   font-family: var(--font-serif);
-  font-style: italic;
+  font-style: normal;
   font-weight: 360;
   line-height: 1.35;
   text-wrap: pretty;
@@ -408,20 +485,20 @@ address {
 }
 
 .link {
-  color: var(--color-fes);
+  color: var(--color-burgundy);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
 }
 
-/* Lines split for animation keep room for italic descenders inside their mask. */
+/* Lines split for animation keep room for descenders inside their mask. */
 .split-line-mask {
   padding-block: 0.14em;
   margin-block: -0.14em;
 }
 
 .on-dark {
-  background: var(--color-fes-deep);
+  background: var(--color-burgundy-deep);
   color: var(--on-dark);
 }
 
@@ -437,6 +514,17 @@ address {
 
 .on-dark .link {
   color: var(--on-dark);
+}
+
+.on-dark .display em,
+.on-dark .h1 em,
+.on-dark .h2 em {
+  color: var(--color-sage);
+}
+
+/* The logo mark is burgundy; on a dark ground it is sage. */
+.on-dark {
+  --logo-mark: var(--color-sage);
 }
 
 /* ── Icons: line drawings that take the colour of the text beside them ───── */
@@ -463,8 +551,8 @@ address {
   padding-block: var(--section);
 }
 
-.band-tadelakt {
-  background: var(--color-tadelakt);
+.band-sage {
+  background: var(--color-sage-tint);
 }
 
 .rule {
@@ -491,7 +579,7 @@ address {
   top: -4rem;
   z-index: 100;
   padding: var(--s-3) var(--s-4);
-  background: var(--color-fes);
+  background: var(--color-burgundy-deep);
   color: var(--on-dark);
   font-weight: 600;
   border-radius: var(--radius);
@@ -521,7 +609,7 @@ address {
   width: 0.75rem;
   height: 0.75rem;
   fill: currentColor;
-  color: var(--color-fes);
+  color: var(--color-burgundy);
 }
 
 .eyebrow {
@@ -531,7 +619,7 @@ address {
 }
 
 .on-dark .khatam {
-  color: var(--color-naana);
+  color: var(--color-sage);
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
@@ -545,10 +633,10 @@ address {
   gap: 0.5rem;
   min-height: 3rem;
   padding: 0.625rem 1.125rem;
-  border: 1px solid var(--color-fes);
+  border: 1px solid var(--color-sage-deep);
   border-radius: var(--radius);
   background: transparent;
-  color: var(--color-fes);
+  color: var(--color-ink);
   font-size: 0.9375rem;
   font-weight: 600;
   line-height: 1.2;
@@ -573,27 +661,28 @@ address {
 }
 
 .button-primary {
-  background: var(--color-fes);
+  border-color: transparent;
+  background: var(--gradient-burgundy) border-box;
   color: var(--on-dark);
 }
 
 .button-primary:active {
-  background: var(--color-fes-press);
-  border-color: var(--color-fes-press);
+  background: var(--color-burgundy-deep);
+  border-color: var(--color-burgundy-deep);
 }
 
 .button-secondary:active {
-  background: var(--color-naana-tint);
+  background: var(--color-sage-tint);
 }
 
 .button-quiet {
-  border-color: var(--color-pierre);
-  color: var(--color-beldi);
+  border-color: var(--color-line);
+  color: var(--color-ink);
   font-weight: 500;
 }
 
 .button-quiet:active {
-  background: var(--color-pierre-soft);
+  background: var(--color-line-soft);
 }
 
 .button:disabled {
@@ -607,12 +696,12 @@ address {
 
 @media (hover: hover) {
   .button-primary:hover {
-    background: var(--color-fes-press);
-    border-color: var(--color-fes-press);
+    background: var(--color-burgundy-deep);
+    border-color: var(--color-burgundy-deep);
   }
 
   .button-secondary:hover {
-    background: var(--color-naana-tint);
+    background: var(--color-sage-tint);
   }
 
   .button-quiet:hover {
@@ -620,11 +709,11 @@ address {
   }
 }
 
-/* On dark grounds the roles invert: ivory acts, outlines stay quiet. */
+/* On dark grounds the roles invert: the light colour acts, outlines stay quiet. */
 .on-dark .button-primary {
   background: var(--on-dark);
   border-color: var(--on-dark);
-  color: var(--color-fes-deep);
+  color: var(--color-burgundy-deep);
 }
 
 .on-dark .button-secondary,
@@ -640,8 +729,8 @@ address {
 
 @media (hover: hover) {
   .on-dark .button-primary:hover {
-    background: var(--color-pierre-soft);
-    border-color: var(--color-pierre-soft);
+    background: var(--color-line-soft);
+    border-color: var(--color-line-soft);
   }
 
   .on-dark .button-secondary:hover,
@@ -658,7 +747,7 @@ address {
   align-items: center;
   gap: 0.5rem;
   min-height: var(--tap);
-  color: var(--color-fes);
+  color: var(--color-burgundy);
   font-weight: 600;
   font-size: 0.9375rem;
 }
@@ -697,7 +786,7 @@ address {
 .picture {
   display: block;
   overflow: hidden;
-  background-color: var(--color-tadelakt);
+  background-color: var(--color-sage-tint);
 }
 
 .picture img {
@@ -721,7 +810,7 @@ address {
   flex: none;
   width: 4.25rem;
   height: 0.75rem;
-  color: var(--color-pierre);
+  color: var(--color-line);
 }
 
 .rating-stars svg {
@@ -734,7 +823,7 @@ address {
   position: absolute;
   inset: 0 auto 0 0;
   overflow: hidden;
-  color: var(--color-beldi);
+  color: var(--color-ink);
 }
 
 .rating {
@@ -754,7 +843,7 @@ address {
 }
 
 .rating-value b {
-  color: var(--color-beldi);
+  color: var(--color-ink);
   font-weight: 600;
 }
 
@@ -769,7 +858,7 @@ address {
 
 .rating-new {
   padding: 0.125rem 0.5rem;
-  border: 1px solid var(--color-pierre);
+  border: 1px solid var(--color-line);
   border-radius: var(--radius);
   font-size: var(--text-label);
   font-weight: 600;
@@ -809,7 +898,7 @@ address {
   max-width: none;
   max-height: none;
   background: var(--color-paper);
-  color: var(--color-beldi);
+  color: var(--color-ink);
   box-shadow: var(--shadow-sheet);
   overflow: hidden;
   opacity: 0;
@@ -826,7 +915,7 @@ address {
 }
 
 .sheet::backdrop {
-  background: rgb(23 32 27 / 0);
+  background: rgb(29 29 29 / 0);
   transition:
     background-color var(--t-sheet) linear,
     overlay var(--t-sheet) allow-discrete,
@@ -834,12 +923,12 @@ address {
 }
 
 .sheet[open]::backdrop {
-  background: rgb(23 32 27 / 0.48);
+  background: rgb(29 29 29 / 0.48);
 }
 
 @starting-style {
   .sheet[open]::backdrop {
-    background: rgb(23 32 27 / 0);
+    background: rgb(29 29 29 / 0);
   }
 }
 
@@ -867,9 +956,9 @@ address {
 }
 
 .sheet-title {
-  font-family: var(--font-serif);
+  font-family: var(--font-title);
   font-size: 1.375rem;
-  font-weight: 380;
+  font-weight: 400;
   line-height: 1.2;
 }
 
@@ -879,7 +968,7 @@ address {
   width: var(--tap);
   height: var(--tap);
   flex: none;
-  color: var(--color-beldi);
+  color: var(--color-ink);
 }
 
 .sheet-close .icon {
@@ -927,7 +1016,7 @@ address {
   width: 2.25rem;
   height: 3px;
   margin-top: 0.5rem;
-  background: var(--color-pierre);
+  background: var(--color-line);
 }
 
 @media (min-width: 48em) {
@@ -957,7 +1046,7 @@ address {
   inset: 0;
   width: 100%;
   height: 100dvh;
-  background: var(--color-chaux);
+  background: var(--color-page);
   box-shadow: none;
   transform: translateY(0.75rem);
 }
@@ -1000,7 +1089,7 @@ address {
   aspect-ratio: var(--ratio);
   overflow: hidden;
   border-radius: 50% 50% var(--radius) var(--radius) / var(--rise) var(--rise) var(--radius) var(--radius);
-  background-color: var(--color-tadelakt);
+  background-color: var(--color-sage-tint);
   isolation: isolate;
 }
 
@@ -1056,7 +1145,7 @@ address {
   gap: clamp(1.25rem, 3vw, 2.5rem);
   padding-right: clamp(1.25rem, 3vw, 2.5rem);
   font-family: var(--font-serif);
-  font-style: italic;
+  font-style: normal;
   font-weight: 300;
   font-size: clamp(1.75rem, 1.2rem + 2.4vw, 3.25rem);
   line-height: 1.1;
@@ -1068,7 +1157,7 @@ address {
 .marquee-star {
   width: 0.4em;
   height: 0.4em;
-  color: var(--color-fes);
+  color: var(--color-sage-deep);
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
@@ -1080,7 +1169,7 @@ address {
   height: 2rem;
   width: auto;
   aspect-ratio: 145 / 44;
-  color: var(--color-beldi);
+  color: var(--color-ink);
 }
 
 .logo-mark {
@@ -1110,7 +1199,7 @@ address {
   align-items: flex-end;
   gap: 2px;
   flex: none;
-  color: var(--color-dhahab);
+  color: var(--color-burgundy);
 }
 
 .distinction-marks svg {
@@ -1125,7 +1214,7 @@ address {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-dhahab-ink);
+  color: var(--color-burgundy-deep);
 }
 
 .distinction-year {
@@ -1158,7 +1247,7 @@ address {
 
 .on-dark .distinction-marks,
 .on-dark .distinction-name {
-  color: var(--color-dhahab);
+  color: var(--color-sage);
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
@@ -1182,7 +1271,7 @@ address {
 .breadcrumbs li + li::before {
   content: '/';
   margin: 0 0.5rem;
-  color: var(--color-pierre);
+  color: var(--color-line);
 }
 
 .breadcrumbs a {
@@ -1204,7 +1293,7 @@ address {
 
 @media (hover: hover) {
   .breadcrumbs a:hover {
-    color: var(--color-beldi);
+    color: var(--color-ink);
     text-decoration-color: currentColor;
   }
 }
@@ -1406,7 +1495,7 @@ address {
   display: flex;
   align-items: center;
   gap: var(--s-3);
-  border-bottom: 1px solid var(--color-beldi);
+  border-bottom: 1px solid var(--color-ink);
 }
 
 .search-overlay-field .icon {
@@ -1421,11 +1510,11 @@ address {
   height: 3.5rem;
   border: 0;
   background: transparent;
-  font-family: var(--font-serif);
+  font-family: var(--font-title);
   font-size: 1.5rem;
   font-weight: 340;
   letter-spacing: -0.01em;
-  color: var(--color-beldi);
+  color: var(--color-ink);
   outline: none;
   appearance: none;
 }
@@ -1441,7 +1530,7 @@ address {
 
 .search-overlay-field:focus-within {
   border-bottom-width: 2px;
-  border-bottom-color: var(--color-fes);
+  border-bottom-color: var(--color-burgundy);
   margin-bottom: -1px;
 }
 
@@ -1456,7 +1545,7 @@ address {
   min-height: 3.5rem;
   margin-top: var(--s-2);
   padding: var(--s-3) var(--s-4);
-  background: var(--color-fes);
+  background: var(--color-burgundy-deep);
   color: var(--on-dark);
   border-radius: var(--radius);
   text-align: left;
@@ -1470,7 +1559,7 @@ address {
 
 .search-overlay-term {
   padding: 0.1875rem 0.5rem;
-  border: 1px solid rgb(245 241 232 / 0.4);
+  border: 1px solid color-mix(in srgb, var(--on-dark) 40%, transparent);
   border-radius: var(--radius);
   font-size: var(--text-small);
   line-height: 1.3;
@@ -1524,10 +1613,10 @@ address {
 }
 
 .search-overlay-active {
-  background: var(--color-naana-tint);
+  background: var(--color-sage-tint);
   box-shadow:
-    -0.75rem 0 0 var(--color-naana-tint),
-    0.75rem 0 0 var(--color-naana-tint);
+    -0.75rem 0 0 var(--color-sage-tint),
+    0.75rem 0 0 var(--color-sage-tint);
 }
 
 .search-overlay-entries {
@@ -1559,7 +1648,7 @@ address {
 
 @media (hover: hover) {
   .search-overlay-option:hover {
-    color: var(--color-fes);
+    color: var(--color-burgundy);
   }
 }
 
@@ -1585,11 +1674,11 @@ address {
   gap: var(--s-4);
   padding: 1.125rem 0;
   border-bottom: var(--hairline);
-  font-family: var(--font-serif);
+  font-family: var(--font-title);
   font-size: 1.875rem;
   font-weight: 330;
   line-height: 1.1;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.025em;
 }
 
 .mobile-menu-primary a .icon {
@@ -1638,9 +1727,59 @@ address {
 
 .mobile-menu-secondary {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: var(--s-8);
   padding-top: var(--s-4);
   border-top: var(--hairline);
+}
+
+/* ── Language: FR / EN, the one in use at full strength ─────────────────── */
+
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+}
+
+.language-switch-choice {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding-inline: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: color-mix(in srgb, currentColor 50%, transparent);
+  transition: color var(--t-hover) var(--ease);
+}
+
+.language-switch-choice + .language-switch-choice::before {
+  content: '';
+  width: 1px;
+  height: 0.75rem;
+  margin-right: 0.75rem;
+  background: color-mix(in srgb, currentColor 60%, transparent);
+}
+
+.language-switch-current {
+  color: inherit;
+}
+
+@media (hover: hover) {
+  .language-switch-choice:hover {
+    color: inherit;
+  }
+}
+
+/* In the header it shows once there is room for the navigation; before that it is in the menu. */
+.site-header-language {
+  display: none;
+}
+
+@media (min-width: 64em) {
+  .site-header-language {
+    display: inline-flex;
+  }
 }
 
 .mobile-menu-secondary a {
@@ -1648,14 +1787,14 @@ address {
   align-items: center;
   min-height: var(--tap);
   font-weight: 600;
-  color: var(--color-fes);
+  color: var(--color-burgundy);
 }
 
 .mobile-menu-motto {
   margin-top: auto;
   padding-top: var(--s-10);
   font-family: var(--font-serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 1.0625rem;
   color: var(--color-ink-3);
 }
@@ -1668,21 +1807,46 @@ address {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: color-mix(in srgb, var(--color-chaux) 84%, transparent);
-  border-bottom: 1px solid transparent;
-  backdrop-filter: blur(16px) saturate(1.3);
-  transition: border-color var(--t-hover) var(--ease);
+  height: var(--header-h);
+  padding-top: var(--s-2);
+  color: var(--color-ink);
+  pointer-events: none; /* only the bar takes clicks; the page shows either side of it */
+  transition: color var(--t-sheet) var(--ease);
 }
 
-.site-header-raised {
-  border-bottom-color: var(--color-pierre);
+/* Over the homepage photograph, before the page has moved. */
+.site-header-over {
+  --logo-mark: var(--color-sage);
+
+  color: var(--on-dark);
 }
 
+/* A capsule that floats above the page: clear at the top, frosted plaster once
+   the page moves. The name sits in the middle, whatever is either side of it. */
 .site-header-bar {
   display: grid;
   grid-template-columns: var(--tap) 1fr var(--tap);
   align-items: center;
-  height: var(--header-h);
+  width: calc(100% - 2 * var(--gutter) + 2 * var(--s-2));
+  height: calc(var(--header-h) - var(--s-2));
+  margin-inline: auto;
+  padding-inline: var(--s-1);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  pointer-events: auto;
+  transition:
+    max-width 0.8s var(--ease-out),
+    padding 0.8s var(--ease-out),
+    background-color var(--t-sheet) var(--ease),
+    border-color var(--t-sheet) var(--ease),
+    box-shadow var(--t-sheet) var(--ease);
+}
+
+.site-header-raised .site-header-bar {
+  background: color-mix(in srgb, var(--color-paper) 86%, transparent);
+  border-color: color-mix(in srgb, var(--color-line) 85%, transparent);
+  box-shadow: var(--shadow-bar);
+  backdrop-filter: blur(18px) saturate(1.4);
 }
 
 .site-header-tool {
@@ -1691,22 +1855,16 @@ address {
   justify-content: center;
   width: var(--tap);
   height: var(--tap);
-  border-radius: 50%;
-  color: var(--color-beldi);
-  transition: background-color var(--t-hover) var(--ease);
+  border-radius: var(--radius-full);
+  color: inherit;
+  transition:
+    background-color var(--t-hover) var(--ease),
+    color var(--t-sheet) var(--ease);
 }
 
 .site-header-tool .icon {
   width: 1.375rem;
   height: 1.375rem;
-}
-
-.site-header-menu-button {
-  margin-left: -0.625rem;
-}
-
-.site-header-search-button {
-  margin-right: -0.625rem;
 }
 
 .site-header-brand {
@@ -1718,10 +1876,12 @@ address {
 
 .site-header-logo {
   height: 1.875rem;
+  color: inherit;
+  transition: color var(--t-sheet) var(--ease);
 }
 
 .site-header-nav,
-.site-header-for-spas {
+.site-header-tools .site-header-for-spas {
   display: none;
 }
 
@@ -1729,7 +1889,17 @@ address {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--s-3);
+  gap: var(--s-6);
+}
+
+/* On a phone the search is its icon; the word is still read aloud. */
+.site-header-search-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .site-header-link {
@@ -1739,7 +1909,7 @@ address {
   min-height: var(--tap);
   font-size: 0.9375rem;
   font-weight: 500;
-  color: var(--color-ink-2);
+  color: color-mix(in srgb, currentColor 80%, transparent);
   white-space: nowrap;
   transition: color var(--t-hover) var(--ease);
 }
@@ -1758,7 +1928,7 @@ address {
 }
 
 .site-header-current {
-  color: var(--color-beldi);
+  color: inherit;
 }
 
 .site-header-current::after {
@@ -1767,11 +1937,11 @@ address {
 
 @media (hover: hover) {
   .site-header-tool:hover {
-    background: var(--color-pierre-soft);
+    background: color-mix(in srgb, currentColor 10%, transparent);
   }
 
   .site-header-link:hover {
-    color: var(--color-beldi);
+    color: inherit;
   }
 
   .site-header-link:hover::after {
@@ -1782,17 +1952,26 @@ address {
 
 /* From 64em the menu button gives way to the navigation itself. */
 @media (min-width: 64em) {
+  .site-header {
+    padding-top: var(--s-3);
+  }
+
   .site-header-bar {
-    grid-template-columns: auto 1fr auto;
-    gap: var(--s-12);
+    grid-template-columns: 1fr auto 1fr;
+    width: calc(100% - 2 * var(--gutter));
+    max-width: var(--container);
+    height: calc(var(--header-h) - var(--s-3));
+    padding-inline: 0;
+  }
+
+  /* Once the page moves, the bar draws in around its contents. */
+  .site-header-raised .site-header-bar {
+    max-width: 66rem;
+    padding-inline: 0.625rem;
   }
 
   .site-header-menu-button {
     display: none;
-  }
-
-  .site-header-brand {
-    justify-self: start;
   }
 
   .site-header-logo {
@@ -1801,17 +1980,56 @@ address {
 
   .site-header-nav {
     display: flex;
+    justify-self: start;
     gap: var(--s-8);
+    transition: margin 0.8s var(--ease-out);
   }
 
-  .site-header-search-button {
-    margin-right: 0;
+  .site-header-raised .site-header-nav {
+    margin-left: var(--s-4);
   }
 
-  .site-header-for-spas {
+  .site-header-tools .site-header-for-spas {
     display: inline-flex;
-    min-height: var(--tap);
-    padding-block: 0.5rem;
+  }
+
+  /* The search is the one filled action in the bar. */
+  .site-header-search-button {
+    width: auto;
+    gap: 0.5rem;
+    padding: 0 1.125rem 0 0.875rem;
+    background: var(--gradient-burgundy);
+    color: var(--on-dark);
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .site-header-search-button .icon {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .site-header-search-label {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+
+  .site-header-over .site-header-search-button {
+    background: var(--on-dark);
+    color: var(--color-burgundy-deep);
+  }
+}
+
+@media (min-width: 64em) and (hover: hover) {
+  .site-header-search-button:hover {
+    background: var(--color-burgundy-deep);
+  }
+
+  .site-header-over .site-header-search-button:hover {
+    background: var(--color-line-soft);
   }
 }
 
@@ -1821,6 +2039,7 @@ address {
 
 .site-footer {
   position: relative;
+  background: var(--gradient-night);
   padding-top: var(--s-16);
   padding-bottom: calc(var(--s-8) + env(safe-area-inset-bottom, 0px));
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
@@ -1856,7 +2075,7 @@ address {
 .site-footer-motto {
   margin-top: var(--s-8);
   font-family: var(--font-serif);
-  font-style: italic;
+  font-style: normal;
   font-weight: 320;
   font-size: 1.625rem;
   line-height: 1.15;
@@ -1936,6 +2155,94 @@ address {
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
+   Loader · components/site/Loader.tsx
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* While the loader is up, the page behind it does not scroll. */
+html.is-loading {
+  overflow: hidden;
+}
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    display: none;
+  }
+}
+
+/* Two sheets rise one after the other: the film, and a sheet of burgundy behind it. */
+.loader-under,
+.loader-sheet {
+  position: absolute;
+  inset: 0;
+}
+
+.loader-under {
+  background: var(--gradient-burgundy);
+}
+
+.loader-sheet {
+  overflow: hidden;
+  background: var(--color-black);
+}
+
+/* The film fills the sheet from the first moment. */
+.loader-film {
+  position: absolute;
+  inset: 0;
+}
+
+.loader-film video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* A black veil over the film, heavier towards the edges. */
+.loader-film::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 50%, transparent 30%, color-mix(in srgb, var(--color-black) 55%, transparent)),
+    color-mix(in srgb, var(--color-black) 62%, transparent);
+}
+
+.loader-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--s-6);
+  padding: var(--gutter);
+  text-align: center;
+}
+
+.loader-logo {
+  height: clamp(3.25rem, 7vw, 5rem);
+}
+
+.loader-face .loader-line {
+  color: color-mix(in srgb, var(--on-dark) 78%, transparent);
+}
+
+/* A line along the foot of the sheet, drawn as the page loads. */
+.loader-bar {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 2px;
+  background: var(--color-sage);
+  transform-origin: 0 50%;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
    Spa card · components/site/SpaCard.tsx
    ════════════════════════════════════════════════════════════════════════════ */
 
@@ -1962,11 +2269,11 @@ address {
 }
 
 .spa-card-name {
-  font-family: var(--font-serif);
+  font-family: var(--font-title);
   font-size: 1.5rem;
-  font-weight: 380;
+  font-weight: 400;
   line-height: 1.12;
-  letter-spacing: -0.012em;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
@@ -1983,7 +2290,7 @@ address {
 }
 
 .spa-card-link:focus-visible::after {
-  outline: 2px solid var(--color-fes);
+  outline: 2px solid var(--color-burgundy);
   outline-offset: 4px;
 }
 
@@ -2054,7 +2361,7 @@ address {
 }
 
 .spa-card-facts b {
-  color: var(--color-beldi);
+  color: var(--color-ink);
 }
 
 .spa-card-cta {
@@ -2062,7 +2369,7 @@ address {
   align-items: center;
   gap: 0.375rem;
   flex: none;
-  color: var(--color-fes);
+  color: var(--color-burgundy);
   font-size: var(--text-small);
   font-weight: 600;
   white-space: nowrap;
@@ -2147,7 +2454,7 @@ address {
 
 .spa-card-skeleton .spa-card-media,
 .spa-card-skeleton .spa-card-body span {
-  background: var(--color-pierre-soft);
+  background: var(--color-line-soft);
 }
 
 .spa-card-skeleton .spa-card-body span {
@@ -2276,7 +2583,7 @@ address {
   gap: 0.5rem;
   min-height: 2rem;
   padding: 0 0.625rem;
-  background: var(--color-beldi);
+  background: var(--color-ink);
   color: var(--on-dark);
   border-radius: var(--radius);
   font-size: 0.8125rem;
@@ -2364,7 +2671,7 @@ address {
   margin: 0;
   padding: 0;
   border: 0;
-  background: var(--color-beldi);
+  background: var(--color-ink);
   color: var(--on-dark);
 }
 
@@ -2374,7 +2681,7 @@ address {
 }
 
 .gallery-viewer::backdrop {
-  background: var(--color-beldi);
+  background: var(--color-ink);
 }
 
 .gallery-viewer-bar,
@@ -2409,7 +2716,7 @@ address {
 }
 
 .gallery-viewer-button:focus-visible {
-  outline-color: var(--color-naana);
+  outline-color: var(--color-sage);
 }
 
 .gallery-viewer-button .icon {
@@ -2491,11 +2798,11 @@ address {
 }
 
 .hours-status b {
-  color: var(--color-beldi);
+  color: var(--color-ink);
 }
 
 .hours-status .hours-open {
-  color: var(--color-fes);
+  color: var(--color-burgundy);
 }
 
 .hours-zone {
@@ -2549,7 +2856,7 @@ address {
 }
 
 .rating-breakdown-number {
-  font-family: var(--font-serif);
+  font-family: var(--font-title);
   font-size: 4.5rem;
   font-weight: 320;
   line-height: 0.85;
@@ -2568,7 +2875,7 @@ address {
 
 .rating-breakdown-label b {
   font-size: 1rem;
-  color: var(--color-beldi);
+  color: var(--color-ink);
 }
 
 .rating-breakdown-categories {
@@ -2599,7 +2906,7 @@ address {
   position: relative;
   display: block;
   height: 3px;
-  background: var(--color-pierre);
+  background: var(--color-line);
 }
 
 .rating-breakdown-track::after {
@@ -2607,7 +2914,7 @@ address {
   position: absolute;
   inset: 0 auto 0 0;
   width: var(--share);
-  background: var(--color-beldi);
+  background: var(--color-ink);
 }
 
 .rating-breakdown-value {
@@ -2655,15 +2962,15 @@ address {
 .rating-breakdown-fresh {
   max-width: 34rem;
   padding: var(--s-5) var(--s-5) var(--s-5) var(--s-6);
-  border-left: 2px solid var(--color-beldi);
+  border-left: 2px solid var(--color-ink);
   color: var(--color-ink-2);
 }
 
 .rating-breakdown-fresh-title {
   margin-bottom: var(--s-1);
-  font-family: var(--font-serif);
+  font-family: var(--font-title);
   font-size: 1.5rem;
-  color: var(--color-beldi);
+  color: var(--color-ink);
 }
 
 @media (min-width: 48em) {
@@ -2738,7 +3045,7 @@ address {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--color-beldi);
+  color: var(--color-ink);
 }
 
 .sticky-contact-bar-summary span {
@@ -2840,7 +3147,7 @@ address {
 }
 
 .search-form-field select:focus-visible {
-  outline: 2px solid var(--color-fes);
+  outline: 2px solid var(--color-burgundy);
   outline-offset: -1px;
 }
 
@@ -2854,19 +3161,19 @@ address {
   pointer-events: none;
 }
 
-/* Mint marks a choice that has been made. */
+/* Sage marks a choice that has been made. */
 .search-form-chosen {
-  border-color: var(--color-naana);
-  background: var(--color-naana-tint);
+  border-color: var(--color-sage);
+  background: var(--color-sage-tint);
 }
 
 .search-form-chosen label {
-  color: var(--color-fes);
+  color: var(--color-ink);
 }
 
 .search-form-chosen select {
   font-weight: 600;
-  color: var(--color-beldi);
+  color: var(--color-ink);
 }
 
 .search-form-submit {
@@ -2887,7 +3194,7 @@ address {
   }
 
   .search-form-chosen:hover {
-    border-color: var(--color-fes);
+    border-color: var(--color-sage-deep);
   }
 }
 
@@ -2899,6 +3206,21 @@ address {
   .search-form-submit {
     grid-column: auto;
   }
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   Scene · components/ui/Scene.tsx
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* Above the ornaments a section paints behind its content. */
+.scene {
+  position: relative;
+  z-index: 1;
+}
+
+/* A panel draws back towards its foot, the edge that is last to leave the screen. */
+.scene-body {
+  transform-origin: 50% 100%;
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
@@ -2916,11 +3238,54 @@ address {
   display: flex;
   flex-direction: column;
   gap: var(--s-3);
-  max-width: 40rem;
+  max-width: 42rem;
+}
+
+.home-intro .h2 {
+  font-size: clamp(2rem, 1.45rem + 2.4vw, 3.5rem); /* 32 to 56 */
+  line-height: 1.04;
+  letter-spacing: -0.035em;
 }
 
 .home-intro-action {
   flex: none;
+}
+
+/* Centred, for a section that is itself symmetrical. */
+.home-intro-centred {
+  align-items: center;
+  text-align: center;
+}
+
+.home-intro-centred .home-intro-titles {
+  align-items: center;
+}
+
+/* The round arrow at the end of a row or a card. */
+.home-go {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--color-line);
+  border-radius: 50%;
+  color: var(--color-burgundy);
+  transition:
+    background-color var(--t-hover) var(--ease),
+    border-color var(--t-hover) var(--ease),
+    color var(--t-hover) var(--ease),
+    transform var(--t-hover) var(--ease);
+}
+
+.home-go .icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.on-dark .home-go {
+  border-color: color-mix(in srgb, var(--on-dark-3) 55%, transparent);
+  color: var(--on-dark);
 }
 
 @media (min-width: 48em) {
@@ -2931,6 +3296,12 @@ address {
     gap: var(--s-10);
     margin-bottom: var(--s-16);
   }
+
+  .home-intro-centred {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-4);
+  }
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
@@ -2938,55 +3309,62 @@ address {
    ════════════════════════════════════════════════════════════════════════════ */
 
 .home-hero {
+  --overlap: 3.5rem; /* how far the search bar climbs onto the photograph */
+
   position: relative;
-  padding-top: var(--s-3);
-  padding-bottom: var(--s-8);
-  overflow: clip;
-}
-
-/* Carved plaster in the spandrels, either side of the arch. */
-.home-hero::before,
-.home-hero::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: min(46vw, 40rem);
-  height: min(70%, 34rem);
-  background: url('./assets/decor-plaster.webp') center / cover no-repeat;
-  opacity: 0.2;
-  mix-blend-mode: multiply;
-  pointer-events: none;
-}
-
-.home-hero::before {
-  left: 0;
-  mask-image: radial-gradient(120% 100% at 0% 0%, #000 0%, transparent 62%);
-}
-
-.home-hero::after {
-  right: 0;
-  transform: scaleX(-1);
-  mask-image: radial-gradient(120% 100% at 0% 0%, #000 0%, transparent 62%);
-}
-
-.home-hero-inner {
-  position: relative;
-  z-index: 1;
-}
-
-/* The photograph is a doorway on a phone and a wide gate on a desk. */
-.home-hero-gate {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  max-height: 34rem;
-  width: 100%;
-  overflow: hidden;
-  border-radius: 50% 50% var(--radius) var(--radius) / 40% 40% var(--radius) var(--radius);
-  background-color: #756b53; /* the photograph's own tone, seen while it loads */
+  margin-top: calc(-1 * var(--header-h)); /* the photograph runs up behind the header */
+  padding: var(--frame) var(--frame) var(--s-10);
   isolation: isolate;
 }
 
-/* Taller than the gate, so the photograph can slide down behind it as the page scrolls. */
+/* The photograph is a panel set into the page, a margin of plaster around it. */
+.home-hero-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: max(27rem, 100svh - 13.5rem);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transform-origin: 50% 100%;
+  isolation: isolate;
+}
+
+/* It opens from a doorway in the middle of the panel. */
+.home-hero-gate {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--color-ink); /* seen while the photograph loads */
+}
+
+/* A hairline frame set just inside the edge. */
+.home-hero-gate::before {
+  content: '';
+  position: absolute;
+  inset: var(--s-2);
+  z-index: 1;
+  border: 1px solid color-mix(in srgb, var(--on-dark) 30%, transparent);
+  border-radius: calc(var(--radius-lg) - var(--s-2));
+  pointer-events: none;
+}
+
+/* The grade: darker where the header and the title sit, clear in between. */
+.home-hero-gate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-black) 60%, transparent), transparent 30%),
+    linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-black) 82%, transparent),
+      color-mix(in srgb, var(--color-black) 36%, transparent) 44%,
+      transparent 72%
+    ),
+    linear-gradient(to right, color-mix(in srgb, var(--color-black) 62%, transparent), transparent 82%);
+}
+
+/* Taller than the panel, so the photograph can slide down behind it as the page scrolls. */
 .home-hero-drift {
   position: absolute;
   inset: -14% 0 0 0;
@@ -3001,28 +3379,71 @@ address {
 
 .home-hero-picture img {
   object-fit: cover;
-  object-position: 50% 60%;
+  object-position: 42% 50%;
 }
 
-.home-hero-card {
-  position: relative;
-  z-index: 2;
+/* Inside the panel the container starts a frame's width further in; this takes it back,
+   so the title and the search line up with the header above and the sections below. */
+.home-hero-copy,
+.home-hero-below {
+  width: min(100% - 2 * (var(--gutter) - var(--frame)), var(--container));
+}
+
+.home-hero-copy {
   display: grid;
+  justify-items: start;
   gap: var(--s-4);
-  margin: -5rem var(--s-2) 0;
-  padding: var(--s-6) var(--s-5);
-  border: 1px solid var(--color-pierre-soft);
-  border-radius: var(--radius-lg);
-  background: var(--color-chaux);
-  box-shadow: var(--shadow-card);
+  padding-top: calc(var(--header-h) + var(--s-8));
+  padding-bottom: calc(var(--overlap) + var(--s-6));
+  background: none; /* the photograph is the ground here, not the dark plaster of .on-dark */
+}
+
+.home-hero-copy .label {
+  color: color-mix(in srgb, var(--on-dark) 88%, transparent);
 }
 
 .home-hero-title {
-  max-width: 14em;
+  font-size: clamp(2.875rem, min(12.5vw, 12.5svh), 7.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
 }
 
-.home-hero-form {
-  margin-top: var(--s-1);
+/* Over the photograph the leaning words take the paler sage, to stand clear of the palms. */
+.home-hero-copy .home-hero-title em {
+  color: var(--color-gold);
+}
+
+.home-hero-below {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: var(--s-5);
+  margin-top: calc(-1 * var(--overlap));
+}
+
+/* The search is one bar laid across the foot of the photograph. */
+.home-hero-form .search-form-row {
+  padding: var(--s-2);
+  border: 1px solid var(--color-line-soft);
+  border-radius: var(--radius-full);
+  background: var(--color-paper);
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 56em) {
+  .home-hero-form .search-form-row {
+    border-radius: var(--radius-lg);
+  }
+}
+
+.home-hero-form .search-form-field,
+.home-hero-form .search-form-submit {
+  border-radius: calc(var(--radius-full) - var(--s-2));
+}
+
+.home-hero-foot {
+  display: grid;
+  gap: var(--s-4);
 }
 
 .home-hero-trust {
@@ -3030,7 +3451,7 @@ address {
   flex-wrap: wrap;
   gap: 0.375rem 1.25rem;
   font-size: var(--text-small);
-  color: var(--color-ink-3);
+  color: var(--color-ink-2);
 }
 
 .home-hero-trust li {
@@ -3042,39 +3463,331 @@ address {
 .home-hero-trust svg {
   width: 0.5rem;
   height: 0.5rem;
-  color: var(--color-naana);
 }
 
-@media (min-width: 48em) {
+.home-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-6);
+}
+
+/* From here the four choices and the button fit on one line. */
+@media (min-width: 56em) {
   .home-hero {
-    padding-bottom: var(--s-16);
+    --overlap: 2.4rem;
   }
 
-  .home-hero-gate {
-    aspect-ratio: auto;
-    max-height: none;
-    height: clamp(30rem, 78svh, 46rem);
-    max-height: 76vw;
-    border-radius: 50% 50% var(--radius-lg) var(--radius-lg) / 56% 56% var(--radius-lg) var(--radius-lg);
+  .home-hero-stage {
+    min-height: max(31rem, 100svh - var(--frame) - 9rem);
   }
 
-  /* The wide gate shows the lower half of the photograph: the pavilion and its pool. */
-  .home-hero-picture img {
-    object-position: 50% 82%;
+  .home-hero-form .search-form-field {
+    border-color: transparent;
+    background: transparent;
   }
 
-  .home-hero-card {
+  /* A hairline between one choice and the next. */
+  .home-hero-form .search-form-field + .search-form-field::before {
+    content: '';
     position: absolute;
-    left: clamp(1.5rem, 3.5vw, 3.5rem);
-    bottom: -3.5rem;
-    width: min(100% - 2 * clamp(1.5rem, 3.5vw, 3.5rem), 62rem);
-    margin: 0;
-    padding: clamp(1.75rem, 2.6vw, 2.5rem);
-    gap: var(--s-5);
+    top: 22%;
+    bottom: 22%;
+    left: calc(-0.25rem - 1.5px);
+    width: 1px;
+    background: var(--color-line);
   }
 
-  .home-hero-title {
-    max-width: none;
+  .home-hero-form .search-form-chosen {
+    border-color: var(--color-sage);
+    background: var(--color-sage-tint);
+  }
+
+  .home-hero-form .search-form-submit {
+    padding-inline: var(--s-8);
+  }
+
+  .home-hero-foot {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding-inline: var(--s-4);
+  }
+}
+
+@media (min-width: 56em) and (hover: hover) {
+  .home-hero-form .search-form-field:hover {
+    border-color: transparent;
+    background: var(--color-page);
+  }
+
+  .home-hero-form .search-form-chosen:hover {
+    border-color: var(--color-sage-deep);
+    background: var(--color-sage-tint);
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════════
+   Homepage · this month’s picks · routes/index.tsx
+   ════════════════════════════════════════════════════════════════════════════ */
+
+.home-picks {
+  position: relative;
+  overflow: clip;
+}
+
+.home-picks-grid {
+  display: grid;
+  gap: var(--s-12);
+}
+
+.home-picks-lead,
+.home-picks-row {
+  position: relative;
+}
+
+.home-picks-lead {
+  display: grid;
+  gap: var(--s-8);
+}
+
+.home-picks-frame {
+  position: relative;
+}
+
+/* A second arch drawn around the first, a hand's width out. */
+.home-picks-frame::before {
+  --out: var(--s-3);
+  --foot: calc(var(--radius) + var(--out));
+
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--out));
+  border: 1px solid color-mix(in srgb, var(--color-gold) 75%, transparent);
+  border-radius: 50% 50% var(--foot) var(--foot) / 66.67% 66.67% var(--foot) var(--foot);
+  pointer-events: none;
+}
+
+/* Burgundy is the mark of something the editors chose. Here as a seal
+   pressed onto the corner of the photograph… */
+.home-picks-seal {
+  position: absolute;
+  right: 6%;
+  bottom: -1.75rem;
+  z-index: 2;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.25rem;
+  width: 6.25rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-gold);
+  box-shadow: 0 0 0 0.375rem var(--color-page);
+  color: var(--color-burgundy-night);
+  text-align: center;
+  font-variant-numeric: lining-nums;
+  rotate: -8deg;
+}
+
+.home-picks-seal b {
+  font-family: var(--font-title);
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.home-picks-seal span {
+  max-width: 4.5rem;
+  font-size: 0.5625rem;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* …and as a tag on the rows beside it. */
+.home-picks-pick {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.3125rem 0.625rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-burgundy);
+  color: var(--on-dark);
+  font-size: var(--text-label);
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-variant-numeric: lining-nums;
+}
+
+.home-picks-lead-body {
+  display: grid;
+  justify-items: start;
+  gap: var(--s-3);
+}
+
+.home-picks-lead-name,
+.home-picks-name {
+  font-family: var(--font-title);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  transition: color var(--t-hover) var(--ease);
+}
+
+.home-picks-lead-name {
+  font-size: clamp(2.125rem, 1.6rem + 2vw, 3.25rem);
+  line-height: 1.02;
+}
+
+.home-picks-name {
+  font-size: clamp(1.375rem, 1.25rem + 0.5vw, 1.625rem);
+  line-height: 1.12;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* The whole card is the link; the name is what assistive technology reads. */
+.home-picks-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.home-picks-cover:focus-visible {
+  outline: none;
+}
+
+.home-picks-cover:focus-visible::after {
+  outline: 2px solid var(--color-burgundy);
+  outline-offset: 6px;
+  border-radius: var(--radius);
+}
+
+.home-picks-place {
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+}
+
+.home-picks-place span {
+  color: var(--color-ink-3);
+}
+
+.home-picks-why {
+  max-width: 34em;
+  margin-top: var(--s-1);
+  font-size: clamp(1.1875rem, 1.1rem + 0.4vw, 1.4375rem);
+  color: var(--color-ink-2);
+}
+
+.home-picks-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-6);
+  width: 100%;
+  margin-top: var(--s-2);
+  padding-top: var(--s-4);
+  border-top: var(--hairline);
+}
+
+.home-picks-facts {
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.home-picks-facts b {
+  color: var(--color-ink);
+}
+
+.home-picks-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  color: var(--color-burgundy);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.home-picks-list {
+  display: grid;
+  align-content: start;
+  border-bottom: var(--hairline);
+}
+
+.home-picks-row {
+  display: grid;
+  grid-template-columns: 5.25rem minmax(0, 1fr);
+  align-items: start;
+  gap: var(--s-5);
+  padding-block: var(--s-6);
+  border-top: var(--hairline);
+}
+
+.home-picks-row-body {
+  display: grid;
+  justify-items: start;
+  gap: 0.375rem;
+}
+
+.home-picks-note {
+  margin-block: 0.125rem 0.25rem;
+  font-size: 1.0625rem;
+  color: var(--color-ink-2);
+}
+
+@media (hover: hover) {
+  .home-picks-lead:hover .home-go {
+    background: var(--color-burgundy);
+    border-color: var(--color-burgundy);
+    color: var(--on-dark);
+    transform: translateX(4px);
+  }
+
+  .home-picks-lead:hover .home-picks-lead-name,
+  .home-picks-row:hover .home-picks-name {
+    color: var(--color-burgundy);
+  }
+
+  /* The link lies over the whole card, so the photograph answers the card. */
+  .home-picks-lead:hover .door-picture img,
+  .home-picks-row:hover .door-picture img {
+    transform: scale(1.06);
+  }
+}
+
+@media (min-width: 40em) {
+  .home-picks-row {
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: var(--s-6);
+  }
+
+  .home-picks-seal {
+    width: 7rem;
+    bottom: -2rem;
+  }
+
+  .home-picks-seal b {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 64em) {
+  .home-picks-grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: start;
+    gap: clamp(2.5rem, 6vw, 6rem);
+  }
+
+  .home-picks-lead-body {
+    gap: var(--s-4);
   }
 }
 
@@ -3083,7 +3796,34 @@ address {
    ════════════════════════════════════════════════════════════════════════════ */
 
 .home-cities {
+  position: relative;
+  padding-top: 0; /* the picks above already leave their own space */
   overflow: clip;
+}
+
+/* A low sun of polished plaster rising behind the arcade, and the ring around it. */
+.home-cities::before,
+.home-cities::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  aspect-ratio: 2 / 1;
+  translate: -50% 0;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  pointer-events: none;
+}
+
+.home-cities::before {
+  width: min(120vw, 72rem);
+  background: linear-gradient(to bottom, var(--color-sage-soft) 10%, transparent 96%);
+}
+
+.home-cities::after {
+  width: min(138vw, 82rem);
+  border: 1px solid var(--color-line);
+  border-bottom: 0;
+  mask-image: linear-gradient(to bottom, #000 30%, transparent 96%);
 }
 
 /* A row you swipe on a phone, an arcade of five doors once there is room. */
@@ -3124,17 +3864,18 @@ address {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: var(--font-serif);
+  font-family: var(--font-title);
   font-size: clamp(1.5rem, 1.3rem + 0.7vw, 1.875rem);
-  font-weight: 360;
+  font-weight: 400;
   line-height: 1.1;
-  letter-spacing: -0.014em;
+  letter-spacing: -0.02em;
+  transition: color var(--t-hover) var(--ease);
 }
 
 .home-cities-name .icon {
   width: 1.125rem;
   height: 1.125rem;
-  color: var(--color-fes);
+  color: var(--color-burgundy);
   opacity: 0;
   transform: translateX(-0.5rem);
   transition:
@@ -3154,6 +3895,10 @@ address {
 }
 
 @media (hover: hover) {
+  .home-cities-link:hover .home-cities-name {
+    color: var(--color-burgundy);
+  }
+
   .home-cities-link:hover .home-cities-name .icon,
   .home-cities-link:focus-visible .home-cities-name .icon {
     opacity: 1;
@@ -3185,60 +3930,107 @@ address {
   .home-cities-item:nth-child(even) {
     margin-top: 3.5rem;
   }
+
+  /* Neighbours slide past each other as the page scrolls. */
+  .home-cities-link {
+    translate: 0 var(--shift, 0);
+  }
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
    Homepage · explore by experience · routes/index.tsx
    ════════════════════════════════════════════════════════════════════════════ */
 
-/* A band of polished plaster, with zellige showing faintly at its edges. */
 .home-experiences {
-  position: relative;
-  margin-inline: clamp(0.5rem, 1.25vw, 1.25rem);
-  padding-block: var(--section);
-  border-radius: var(--radius-lg);
-  background: var(--color-tadelakt);
-  overflow: hidden;
+  padding-inline: var(--frame);
 }
 
-.home-experiences::before,
-.home-experiences::after {
+/* The one dark room of the page: wine red, lit by a lantern. */
+.home-experiences-panel {
+  position: relative;
+  background: var(--gradient-wine);
+  padding-block: var(--section);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.home-experiences-panel::before,
+.home-experiences-panel::after {
   content: '';
   position: absolute;
-  mix-blend-mode: multiply;
+  z-index: -1;
   pointer-events: none;
 }
 
-.home-experiences::before {
-  inset: 0 auto 0 0;
-  width: min(34vw, 26rem);
-  background: url('./assets/decor-zellige-green.webp') left center / cover no-repeat;
-  opacity: 0.16;
-  mask-image: linear-gradient(to right, #000 0%, transparent 100%);
+/* Lantern light thrown across the wall… */
+.home-experiences-panel::before {
+  top: -22%;
+  right: -16%;
+  width: min(110vw, 52rem);
+  aspect-ratio: 1;
+  background: url('./assets/decor-lantern.webp') center / cover no-repeat;
+  opacity: 0.46;
+  mix-blend-mode: screen;
+  filter: grayscale(1) sepia(0.6);
+  mask-image: radial-gradient(closest-side, #000 20%, transparent 100%);
 }
 
-.home-experiences::after {
-  right: -6rem;
-  bottom: -8rem;
-  width: min(70vw, 34rem);
+/* …and a zellige star low in the opposite corner. */
+.home-experiences-panel::after {
+  left: -10rem;
+  bottom: -12rem;
+  width: min(90vw, 36rem);
   aspect-ratio: 1;
   background: url('./assets/decor-zellige-star.webp') center / cover no-repeat;
-  opacity: 0.13;
+  opacity: 0.14;
+  mix-blend-mode: luminosity;
   mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
 }
 
 .home-experiences-inner {
-  position: relative;
-  z-index: 1;
+  width: min(100% - 2 * (var(--gutter) - var(--frame)), var(--container));
+  display: grid;
+  gap: var(--s-2);
+}
+
+/* The doorway that shows the experience under the pointer: wide screens only. */
+.home-experiences-preview {
+  display: none;
+}
+
+.home-experiences-preview .door {
+  background-color: var(--line-dark);
+}
+
+.home-experiences-shot {
+  position: absolute;
+  inset: 0;
+  background-color: transparent;
+  opacity: 0;
+  transition: opacity 0.9s var(--ease-out);
+}
+
+.home-experiences-shot img {
+  scale: 1.14;
+  transition: scale 1.8s var(--ease-out);
+}
+
+.home-experiences-shown {
+  opacity: 1;
+}
+
+.home-experiences-shown img {
+  scale: 1;
 }
 
 .home-experiences-list {
   display: grid;
-  border-bottom: var(--hairline);
+  border-bottom: 1px solid var(--line-dark);
 }
 
 .home-experiences-item {
-  border-top: var(--hairline);
+  border-top: 1px solid var(--line-dark);
 }
 
 .home-experiences-link {
@@ -3253,6 +4045,10 @@ address {
   width: 4.25rem;
 }
 
+.home-experiences-index {
+  display: none;
+}
+
 .home-experiences-body {
   display: grid;
   gap: 0.25rem;
@@ -3260,42 +4056,23 @@ address {
 }
 
 .home-experiences-name {
-  font-family: var(--font-serif);
+  font-family: var(--font-title);
   font-size: clamp(1.5rem, 1.3rem + 0.8vw, 2rem);
-  font-weight: 350;
+  font-weight: 400;
   line-height: 1.08;
-  letter-spacing: -0.016em;
+  letter-spacing: -0.02em;
+  transition: color var(--t-hover) var(--ease);
 }
 
 .home-experiences-words {
   font-size: 1.0625rem;
-  color: var(--color-ink-2);
+  color: var(--on-dark-2);
 }
 
 .home-experiences-count {
   font-size: var(--text-small);
-  color: var(--color-ink-3);
+  color: var(--on-dark-3);
   font-variant-numeric: tabular-nums lining-nums;
-}
-
-.home-experiences-go {
-  display: grid;
-  place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border: 1px solid var(--color-pierre);
-  border-radius: 50%;
-  color: var(--color-fes);
-  transition:
-    background-color var(--t-hover) var(--ease),
-    border-color var(--t-hover) var(--ease),
-    color var(--t-hover) var(--ease),
-    transform var(--t-hover) var(--ease);
-}
-
-.home-experiences-go .icon {
-  width: 1.125rem;
-  height: 1.125rem;
 }
 
 .home-experiences-link:focus-visible {
@@ -3304,15 +4081,15 @@ address {
 }
 
 @media (hover: hover) {
-  .home-experiences-link:hover .home-experiences-go {
-    background: var(--color-fes);
-    border-color: var(--color-fes);
-    color: var(--on-dark);
+  .home-experiences-link:hover .home-go {
+    background: var(--color-sage);
+    border-color: var(--color-sage);
+    color: var(--color-burgundy-night);
     transform: translateX(4px);
   }
 
   .home-experiences-link:hover .home-experiences-name {
-    color: var(--color-fes);
+    color: var(--color-sage);
   }
 }
 
@@ -3327,286 +4104,74 @@ address {
   }
 }
 
-@media (min-width: 60em) {
-  .home-experiences-list {
-    grid-template-columns: 1fr 1fr;
-    column-gap: clamp(2rem, 5vw, 5rem);
-  }
-}
-
-/* ════════════════════════════════════════════════════════════════════════════
-   Homepage · this month’s picks · routes/index.tsx
-   ════════════════════════════════════════════════════════════════════════════ */
-
-.home-picks-grid {
-  display: grid;
-  gap: var(--s-12);
-}
-
-.home-picks-lead,
-.home-picks-row {
-  position: relative;
-}
-
-.home-picks-lead {
-  display: grid;
-  gap: var(--s-6);
-}
-
-.home-picks-lead-body {
-  display: grid;
-  justify-items: start;
-  gap: var(--s-3);
-}
-
-/* Gold on Fès green: the mark of something the editors chose. */
-.home-picks-pick {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.3125rem 0.625rem;
-  border-radius: var(--radius-sm);
-  background: var(--color-fes-deep);
-  color: var(--color-dhahab);
-  font-size: var(--text-label);
-  line-height: 1.35;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-variant-numeric: lining-nums;
-}
-
-.home-picks-lead-name,
-.home-picks-name {
-  font-family: var(--font-serif);
-  font-weight: 350;
-  letter-spacing: -0.016em;
-  text-wrap: balance;
-}
-
-.home-picks-lead-name {
-  font-size: clamp(2rem, 1.6rem + 1.6vw, 3rem);
-  line-height: 1.04;
-}
-
-.home-picks-name {
-  font-size: clamp(1.375rem, 1.25rem + 0.5vw, 1.625rem);
-  line-height: 1.12;
-}
-
-/* The whole card is the link; the name is what assistive technology reads. */
-.home-picks-cover::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-
-.home-picks-cover:focus-visible {
-  outline: none;
-}
-
-.home-picks-cover:focus-visible::after {
-  outline: 2px solid var(--color-fes);
-  outline-offset: 6px;
-  border-radius: var(--radius);
-}
-
-.home-picks-place {
-  font-size: var(--text-small);
-  color: var(--color-ink-2);
-}
-
-.home-picks-place span {
-  color: var(--color-ink-3);
-}
-
-.home-picks-why {
-  max-width: 34em;
-  margin-top: var(--s-1);
-  font-size: clamp(1.1875rem, 1.1rem + 0.4vw, 1.4375rem);
-  color: var(--color-ink-2);
-}
-
-.home-picks-foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--s-3) var(--s-6);
-  width: 100%;
-  margin-top: var(--s-2);
-  padding-top: var(--s-4);
-  border-top: var(--hairline);
-}
-
-.home-picks-facts {
-  font-size: var(--text-small);
-  color: var(--color-ink-2);
-  font-variant-numeric: tabular-nums lining-nums;
-}
-
-.home-picks-facts b {
-  color: var(--color-beldi);
-}
-
-.home-picks-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--color-fes);
-  font-size: 0.9375rem;
-  font-weight: 600;
-}
-
-.home-picks-cta .icon {
-  width: 1.125rem;
-  height: 1.125rem;
-  transition: transform var(--t-hover) var(--ease);
-}
-
-.home-picks-list {
-  display: grid;
-  align-content: start;
-  border-bottom: var(--hairline);
-}
-
-.home-picks-row {
-  display: grid;
-  grid-template-columns: 5.25rem minmax(0, 1fr);
-  align-items: start;
-  gap: var(--s-5);
-  padding-block: var(--s-6);
-  border-top: var(--hairline);
-}
-
-.home-picks-row-body {
-  display: grid;
-  justify-items: start;
-  gap: 0.375rem;
-}
-
-.home-picks-note {
-  margin-block: 0.125rem 0.25rem;
-  font-size: 1.0625rem;
-  color: var(--color-ink-2);
-}
-
-@media (hover: hover) {
-  .home-picks-lead:hover .home-picks-cta .icon {
-    transform: translateX(4px);
-  }
-
-  .home-picks-lead:hover .home-picks-lead-name,
-  .home-picks-row:hover .home-picks-name {
-    color: var(--color-fes);
-  }
-}
-
-@media (min-width: 40em) {
-  .home-picks-row {
-    grid-template-columns: 7rem minmax(0, 1fr);
-    gap: var(--s-6);
-  }
-}
-
+/* With room, the titles and the doorway stand to the left and the list runs beside them. */
 @media (min-width: 64em) {
-  .home-picks-grid {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  .home-experiences-inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     align-items: start;
-    gap: clamp(2.5rem, 6vw, 6rem);
+    gap: clamp(3rem, 7vw, 7rem);
   }
 
-  .home-picks-lead-body {
+  .home-experiences-aside {
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-6));
+    display: grid;
+    gap: var(--s-10);
+  }
+
+  .home-experiences-aside .home-intro {
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--s-4);
-  }
-}
-
-/* ════════════════════════════════════════════════════════════════════════════
-   Homepage · “Run a spa?” band · routes/index.tsx
-   ════════════════════════════════════════════════════════════════════════════ */
-
-.home-for-spas {
-  padding-bottom: var(--s-8);
-}
-
-.home-for-spas-band {
-  position: relative;
-  display: grid;
-  gap: var(--s-8);
-  padding: clamp(2rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 4.5rem);
-  border-radius: var(--radius-lg);
-  background: var(--color-fes);
-  overflow: hidden;
-  isolation: isolate;
-}
-
-/* Lantern light thrown across the wall, and a zellige star low in the corner. */
-.home-for-spas-band::before,
-.home-for-spas-band::after {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  pointer-events: none;
-}
-
-.home-for-spas-band::before {
-  inset: -35% -26% -35% auto;
-  width: min(72%, 44rem);
-  background: url('./assets/decor-lantern.webp') center / cover no-repeat;
-  opacity: 0.44;
-  mix-blend-mode: screen;
-  mask-image: radial-gradient(closest-side, #000 20%, transparent 100%);
-}
-
-.home-for-spas-band::after {
-  left: -9rem;
-  bottom: -12rem;
-  width: min(70vw, 28rem);
-  aspect-ratio: 1;
-  background: url('./assets/decor-zellige-star.webp') center / cover no-repeat;
-  opacity: 0.16;
-  mix-blend-mode: luminosity;
-  mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
-}
-
-.home-for-spas-text {
-  display: grid;
-  justify-items: start;
-  gap: var(--s-4);
-  max-width: 40rem;
-}
-
-.home-for-spas-title {
-  font-family: var(--font-serif);
-  font-size: clamp(1.875rem, 1.4rem + 2.1vw, 3rem);
-  font-weight: 320;
-  line-height: 1.06;
-  letter-spacing: -0.018em;
-  text-wrap: balance;
-}
-
-.home-for-spas-title em {
-  font-style: italic;
-  font-weight: 300;
-}
-
-.home-for-spas-line {
-  font-size: var(--text-lede);
-  line-height: 1.45;
-  color: var(--on-dark-2);
-  text-wrap: pretty;
-}
-
-@media (min-width: 56em) {
-  .home-for-spas-band {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: end;
-    gap: var(--s-12);
+    margin-bottom: 0;
   }
 
-  .home-for-spas-band::before {
-    right: -12%;
+  .home-experiences-preview {
+    display: block;
+    width: min(100%, 21rem);
+  }
+
+  /* The photograph is in the doorway; the row keeps its number instead. */
+  .home-experiences-thumb {
+    display: none;
+  }
+
+  .home-experiences-index {
+    display: block;
+    width: 2.5rem;
+    font-size: var(--text-small);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums lining-nums;
+    letter-spacing: 0.08em;
+    color: var(--on-dark-3);
+    transition: color var(--t-hover) var(--ease);
+  }
+
+  .home-experiences-link {
+    padding-block: var(--s-6);
+    transition: padding var(--t-sheet) var(--ease);
+  }
+
+  .home-experiences-name {
+    font-size: clamp(2rem, 1.3rem + 1.4vw, 2.625rem);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+  }
+
+  /* Sage marks the row that is showing. */
+  .home-experiences-current .home-experiences-link {
+    padding-left: var(--s-3);
+  }
+
+  .home-experiences-current .home-experiences-name,
+  .home-experiences-current .home-experiences-index {
+    color: var(--color-sage);
+  }
+
+  .home-experiences-current .home-go {
+    background: var(--color-sage);
+    border-color: var(--color-sage);
+    color: var(--color-burgundy-night);
   }
 }
 
@@ -3619,39 +4184,7 @@ address {
   overflow: clip;
 }
 
-/* Plaster behind the question, a patch of zellige behind the doors. */
-.home-closing::before,
-.home-closing::after {
-  content: '';
-  position: absolute;
-  mix-blend-mode: multiply;
-  pointer-events: none;
-}
-
-.home-closing::before {
-  left: 0;
-  bottom: 0;
-  width: min(60vw, 42rem);
-  height: min(80%, 36rem);
-  background: url('./assets/decor-plaster.webp') center / cover no-repeat;
-  opacity: 0.15;
-  mask-image: radial-gradient(110% 100% at 0% 100%, #000 0%, transparent 65%);
-}
-
-.home-closing::after {
-  top: 50%;
-  right: -6rem;
-  width: min(90vw, 46rem);
-  aspect-ratio: 1;
-  translate: 0 -50%;
-  background: url('./assets/decor-zellige-green.webp') center / 20rem auto;
-  opacity: 0.13;
-  mask-image: radial-gradient(closest-side, #000 15%, transparent 100%);
-}
-
 .home-closing-grid {
-  position: relative;
-  z-index: 1;
   display: grid;
   gap: var(--s-16);
 }
@@ -3700,7 +4233,7 @@ address {
   padding: var(--edge);
   border-radius: 50% 50% calc(var(--radius) + var(--edge)) calc(var(--radius) + var(--edge)) / 38% 38%
     calc(var(--radius) + var(--edge)) calc(var(--radius) + var(--edge));
-  background: var(--color-chaux);
+  background: var(--color-page);
 }
 
 @media (min-width: 64em) {
@@ -3714,6 +4247,97 @@ address {
     width: min(100%, 30rem);
     margin-inline: auto 0;
     padding: 0 0 3.5rem 5rem;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   Homepage · “Run a spa?” band · routes/index.tsx
+   ════════════════════════════════════════════════════════════════════════════ */
+
+.home-for-spas {
+  padding-bottom: var(--section);
+}
+
+/* A band of sage, the last thing before the footer. */
+.home-for-spas-band {
+  position: relative;
+  display: grid;
+  gap: var(--s-8);
+  padding: clamp(2rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 4.5rem);
+  border-radius: var(--radius-lg);
+  background: var(--gradient-sage);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.home-for-spas-band::before,
+.home-for-spas-band::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Doorways drawn in hairlines, one inside the other, standing at the far end… */
+.home-for-spas-band::before {
+  top: 10%;
+  right: clamp(1rem, 6vw, 5rem);
+  bottom: 0;
+  aspect-ratio: 3 / 4;
+  background: var(--color-burgundy);
+  opacity: 0.3;
+  mask: var(--art-doorways) center bottom / contain no-repeat;
+}
+
+/* …and carved plaster pressed into the near corner. */
+.home-for-spas-band::after {
+  left: 0;
+  bottom: 0;
+  width: min(70%, 34rem);
+  height: 100%;
+  background: url('./assets/decor-plaster.webp') center / cover no-repeat;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  mask-image: radial-gradient(120% 110% at 0% 100%, #000 0%, transparent 62%);
+}
+
+.home-for-spas-band .label {
+  color: var(--color-ink-2);
+}
+
+.home-for-spas-text {
+  display: grid;
+  justify-items: start;
+  gap: var(--s-4);
+  max-width: 40rem;
+}
+
+.home-for-spas-title {
+  font-family: var(--font-title);
+  font-size: clamp(1.875rem, 1.4rem + 2.1vw, 3rem);
+  font-weight: 300;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.home-for-spas-title em {
+  font-style: normal;
+  color: var(--color-burgundy);
+}
+
+.home-for-spas-line {
+  font-size: var(--text-lede);
+  line-height: 1.45;
+  color: var(--color-ink-2);
+  text-wrap: pretty;
+}
+
+@media (min-width: 56em) {
+  .home-for-spas-band {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: var(--s-12);
   }
 }
 

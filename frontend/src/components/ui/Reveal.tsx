@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
-import { rise, stagger, VIEWPORT } from '@/lib/motion'
+import { useReplay } from '@/hooks/use-replay'
+import { rise, stagger } from '@/lib/motion'
 
 interface RevealProps {
   children: ReactNode
@@ -9,10 +10,11 @@ interface RevealProps {
   delay?: number
 }
 
-/** Fades its content up the first time it scrolls into view. */
+/** Fades its content up as it scrolls into view, and lets it go when it drops back out. */
 export function Reveal({ children, className, delay = 0 }: RevealProps) {
+  const replay = useReplay()
   return (
-    <motion.div className={className} variants={rise} custom={delay} initial="hidden" whileInView="shown" viewport={VIEWPORT}>
+    <motion.div className={className} variants={rise} custom={delay} {...replay}>
       {children}
     </motion.div>
   )
@@ -23,14 +25,15 @@ interface StaggerProps {
   className?: string
   gap?: number
   delay?: number
-  as?: 'div' | 'ul' | 'ol'
+  as?: 'div' | 'ul' | 'ol' | 'article'
 }
 
 /** Reveals its motion children one after another. Children bring their own variants. */
 export function Stagger({ children, className, gap, delay, as = 'div' }: StaggerProps) {
   const Tag = motion[as]
+  const replay = useReplay()
   return (
-    <Tag className={className} variants={stagger(gap, delay)} initial="hidden" whileInView="shown" viewport={VIEWPORT}>
+    <Tag className={className} variants={stagger(gap, delay)} {...replay}>
       {children}
     </Tag>
   )

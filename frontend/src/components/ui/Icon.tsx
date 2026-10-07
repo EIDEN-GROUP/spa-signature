@@ -81,7 +81,7 @@ export function IconSprite() {
       </symbol>
       {/* The logo lockup, defined once and referenced by the header and the footer. */}
       <symbol id="logo" viewBox={`0 0 ${LOCKUP.width} ${LOCKUP.height}`}>
-        <g transform={`translate(0 ${LOCKUP.markY})`} style={{ fill: 'var(--logo-mark, #c9a43b)' }} stroke="none">
+        <g transform={`translate(0 ${LOCKUP.markY})`} style={{ fill: 'var(--logo-mark, #821911)' }} stroke="none">
           <path fillRule="evenodd" d={MARK.wall} />
           {MARK.ripples.map((d) => (
             <path key={d} d={d} />
@@ -91,7 +91,7 @@ export function IconSprite() {
         <path d={LOCKUP.bottom} fill="currentColor" stroke="none" />
       </symbol>
       <symbol id="mark" viewBox={`0 0 ${MARK.width} ${MARK.height}`}>
-        <g style={{ fill: 'var(--logo-mark, #c9a43b)' }} stroke="none">
+        <g style={{ fill: 'var(--logo-mark, #821911)' }} stroke="none">
           <path fillRule="evenodd" d={MARK.wall} />
           {MARK.ripples.map((d) => (
             <path key={d} d={d} />

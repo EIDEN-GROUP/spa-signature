@@ -2,21 +2,25 @@ import { Seo } from '@/components/site/Seo'
 import { Button } from '@/components/ui/Button'
 import { Eyebrow } from '@/components/ui/Khatam'
 import { Reveal } from '@/components/ui/Reveal'
+import { Rich } from '@/components/ui/Rich'
+import { useT } from '@/hooks/use-language'
 import { paths } from '@/lib/paths'
 
 /** Stands in for every page that is not built yet, so no link leads nowhere. */
 export function ComingSoon() {
+  const t = useT()
+
   return (
     <section className="container coming-soon">
-      <Seo title="Coming soon" description="This part of the guide is on its way." path={paths.home} noindex />
+      <Seo title={t.comingSoon.title} description={t.comingSoon.description} path={paths.home} noindex />
       <Reveal className="coming-soon-text">
-        <Eyebrow>On its way</Eyebrow>
+        <Eyebrow>{t.comingSoon.eyebrow}</Eyebrow>
         <h1 className="h1">
-          This door opens <em>soon</em>.
+          <Rich text={t.comingSoon.heading} />
         </h1>
-        <p className="lede">We are still preparing this part of the guide. The homepage is ready to explore.</p>
+        <p className="lede">{t.comingSoon.lede}</p>
         <Button to={paths.home} variant="primary" icon="arrow-left">
-          Back to the homepage
+          {t.comingSoon.back}
         </Button>
       </Reveal>
     </section>

@@ -5,7 +5,7 @@ import { cx } from '@/lib/utils'
 
 interface ButtonProps {
   children: ReactNode
-  /** Fès green, once per view. Everything else is secondary or quiet. */
+  /** Clay, once per view. Everything else is secondary or quiet. */
   variant?: 'primary' | 'secondary' | 'quiet'
   icon?: IconName
   /** Trailing arrow, for actions that go somewhere. */

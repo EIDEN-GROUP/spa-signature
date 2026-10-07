@@ -1,6 +1,6 @@
-import { ratingText } from '@/lib/rating'
+import { useT } from '@/hooks/use-language'
 import type { RatingSummary } from '@/lib/types'
-import { cx, plural } from '@/lib/utils'
+import { cx } from '@/lib/utils'
 
 /** Five ink stars filled to a value. Decoration only: the number beside them is the content. */
 export function Stars({ value, className }: { value: number; className?: string }) {
@@ -34,23 +34,30 @@ interface RatingInlineProps {
  * like a distinction. Under ten reviews there is no average, only "New".
  */
 export function RatingInline({ rating, showLabel = false, className }: RatingInlineProps) {
+  const t = useT()
+  const label = rating.label ? t.rating.labels[rating.label] : ''
+  const spoken =
+    rating.average === null
+      ? t.rating.spokenFresh(rating.count)
+      : t.rating.spoken(t.format.score(rating.average), rating.count, label)
+
   return (
     <span className={cx('rating', className)}>
-      <span className="visually-hidden">{ratingText(rating)}</span>
+      <span className="visually-hidden">{spoken}</span>
       <span className="rating-visual" aria-hidden="true">
         {rating.average === null ? (
-          <span className="rating-new">New</span>
+          <span className="rating-new">{t.rating.fresh}</span>
         ) : (
           <>
             <Stars value={rating.average} />
             <span className="rating-value">
-              <b>{rating.average.toFixed(1)}</b> / 5
+              <b>{t.format.score(rating.average)}</b> / 5
             </span>
           </>
         )}
         <span className="rating-count">
-          {plural(rating.count, 'review')}
-          {showLabel && rating.label ? ` · ${rating.label}` : ''}
+          {t.format.reviews(rating.count)}
+          {showLabel && label ? ` · ${label}` : ''}
         </span>
       </span>
     </span>

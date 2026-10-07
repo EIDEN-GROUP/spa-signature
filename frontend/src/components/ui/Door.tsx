@@ -18,8 +18,8 @@ interface DoorProps {
 
 /**
  * A photograph cut as a doorway: a full arch over straight jambs. It rises
- * from its threshold when revealed (give a parent `initial`/`whileInView`, or
- * a Stagger) and the picture drifts slightly behind the frame on scroll.
+ * from its threshold when revealed (put it inside a Stagger) and the picture
+ * drifts slightly behind the frame on scroll.
  */
 export function Door({ media, ratio = 3 / 4, drift = 6, priority, decorative, className }: DoorProps) {
   const ref = useRef<HTMLDivElement>(null)

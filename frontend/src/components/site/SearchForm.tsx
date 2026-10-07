@@ -2,46 +2,31 @@ import { type CSSProperties, type FormEvent, useId, useMemo, useState } from 're
 import { useNavigate } from 'react-router'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
+import { useT } from '@/hooks/use-language'
 import { track } from '@/lib/analytics'
 import { CITIES, EXPERIENCES, SPAS } from '@/lib/data'
 import { EMPTY_FILTERS, type Filters, search } from '@/lib/filters'
 import { paths } from '@/lib/paths'
 import { OCCASIONS, PRICE_BANDS } from '@/lib/taxonomy'
-import type { CityId, ExperienceId, OccasionId, PriceBandId } from '@/lib/types'
-import { cx, plural } from '@/lib/utils'
+import type { CityId, ExperienceId, OccasionId } from '@/lib/types'
+import { cx } from '@/lib/utils'
+import type { Dictionary } from '@/locales/fr'
 
-type FieldId = 'city' | 'experience' | 'budget' | 'occasion'
+type FieldId = 'city' | 'experience' | 'occasion'
 
-const FIELDS: Record<FieldId, { label: string; any: string; options: { value: string; label: string }[] }> = {
-  city: {
-    label: 'City',
-    any: 'Anywhere',
-    options: CITIES.map((city) => ({ value: city.id, label: city.name })),
-  },
-  experience: {
-    label: 'Experience',
-    any: 'Any experience',
-    options: EXPERIENCES.map((experience) => ({ value: experience.id, label: experience.name })),
-  },
-  budget: {
-    label: 'Budget',
-    any: 'Any budget',
-    options: PRICE_BANDS.map((band) => ({ value: String(band.id), label: `${band.name} · ${band.range}` })),
-  },
-  occasion: {
-    label: 'Occasion',
-    any: 'Any occasion',
-    options: OCCASIONS.map((occasion) => ({ value: occasion.id, label: occasion.name })),
-  },
+function optionsOf(id: FieldId, t: Dictionary): { value: string; label: string }[] {
+  if (id === 'city') return CITIES.map((city) => ({ value: city.id, label: t.cities.byId[city.id].name }))
+  if (id === 'experience') return EXPERIENCES.map((experience) => ({ value: experience.id, label: t.experiences.byId[experience.id].name }))
+  if (id === 'occasion') return OCCASIONS.map((occasion) => ({ value: occasion.id, label: t.occasions[occasion.id] }))
+  return PRICE_BANDS.map((band) => ({ value: String(band.id), label: `${t.priceBands[band.id].name} · ${t.priceBands[band.id].range}` }))
 }
 
-const EMPTY: Record<FieldId, string> = { city: '', experience: '', budget: '', occasion: '' }
+const EMPTY: Record<FieldId, string> = { city: '', experience: '', occasion: '' }
 
 function toFilters(values: Record<FieldId, string>): Partial<Filters> {
   return {
     city: (values.city || null) as CityId | null,
     experiences: values.experience ? [values.experience as ExperienceId] : [],
-    prices: values.budget ? [Number(values.budget) as PriceBandId] : [],
     occasions: values.occasion ? [values.occasion as OccasionId] : [],
   }
 }
@@ -56,6 +41,7 @@ interface SearchFormProps {
 
 /** The quick way in: a few plain choices that open the results already filtered. */
 export function SearchForm({ fields, submitLabel, showCount = false, className }: SearchFormProps) {
+  const t = useT()
   const navigate = useNavigate()
   const uid = useId()
   const [values, setValues] = useState(EMPTY)
@@ -72,18 +58,18 @@ export function SearchForm({ fields, submitLabel, showCount = false, className }
   }
 
   return (
-    <form className={cx('search-form', className)} role="search" aria-label="Find a spa" onSubmit={submit}>
+    <form className={cx('search-form', className)} role="search" aria-label={t.search.label} onSubmit={submit}>
       <div className="search-form-row" style={{ '--fields': fields.length } as CSSProperties}>
         {fields.map((id) => (
           <div key={id} className={cx('search-form-field', values[id] && 'search-form-chosen')}>
-            <label htmlFor={`${uid}-${id}`}>{FIELDS[id].label}</label>
+            <label htmlFor={`${uid}-${id}`}>{t.search.fields[id].label}</label>
             <select
               id={`${uid}-${id}`}
               value={values[id]}
               onChange={(event) => setValues((current) => ({ ...current, [id]: event.target.value }))}
             >
-              <option value="">{FIELDS[id].any}</option>
-              {FIELDS[id].options.map((option) => (
+              <option value="">{t.search.fields[id].any}</option>
+              {optionsOf(id, t).map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -99,7 +85,7 @@ export function SearchForm({ fields, submitLabel, showCount = false, className }
 
       {showCount ? (
         <p className="search-form-count" aria-live="polite">
-          {count > 0 ? `${plural(count, 'spa')} to choose from` : 'No exact match yet: we will show the closest'}
+          {count > 0 ? t.search.count(count) : t.search.none}
         </p>
       ) : null}
     </form>

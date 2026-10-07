@@ -1,6 +1,5 @@
 import { getCity, neighbourhoodOf, priceRange, signatureTreatment } from '@/lib/data'
 import { SCHEMA_DAY } from '@/lib/hours'
-import { mediaUrl } from '@/lib/media'
 import { summarise } from '@/lib/rating'
 import { SITE } from '@/lib/site'
 import { DISTINCTIONS, FACILITIES, LANGUAGES } from '@/lib/taxonomy'
@@ -23,14 +22,14 @@ const ORGANISATION = {
   logo: `${SITE.url}/icon-512.png`,
 }
 
-export function websiteJsonLd(): JsonLd {
+export function websiteJsonLd(description: string = SITE.description, language: string = SITE.locale): JsonLd {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: SITE.name,
-    description: SITE.description,
+    description,
     url: SITE.url,
-    inLanguage: SITE.locale,
+    inLanguage: language,
     publisher: ORGANISATION,
     potentialAction: {
       '@type': 'SearchAction',
@@ -94,7 +93,7 @@ export function spaJsonLd(spa: Spa): JsonLd {
     name: spa.name,
     description: spa.descriptor,
     url: absoluteUrl(`/spa/${spa.slug}`),
-    image: spa.media.gallery.map((item) => `${SITE.url}${mediaUrl(item.id)}`),
+    image: spa.media.gallery.map((item) => `${SITE.url}${item.src}`),
     telephone: spa.contact.phone,
     ...(spa.contact.website ? { sameAs: [spa.contact.website] } : {}),
     address: {
@@ -153,7 +152,7 @@ export function spaJsonLd(spa: Spa): JsonLd {
 }
 
 export function articleJsonLd(article: EditorialArticle): JsonLd {
-  const image = mediaUrl(article.image.id)
+  const image = article.image.src
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',

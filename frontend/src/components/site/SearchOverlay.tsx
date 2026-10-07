@@ -2,15 +2,65 @@ import { type FormEvent, type KeyboardEvent, useId, useMemo, useState } from 're
 import { Link, useNavigate } from 'react-router'
 import { Icon } from '@/components/ui/Icon'
 import { Sheet } from '@/components/ui/Sheet'
-import { CITIES, cityStats, EXPERIENCES, SPAS } from '@/lib/data'
-import { activeFilters, filtersToSearch, search } from '@/lib/filters'
+import { useT } from '@/hooks/use-language'
+import { CITIES, cityStats, EXPERIENCES, getSpaById, SPAS } from '@/lib/data'
+import { type ActiveFilter, activeFilters, filtersToSearch, search } from '@/lib/filters'
 import { paths } from '@/lib/paths'
-import { parseQuery, suggest } from '@/lib/search'
-import { cx, plural } from '@/lib/utils'
+import { parseQuery, type Suggestion, suggest } from '@/lib/search'
+import type { CityId, DistinctionLevel, ExperienceId, FacilityId, OccasionId, PriceBandId, SpaTypeId } from '@/lib/types'
+import { cx } from '@/lib/utils'
+import type { Dictionary } from '@/locales/fr'
 
 interface SearchOverlayProps {
   open: boolean
   onClose: () => void
+}
+
+/** A suggestion in the visitor's language. The search itself names things in English. */
+function suggestionWords(item: Suggestion, t: Dictionary): { label: string; detail: string } {
+  const [kind, ...rest] = item.id.split('-')
+  const key = rest.join('-')
+  if (kind === 'city') return { label: t.cities.byId[key as CityId]?.name ?? item.label, detail: item.detail }
+  if (kind === 'exp') return { label: t.experiences.byId[key as ExperienceId]?.name ?? item.label, detail: item.detail }
+  if (kind === 'type') return { label: t.spaTypes[key as SpaTypeId]?.plural ?? item.label, detail: item.detail }
+  if (kind === 'feature') {
+    const feature = t.facilities[key as FacilityId]
+    return { label: feature ? t.overlay.withFeature(feature) : item.label, detail: item.detail }
+  }
+  if (kind === 'area') {
+    const city = CITIES.find((candidate) => key.startsWith(`${candidate.id}-`))
+    const area = city?.neighbourhoods.find((candidate) => `${city.id}-${candidate.id}` === key)
+    if (city && area) return { label: `${area.name}, ${t.cities.byId[city.id].name}`, detail: item.detail }
+  }
+  if (kind === 'spa') {
+    const spa = getSpaById(key)
+    if (spa) return { label: item.label, detail: t.cities.byId[spa.cityId].name }
+  }
+  return { label: item.label, detail: item.detail }
+}
+
+/** One of the chips that say what the field understood, in the visitor's language. */
+function chipLabel(chip: ActiveFilter, t: Dictionary): string {
+  switch (chip.group) {
+    case 'city':
+      return t.cities.byId[chip.value as CityId]?.name ?? chip.label
+    case 'experiences':
+      return t.experiences.byId[chip.value as ExperienceId]?.name ?? chip.label
+    case 'occasions':
+      return t.occasions[chip.value as OccasionId] ?? chip.label
+    case 'prices':
+      return t.priceBands[chip.value as PriceBandId]?.range ?? chip.label
+    case 'types':
+      return t.spaTypes[chip.value as SpaTypeId]?.name ?? chip.label
+    case 'features':
+      return t.facilities[chip.value as FacilityId] ?? chip.label
+    case 'distinctions':
+      return t.distinctions[chip.value as DistinctionLevel] ?? chip.label
+    case 'rating':
+      return t.overlay.rated(t.format.score(Number(chip.value)))
+    default:
+      return chip.label
+  }
 }
 
 /**
@@ -20,6 +70,7 @@ interface SearchOverlayProps {
  * arrows move, Enter goes, Escape closes.
  */
 export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
+  const t = useT()
   const navigate = useNavigate()
   const inputId = useId()
   const listId = useId()
@@ -59,11 +110,11 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
   }
 
   return (
-    <Sheet open={open} onClose={onClose} title="Search" variant="cover" hideTitle>
+    <Sheet open={open} onClose={onClose} title={t.overlay.title} variant="cover" hideTitle>
       <div className="container search-overlay">
         <form role="search" onSubmit={submit} className="search-overlay-form">
           <label htmlFor={inputId} className="label">
-            Search the guide
+            {t.overlay.label}
           </label>
           <div className="search-overlay-field">
             <Icon name="search" />
@@ -80,7 +131,7 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
               autoCapitalize="off"
               spellCheck={false}
               enterKeyHint="search"
-              placeholder="City, neighbourhood, ritual or spa"
+              placeholder={t.overlay.placeholder}
               value={text}
               onChange={(event) => {
                 setText(event.target.value)
@@ -96,29 +147,30 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
                 {understood.chips.length ? (
                   understood.chips.map((chip) => (
                     <span key={`${chip.group}-${chip.value}`} className="search-overlay-term">
-                      {chip.label}
+                      {chipLabel(chip, t)}
                     </span>
                   ))
                 ) : (
-                  <span className="search-overlay-term">All spas</span>
+                  <span className="search-overlay-term">{t.overlay.allSpas}</span>
                 )}
               </span>
               <span className="search-overlay-go">
-                {understood.count > 0 ? `Show ${plural(understood.count, 'spa')}` : 'See the closest matches'}
+                {understood.count > 0 ? t.overlay.show(understood.count) : t.overlay.closest}
                 <Icon name="arrow-right" />
               </span>
             </button>
           ) : null}
         </form>
 
-        <div id={listId} role="listbox" aria-label="Suggestions" className="search-overlay-results">
+        <div id={listId} role="listbox" aria-label={t.overlay.suggestions} className="search-overlay-results">
           {groups.map((group) => (
-            <div key={group.title} role="group" aria-label={group.title} className="search-overlay-group">
+            <div key={group.title} role="group" aria-label={t.overlay.groups[group.title]} className="search-overlay-group">
               <p className="label" aria-hidden="true">
-                {group.title}
+                {t.overlay.groups[group.title]}
               </p>
               {group.items.map((item) => {
                 const index = options.indexOf(item)
+                const words = suggestionWords(item, t)
                 return (
                   <Link
                     key={item.id}
@@ -134,8 +186,8 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
                       setActive(-1)
                     }}
                   >
-                    <span>{item.label}</span>
-                    <span className="search-overlay-detail">{item.detail}</span>
+                    <span>{words.label}</span>
+                    <span className="search-overlay-detail">{words.detail}</span>
                   </Link>
                 )
               })}
@@ -148,14 +200,14 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
           <div className="search-overlay-entries">
             <section aria-labelledby={`${listId}-cities`}>
               <h3 id={`${listId}-cities`} className="label">
-                Start with a city
+                {t.overlay.startCity}
               </h3>
               <ul>
                 {CITIES.map((city) => (
                   <li key={city.id}>
                     <Link to={paths.spas({ city: city.id })} replace className="search-overlay-option">
-                      <span>{city.name}</span>
-                      <span className="search-overlay-detail">{plural(cityStats(city.id).count, 'spa')}</span>
+                      <span>{t.cities.byId[city.id].name}</span>
+                      <span className="search-overlay-detail">{t.format.spas(cityStats(city.id).count)}</span>
                     </Link>
                   </li>
                 ))}
@@ -163,14 +215,14 @@ export function SearchOverlay({ open, onClose }: SearchOverlayProps) {
             </section>
             <section aria-labelledby={`${listId}-experiences`}>
               <h3 id={`${listId}-experiences`} className="label">
-                Or with what you want
+                {t.overlay.orWant}
               </h3>
               <ul>
                 {EXPERIENCES.map((experience) => (
                   <li key={experience.id}>
                     <Link to={paths.spas({ experiences: [experience.id] })} replace className="search-overlay-option">
-                      <span>{experience.name}</span>
-                      <span className="search-overlay-detail">{experience.promise}</span>
+                      <span>{t.experiences.byId[experience.id].name}</span>
+                      <span className="search-overlay-detail">{t.experiences.byId[experience.id].promise}</span>
                     </Link>
                   </li>
                 ))}

@@ -1,4 +1,3 @@
-import { mediaFocus, mediaUrl } from '@/lib/media'
 import type { Media } from '@/lib/types'
 import { cx } from '@/lib/utils'
 
@@ -20,12 +19,12 @@ export function Picture({ media, ratio, priority = false, decorative = false, fo
   return (
     <picture className={cx('picture', ratio && 'picture-cropped', className)} style={ratio ? { aspectRatio: ratio } : undefined}>
       <img
-        src={mediaUrl(media.id)}
+        src={media.src}
         alt={decorative ? '' : media.alt}
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}
         fetchPriority={priority ? 'high' : 'auto'}
-        style={{ objectPosition: focus ?? mediaFocus(media.id) }}
+        style={{ objectPosition: focus ?? media.focus ?? '50% 50%' }}
       />
     </picture>
   )
