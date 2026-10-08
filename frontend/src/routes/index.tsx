@@ -1,6 +1,7 @@
-import { motion, type MotionStyle, useInView, useReducedMotion, useScroll, useTransform } from 'framer-motion'
-import { type CSSProperties, type FocusEvent, type ReactNode, useRef, useState } from 'react'
+import { motion, type MotionStyle, useAnimationFrame, useInView, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { type CSSProperties, type FocusEvent, type ReactNode, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
+import { BackToTop } from '@/components/site/BackToTop'
 import { SearchForm } from '@/components/site/SearchForm'
 import { Seo } from '@/components/site/Seo'
 import { RatingInline } from '@/components/site/Stars'
@@ -14,15 +15,16 @@ import { Rich } from '@/components/ui/Rich'
 import { Scene } from '@/components/ui/Scene'
 import { SplitHeading } from '@/components/ui/SplitHeading'
 import { useT } from '@/hooks/use-language'
+import { useReplayBothWays } from '@/hooks/use-replay'
 import { useRevealed } from '@/hooks/use-revealed'
 import { CITIES, cityStats, EXPERIENCES, getSpaById, MONTHLY_PICKS, spasWithExperience, toCard } from '@/lib/data'
-import { EASE, fade, rise, unveil } from '@/lib/motion'
+import { drawnFromLeft, drawnFromRight, EASE, fade, lift, rise, settle, unveil } from '@/lib/motion'
 import { paths } from '@/lib/paths'
 import { websiteJsonLd } from '@/lib/seo'
 import type { City } from '@/lib/types'
 import { cx, formatDuration } from '@/lib/utils'
-import doorArcade from '@/assets/door-arcade.webp'
-import doorGate from '@/assets/door-gate.webp'
+import doorArcade from '@/assets/doorArcade.mp4'
+import doorGate from '@/assets/spa-dar-tassa.webp'
 import heroImg from '@/assets/hero-img.png'
 
 // ── The homepage ────────────────────────────────────────────────────────────────
@@ -39,6 +41,7 @@ export function Home() {
       <Experiences />
       <Closing />
       <ForSpas />
+      <BackToTop />
     </>
   )
 }
@@ -184,7 +187,7 @@ function Picks() {
           <Stagger as="ol" className="home-picks-list" gap={0.12} delay={0.15}>
             {others.map(({ spa, card, whyNow }, index) => (
               <motion.li key={spa.id} className="home-picks-row" variants={rise}>
-                <Door media={card.leadImage} shape="soft" ratio={1} drift={4} decorative className="home-picks-thumb" />
+                <Door media={card.leadImage} ratio={1 / 2} drift={4} decorative className="home-picks-thumb" />
                 <div className="home-picks-row-body">
                   <p className="home-picks-pick">N° {index + 2}</p>
                   <h3 className="home-picks-name">
@@ -226,41 +229,145 @@ function Cities() {
           />
         </div>
 
-        <Stagger as="ul" className="home-cities-row" gap={0.11}>
+        <ul className="home-cities-list">
           {CITIES.map((city, index) => (
-            <CityDoor key={city.id} city={city} index={index} />
+            <CityRow key={city.id} city={city} flip={index % 2 === 1} />
           ))}
-        </Stagger>
+        </ul>
       </Scene>
     </section>
   )
 }
 
-/** One door of the arcade. Neighbours slide in opposite directions as the page scrolls. */
-function CityDoor({ city, index }: { city: City; index: number }) {
+function CityRow({ city, flip }: { city: City; flip: boolean }) {
   const t = useT()
   const ref = useRef<HTMLLIElement>(null)
+  const still = useReducedMotion()
+  const replay = useReplayBothWays()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const reach = index % 2 ? 30 : -30
-  const shift = useTransform(scrollYProgress, [0, 1], [`${reach}px`, `${-reach}px`])
+  const side = flip ? 1 : -1
+  const drift = useTransform(scrollYProgress, [0, 1], ['-7%', '7%'])
+  const reach = useTransform(scrollYProgress, [0, 0.45, 1], [`${side * 9}%`, '0%', `${side * 5}%`])
+  const shift = useTransform(scrollYProgress, [0, 1], ['28px', '-28px'])
   const stats = cityStats(city.id)
   const words = t.cities.byId[city.id]
 
   return (
-    <motion.li ref={ref} className="home-cities-item" variants={rise} style={{ '--shift': shift } as MotionStyle}>
+    <motion.li
+      ref={ref}
+      className={cx('home-cities-row', flip && 'home-cities-flip')}
+      style={still ? undefined : ({ '--reach': reach, '--shift': shift } as MotionStyle)}
+      {...replay}
+    >
       <Link to={paths.city(city.slug)} className="home-cities-link">
-        <Door media={{ ...city.image, alt: words.alt }} />
-        <span className="home-cities-text">
-          <span className="home-cities-name">
-            {words.name}
+        <div className="home-cities-figure">
+          <motion.div className="home-cities-frame" variants={flip ? drawnFromRight : drawnFromLeft}>
+            <motion.div className="home-cities-drift" style={still ? undefined : { y: drift }} variants={settle}>
+              <Picture media={{ ...city.image, alt: words.alt }} className="home-cities-photo" />
+            </motion.div>
+          </motion.div>
+          <CityRing id={`home-cities-ring-${city.id}`} words={city.neighbourhoods.map((quarter) => quarter.name)} flip={flip} />
+        </div>
+
+        <div className="home-cities-text">
+          <h3 className="home-cities-name">
+            <motion.span variants={lift} custom={0.15}>
+              {words.name}
+            </motion.span>
+          </h3>
+          <motion.p className="label" variants={rise} custom={0.28}>
+            {t.cities.known}
+          </motion.p>
+          <motion.p className="home-cities-tags" variants={rise} custom={0.36}>
+            {words.known.map((word) => (
+              <span key={word}>
+                <Khatam />
+                {word}
+              </span>
+            ))}
+          </motion.p>
+          <motion.p className="home-cities-line" variants={rise} custom={0.44}>
+            {words.line}
+          </motion.p>
+          <motion.span className="home-cities-cta" variants={rise} custom={0.52}>
+            {t.cities.see(stats.count)}
             <Icon name="arrow-right" />
-          </span>
-          <span className="home-cities-meta">
-            {t.format.spas(stats.count)}
-          </span>
-        </span>
+          </motion.span>
+        </div>
       </Link>
     </motion.li>
+  )
+}
+
+const RING_GAP = 12
+const RING_PAST = 48
+
+function CityRing({ id, words, flip }: { id: string; words: string[]; flip: boolean }) {
+  const box = useRef<HTMLSpanElement>(null)
+  const sample = useRef<SVGTextElement>(null)
+  const line = useRef<SVGTextPathElement>(null)
+  const travelled = useRef(0)
+  const scrolled = useRef(0)
+  const still = useReducedMotion()
+  const seen = useInView(box)
+  const { scrollY } = useScroll()
+  const [size, setSize] = useState({ w: 0, h: 0, phrase: 0 })
+
+  useEffect(() => {
+    const element = box.current
+    if (!element) return
+    let live = true
+    const measure = () => {
+      if (live) setSize({ w: element.clientWidth, h: element.clientHeight, phrase: sample.current?.getComputedTextLength() ?? 0 })
+    }
+    const observer = new ResizeObserver(measure)
+    observer.observe(element)
+    document.fonts.ready.then(measure)
+    return () => {
+      live = false
+      observer.disconnect()
+    }
+  }, [])
+
+  useAnimationFrame((_, delta) => {
+    const y = scrollY.get()
+    const pushed = y - scrolled.current
+    scrolled.current = y
+    if (still || !seen || !size.phrase || !line.current) return
+    const next = travelled.current + delta * 0.028 + pushed * 0.3
+    travelled.current = ((next % size.phrase) + size.phrase) % size.phrase
+    line.current.setAttribute('startOffset', String(-travelled.current))
+  })
+
+  const { w, h, phrase } = size
+  const r = h / 2 + RING_GAP
+  const d = flip
+    ? `M${w + RING_PAST} ${h + RING_GAP}H${h / 2}A${r} ${r} 0 0 1 ${h / 2} ${-RING_GAP}H${w + RING_PAST}`
+    : `M${-RING_PAST} ${-RING_GAP}H${w - h / 2}A${r} ${r} 0 0 1 ${w - h / 2} ${h + RING_GAP}H${-RING_PAST}`
+  const runs = phrase ? Math.ceil((2 * (RING_PAST + w - h / 2) + Math.PI * r) / phrase) + 1 : 1
+  const run = words.map((word) => (
+    <tspan key={word}>
+      {word}
+      <tspan className="home-cities-ring-dot">&emsp;•&emsp;</tspan>
+    </tspan>
+  ))
+
+  return (
+    <motion.span ref={box} className="home-cities-ring" aria-hidden="true" variants={fade} custom={0.5}>
+      <svg focusable="false">
+        <path id={id} d={d} fill="none" />
+        <text ref={sample} className="home-cities-ring-sample">
+          {run}
+        </text>
+        <text>
+          <textPath ref={line} href={`#${id}`}>
+            {Array.from({ length: runs }, (_, index) => (
+              <tspan key={index}>{run}</tspan>
+            ))}
+          </textPath>
+        </text>
+      </svg>
+    </motion.span>
   )
 }
 
@@ -452,15 +559,20 @@ function Closing() {
             </Reveal>
           </div>
 
-          <Stagger className="home-closing-doors" gap={0.2}>
-            <Door
-              media={{ src: doorArcade, alt: t.closing.arcadeAlt, focus: '64% 50%' }}
-              shape="pill"
-              ratio={5 / 8}
-              drift={7}
-              className="home-closing-tall"
-            />
-          </Stagger>
+        <Stagger className="home-closing-doors" gap={0.2}>
+          <Door
+            media={{
+              src: doorArcade,
+              alt: t.closing.arcadeAlt,
+              focus: '64% 50%',
+              type: 'video',
+            }}
+            shape="pill"
+            ratio={5 / 8}
+            drift={7}
+            className="home-closing-tall"
+          />
+        </Stagger>
         </div>
       </Scene>
     </section>

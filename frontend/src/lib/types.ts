@@ -29,12 +29,11 @@ export type IsoDate = `${number}-${number}-${number}`
 // ── Media ───────────────────────────────────────────────────────────────────
 
 export interface Media {
-  /** The imported file: `import photo from '@/assets/name.webp'`. */
   src: string
   alt: string
   caption?: string
-  /** Where to hold the crop when a frame cuts the photograph, as a CSS object-position. */
   focus?: string
+  type?: 'image' | 'video'
 }
 
 // ── Places and experiences ──────────────────────────────────────────────────

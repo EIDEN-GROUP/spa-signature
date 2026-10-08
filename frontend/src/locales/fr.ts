@@ -38,6 +38,7 @@ export const fr = {
     search: 'Rechercher',
     menu: 'Menu',
     language: 'Langue',
+    top: 'Retour en haut',
   },
 
   hero: {
@@ -92,26 +93,38 @@ export const fr = {
     title: 'Découvrir par *ville*',
     lede: 'Chaque ville a sa façon de se baigner. Commencez par celle où vous allez.',
     all: 'Toutes les villes',
+    known: 'On y vient pour',
+    see: (count: number) => (count === 1 ? 'Voir le spa' : `Voir les ${count} spas`),
     byId: {
       marrakech: {
         name: 'Marrakech',
         alt: 'Une porte en cèdre peint sous un arc brisé, dans un mur rose de Marrakech',
+        line: 'La capitale du hammam, du bain de quartier au rituel de palace.',
+        known: ['Hammam', 'Riads', 'Palaces'],
       },
       casablanca: {
         name: 'Casablanca',
         alt: 'La mosquée Hassan II et son minaret au-dessus de l’Atlantique, à Casablanca',
+        line: 'Une ville qui travaille, et qui prend au sérieux sa peau, ses massages et son Atlantique.',
+        known: ['Visage', 'Massage', 'Atlantique'],
       },
       agadir: {
         name: 'Agadir',
         alt: 'Des barques de pêche bleues sur la plage, sous les maisons blanches de Taghazout, près d’Agadir',
+        line: 'Pays de l’argan et houle de l’Atlantique : thalasso dans la baie, récupération le long de la côte.',
+        known: ['Thalasso', 'Argan', 'Récupération'],
       },
       rabat: {
         name: 'Rabat',
         alt: 'Des palmiers le long des remparts de la Kasbah des Oudayas, à Rabat',
+        line: 'La capitale tranquille : rituels classiques dans la Kasbah, clubs paisibles dans les quartiers verts.',
+        known: ['Rituels', 'Kasbah', 'Calme'],
       },
       tangier: {
         name: 'Tanger',
         alt: 'Les toits blancs de la Kasbah de Tanger au-dessus de la baie, vus d’une terrasse à la table en zellige',
+        line: 'Des salles blanches au-dessus du Détroit, et des bains que la Kasbah n’a jamais fermés.',
+        known: ['Hammams', 'Kasbah', 'Détroit'],
       },
     },
   },

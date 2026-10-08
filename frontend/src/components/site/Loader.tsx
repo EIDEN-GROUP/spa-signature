@@ -1,5 +1,5 @@
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Logo } from '@/components/site/Logo'
 import { useT } from '@/hooks/use-language'
@@ -30,7 +30,7 @@ interface LoaderProps {
 
 /**
  * The opening of the site: a short film of a hammam while the page loads, then
- * the whole screen rises like a curtain, a sheet of burgundy close behind it.
+ * the whole screen rises like a curtain.
  * The film is written in index.html, so it plays from the first moment; the
  * logo and the line join it here. Visitors who asked for less motion never see it.
  */
@@ -42,20 +42,51 @@ export function Loader({ onLift }: LoaderProps) {
   const [phase, setPhase] = useState<'loading' | 'lifting' | 'gone'>(() => (screen && !prefersReducedMotion() ? 'loading' : 'gone'))
   const progress = useMotionValue(0)
   const drawn = useTransform(progress, [0, 100], [0, 1])
+  const sounded = useRef(false)
 
   useEffect(() => {
-    if (!screen) return
+    if (!screen || !screen.isConnected) return
     if (prefersReducedMotion()) {
       screen.remove()
       return
     }
     let live = true
-    const under = screen.querySelector<HTMLElement>('.loader-under')
     const curtain = screen.querySelector<HTMLElement>('.loader-sheet')
     const film = screen.querySelector<HTMLElement>('.loader-film')
     const video = screen.querySelector('video')
     // A browser may refuse to play; the loader works the same without the film.
-    video?.play().catch(() => {})
+    const mute = () => {
+      if (video) video.muted = true
+    }
+    const hide = () => {
+      if (document.hidden) mute()
+    }
+    const hush = (ms: number) =>
+      new Promise<void>((resolve) => {
+        if (!video || video.muted) return resolve()
+        const from = video.volume
+        const start = performance.now()
+        const timer = window.setInterval(() => {
+          const left = Math.max(0, 1 - (performance.now() - start) / ms)
+          video.volume = from * left * left
+          if (left > 0) return
+          window.clearInterval(timer)
+          mute()
+          resolve()
+        }, 40)
+      })
+    if (video && !sounded.current && !document.hidden) {
+      sounded.current = true
+      video.muted = false
+      video.play().catch(() => {
+        video.muted = true
+        video.play().catch(() => {})
+      })
+    } else {
+      video?.play().catch(() => {})
+    }
+    document.addEventListener('visibilitychange', hide)
+    window.setTimeout(mute, LONGEST + 3000)
 
     // The line draws itself while the page loads, and holds just short of the end.
     const climb = animate(progress, 92, { duration: (SHORTEST / 1000) * 1.6, ease: [0.2, 0.7, 0.2, 1] })
@@ -65,14 +96,17 @@ export function Loader({ onLift }: LoaderProps) {
       if (seen < FILM) await wait(FILM - seen)
       if (!live) return
       climb.stop()
-      await animate(progress, 100, { duration: 0.45, ease: 'easeOut' })
-      if (!live || !under || !curtain || !film) return
+      await Promise.all([animate(progress, 100, { duration: 0.45, ease: 'easeOut' }), hush(1000)])
+      mute()
+      if (!live || !curtain || !film) return
       setPhase('lifting')
       onLift()
       // The film slides down inside the sheet as the sheet goes up, so it seems to stay where it is.
       animate(film, { y: '45%' }, LIFT)
-      animate(curtain, { y: '-100%' }, LIFT)
-      await animate(under, { y: '-100%' }, { ...LIFT, delay: 0.16 })
+      await animate(curtain, { y: '-100%' }, LIFT)
+      video?.pause()
+      video?.removeAttribute('src')
+      video?.load()
       screen.remove()
       setPhase('gone')
     })
@@ -80,6 +114,7 @@ export function Loader({ onLift }: LoaderProps) {
     return () => {
       live = false
       climb.stop()
+      document.removeEventListener('visibilitychange', hide)
     }
   }, [screen, onLift, progress])
 

@@ -7,6 +7,7 @@ const ICONS = {
   search: 'M11 4.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM16 16l4 4',
   'arrow-right': 'M4.5 12h15M13.5 6l6 6-6 6',
   'arrow-left': 'M19.5 12h-15M10.5 6l-6 6 6 6',
+  'arrow-up': 'M12 19.5v-15M6 10.5l6-6 6 6',
   external: 'M7 17 17 7M9 7h8v8',
   'chevron-down': 'm6 9.5 6 6 6-6',
   'chevron-right': 'm9.5 6 6 6-6 6',

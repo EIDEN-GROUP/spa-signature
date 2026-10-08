@@ -19,3 +19,17 @@ export function useReplay() {
     },
   } as const
 }
+
+export function useReplayBothWays(amount = 0.3) {
+  const [state, setState] = useState<'hidden' | 'shown' | 'passed'>('hidden')
+
+  return {
+    initial: 'hidden',
+    animate: state,
+    viewport: { amount },
+    onViewportEnter: () => setState('shown'),
+    onViewportLeave: (entry: IntersectionObserverEntry | null) => {
+      setState(entry && entry.boundingClientRect.top < 0 ? 'passed' : 'hidden')
+    },
+  } as const
+}

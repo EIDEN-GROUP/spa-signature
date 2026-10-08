@@ -7,22 +7,14 @@ import { cx } from '@/lib/utils'
 
 interface DoorProps {
   media: Media
-  /** Width over height of the doorway. Wider than 1 reads as a gate. */
   ratio?: number
-  /** How far the photograph drifts behind the frame as the page scrolls, in percent. */
   drift?: number
-  /** The cut of the frame: an arch over straight jambs, a soft rectangle, or fully rounded ends. */
   shape?: 'door' | 'soft' | 'pill'
   priority?: boolean
   decorative?: boolean
   className?: string
 }
 
-/**
- * A photograph cut as a doorway: a full arch over straight jambs. It rises
- * from its threshold when revealed (put it inside a Stagger) and the picture
- * drifts slightly behind the frame on scroll.
- */
 export function Door({ media, ratio = 3 / 4, drift = 6, shape = 'door', priority, decorative, className }: DoorProps) {
   const ref = useRef<HTMLDivElement>(null)
   const still = useReducedMotion()

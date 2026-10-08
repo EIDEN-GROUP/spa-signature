@@ -35,6 +35,7 @@ export const en: Dictionary = {
     search: 'Search',
     menu: 'Menu',
     language: 'Language',
+    top: 'Back to top',
   },
 
   hero: {
@@ -87,26 +88,38 @@ export const en: Dictionary = {
     title: 'Discover by *city*',
     lede: 'Every city bathes differently. Start with the one you are going to.',
     all: 'All cities',
+    known: 'Come for',
+    see: (count: number) => (count === 1 ? 'See the spa' : `See the ${count} spas`),
     byId: {
       marrakech: {
         name: 'Marrakech',
         alt: 'A painted cedar door under a pointed arch, set in a rose-pink wall in Marrakech',
+        line: 'The capital of the hammam, from neighbourhood bathhouse to palace ritual.',
+        known: ['Hammam', 'Riads', 'Palaces'],
       },
       casablanca: {
         name: 'Casablanca',
         alt: 'The Hassan II Mosque and its minaret above the Atlantic in Casablanca',
+        line: 'A working city that takes its skin, its massage and its Atlantic seriously.',
+        known: ['Facials', 'Massage', 'Atlantic'],
       },
       agadir: {
         name: 'Agadir',
         alt: 'Blue fishing boats on the beach below the white houses of Taghazout, near Agadir',
+        line: 'Argan country and Atlantic swell: thalasso on the bay, recovery up the coast.',
+        known: ['Thalasso', 'Argan', 'Recovery'],
       },
       rabat: {
         name: 'Rabat',
         alt: 'Palm trees along the ramparts of the Kasbah des Oudayas in Rabat',
+        line: 'The quiet capital: classical rituals in the Kasbah, calm clubs in the green quarters.',
+        known: ['Rituals', 'Kasbah', 'Quiet'],
       },
       tangier: {
         name: 'Tangier',
         alt: 'White rooftops of the Tangier Kasbah above the bay, seen from a terrace with a zellige table',
+        line: 'White rooms above the Strait, and bathhouses the Kasbah never closed.',
+        known: ['Bathhouses', 'Kasbah', 'The Strait'],
       },
     },
   },

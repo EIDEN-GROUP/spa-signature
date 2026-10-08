@@ -22,7 +22,7 @@ falls on the page: the search in the first screen, the only section with real
 spas to compare straight after it, the two ways to browse, a second search for
 whoever reaches the end, and spa owners last. Keep it when adding to the page.
 The hero fills the first screen: the title is centred over the photograph, the
-search is a bar of smoked glass under it, and the promises and the two links
+search is a white bar with a burgundy button under it, and the promises and the two links
 sit along the foot of the photograph. It has one photograph and no carousel.
 “Signature Selection”, “Signature Method”, “Guides” and “Explore Morocco” were
 removed on purpose: do not add them back, or link to them from the header or
@@ -53,11 +53,34 @@ footer.
 - Interface corners use `--radius`. Photographs are framed with the `Door`
   component (`src/components/ui/Door.tsx`), and the cut changes from one
   section to the next so the page is not all doorways: `shape="door"` (an arch
-  over straight jambs: the cities, the first pick, the “Run a spa?” band),
+  over straight jambs: the first pick, the “Run a spa?” band),
   `shape="soft"` (a rounded rectangle: the other picks) and `shape="pill"`
   (rounded ends: the closing search). The experiences carousel uses plain
   rounded rectangles. When adding a section, do not repeat the shape of the
   section above it.
+- Discover by city does not use `Door`. Each city is a row: its photograph is
+  a capsule fixed to one edge of the screen, round at the other end, and the
+  rows alternate sides. The names of the city’s quarters travel around the
+  capsule on an SVG path (`CityRing` in `src/routes/index.tsx`), a little
+  faster while the page scrolls. Facing it: the name, three words in a
+  burgundy pill, one line, and an outlined pill that fills on hover. The
+  whole row is one link. On a phone the text sits under the capsule. A row
+  leaves when it goes off either end of the screen and arrives again from the
+  side the page comes back on (`useReplayBothWays`).
+- In This month’s picks the second pick sits in a card with a burgundy
+  outline, so it reads above the third and the fourth.
+- On the sage panel of Explore by experience the title is white; its
+  emphasised word, the eyebrow and the controls under the rail are burgundy,
+  and the lede is `--color-burgundy-night`.
+- A choice among a few options is the `Select` component
+  (`src/components/ui/Select.tsx`), never a native `<select>`: a button and a
+  list drawn in the page’s own style. The list opens under its field, in two
+  columns or upwards when there is little room below, and closes when the
+  page scrolls. It answers the arrows, Home and End, Enter, Escape and typing
+  the first letters.
+- The homepage ends with `BackToTop` (`src/components/site/BackToTop.tsx`): a
+  round button at the bottom right that appears after the first screen. The
+  ring around it fills as the page scrolls.
 - Design the phone first. Every section is composed for a narrow screen and
   then given more room, not the other way round.
 
@@ -79,7 +102,11 @@ footer.
   draws back as it leaves through the top of the screen.
 - GSAP animates text (`SplitHeading`).
 - The first arrival opens with `Loader`: a short film under a black veil,
-  then the screen rises like a curtain. The page does not scroll and shows no
+  then the screen rises like a curtain, alone: no coloured sheet follows it.
+  The film (`src/assets/loader.mp4`) plays with its sound when the browser
+  allows it and muted otherwise. The sound belongs to the loading step only:
+  it fades to silence before the curtain starts to rise, and the rise is
+  silent. The page does not scroll and shows no
   scrollbar until it is gone. Whatever opens a page waits for it with
   `useRevealed()`.
 - The page is light, with three blocks of burgundy set into it: Explore by

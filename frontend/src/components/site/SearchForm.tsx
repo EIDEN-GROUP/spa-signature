@@ -2,6 +2,7 @@ import { type CSSProperties, type FormEvent, useId, useMemo, useState } from 're
 import { useNavigate } from 'react-router'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
+import { Select } from '@/components/ui/Select'
 import { useT } from '@/hooks/use-language'
 import { track } from '@/lib/analytics'
 import { CITIES, EXPERIENCES, SPAS } from '@/lib/data'
@@ -62,19 +63,16 @@ export function SearchForm({ fields, submitLabel, showCount = false, className }
       <div className="search-form-row" style={{ '--fields': fields.length } as CSSProperties}>
         {fields.map((id) => (
           <div key={id} className={cx('search-form-field', values[id] && 'search-form-chosen')}>
-            <label htmlFor={`${uid}-${id}`}>{t.search.fields[id].label}</label>
-            <select
+            <label id={`${uid}-${id}-label`} htmlFor={`${uid}-${id}`}>
+              {t.search.fields[id].label}
+            </label>
+            <Select
               id={`${uid}-${id}`}
+              labelledBy={`${uid}-${id}-label`}
               value={values[id]}
-              onChange={(event) => setValues((current) => ({ ...current, [id]: event.target.value }))}
-            >
-              <option value="">{t.search.fields[id].any}</option>
-              {optionsOf(id, t).map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+              options={[{ value: '', label: t.search.fields[id].any }, ...optionsOf(id, t)]}
+              onChange={(value) => setValues((current) => ({ ...current, [id]: value }))}
+            />
             <Icon name="chevron-down" />
           </div>
         ))}
